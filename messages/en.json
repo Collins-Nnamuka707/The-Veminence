@@ -1,0 +1,98 @@
+{
+  "Meta": {
+    "title": "The Veminence — human hair wigs",
+    "description": "Human hair wigs delivered across Poland. Order online and pay on WhatsApp."
+  },
+  "Header": {
+    "announcement": "Order online, pay on WhatsApp",
+    "skipToContent": "Skip to content",
+    "home": "The Veminence — home",
+    "menu": "Menu",
+    "nav": {
+      "shop": "Shop",
+      "categories": "Categories",
+      "howItWorks": "How to order"
+    },
+    "language": "Language",
+    "switchTo": "Polski"
+  },
+  "Home": {
+    "hero": {
+      "eyebrow": "Human hair wigs",
+      "title": "Feel <script>beautiful</script> every day",
+      "text": "Carefully chosen human hair wigs. Order online, and we'll confirm payment and delivery with you on WhatsApp.",
+      "cta": "Shop the collection",
+      "secondary": "How to order"
+    },
+    "marquee": {
+      "one": "Human hair",
+      "two": "Lace front",
+      "three": "Delivery across Poland",
+      "four": "Pay on WhatsApp"
+    },
+    "categories": {
+      "eyebrow": "Categories",
+      "title": "Choose your <script>style</script>",
+      "shopNow": "Shop now"
+    },
+    "newArrivals": {
+      "eyebrow": "New in",
+      "title": "New <script>arrivals</script>",
+      "viewAll": "View all"
+    },
+    "howItWorks": {
+      "eyebrow": "How to order",
+      "title": "Order in <script>three</script> steps",
+      "step1Title": "Choose your wig",
+      "step1Text": "Add what you love to your cart and place your order on the site.",
+      "step2Title": "Message us on WhatsApp",
+      "step2Text": "After you order, a ready-made message with your order number opens.",
+      "step3Title": "Pay and await your parcel",
+      "step3Text": "We confirm your payment and ship your order."
+    }
+  },
+  "Product": {
+    "badge": {
+      "new": "New",
+      "sale": "-{percent}%",
+      "soldOut": "Sold out",
+      "preorder": "Pre-order",
+      "comingSoon": "Coming soon"
+    },
+    "status": {
+      "inStock": "In stock",
+      "lowStock": "{count, plural, one {Only # left} other {Only # left}}",
+      "outOfStock": "Currently unavailable",
+      "preorder": "Available to pre-order",
+      "comingSoon": "Coming soon"
+    },
+    "regularPrice": "Regular price",
+    "currentPrice": "Price",
+    "salePrice": "Sale price",
+    "lowestPrice": "Lowest price in the 30 days before the discount: {price}",
+    "vatIncluded": "Price includes VAT",
+    "imagePlaceholder": "Photo of {name} coming soon",
+    "backToShop": "Back to shop",
+    "orderingSoon": "Ordering through the site is coming soon."
+  },
+  "Shop": {
+    "title": "Shop",
+    "all": "All",
+    "heading": "All <script>wigs</script>",
+    "count": "{count, plural, one {# product} other {# products}}"
+  },
+  "Footer": {
+    "tagline": "Human hair wigs for women across Poland.",
+    "shop": "Shop",
+    "help": "Help",
+    "allWigs": "All wigs",
+    "newArrivals": "New arrivals",
+    "howToOrder": "How to order",
+    "rights": "All rights reserved."
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "text": "This page doesn't exist or has moved.",
+    "back": "Back to the home page"
+  }
+}
