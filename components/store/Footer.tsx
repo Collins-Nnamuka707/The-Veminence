@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Logo } from "./Logo";
 
-export function Footer() {
+export function Footer({ whatsappHref }: { whatsappHref: string }) {
   const t = useTranslations("Footer");
 
   return (
@@ -16,11 +16,21 @@ export function Footer() {
 
         <FooterColumn title={t("shop")}>
           <FooterLink href="/shop">{t("allWigs")}</FooterLink>
-          <FooterLink href="/#new-arrivals">{t("newArrivals")}</FooterLink>
+          <FooterLink href="/shop/new">{t("newArrivals")}</FooterLink>
+          <FooterLink href="/shop/bestsellers">{t("bestSellers")}</FooterLink>
         </FooterColumn>
 
-        <FooterColumn title={t("help")}>
-          <FooterLink href="/#how-it-works">{t("howToOrder")}</FooterLink>
+        <FooterColumn title={t("contact")}>
+          <li>
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-11 items-center hover:text-gold"
+            >
+              WhatsApp
+            </a>
+          </li>
         </FooterColumn>
       </div>
 

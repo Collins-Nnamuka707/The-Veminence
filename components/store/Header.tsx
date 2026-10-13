@@ -1,12 +1,15 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { AccountLink } from "./AccountLink";
+import { CartLink } from "./cart/CartLink";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Logo } from "./Logo";
 
 const navItems = [
   { href: "/shop", key: "shop" },
+  { href: "/shop/new", key: "newIn" },
+  { href: "/shop/bestsellers", key: "bestSellers" },
   { href: "/#categories", key: "categories" },
-  { href: "/#how-it-works", key: "howItWorks" },
 ] as const;
 
 export function Header() {
@@ -20,10 +23,6 @@ export function Header() {
       >
         {t("skipToContent")}
       </a>
-
-      <p className="bg-ink px-4 py-2 text-center text-xs tracking-wide text-cream">
-        {t("announcement")}
-      </p>
 
       <header className="sticky top-0 z-40 border-b border-stone bg-cream/95 backdrop-blur">
         <div className="container-page flex h-16 items-center justify-between gap-4">
@@ -45,6 +44,8 @@ export function Header() {
 
           <div className="flex items-center gap-1">
             <LanguageSwitcher />
+            <AccountLink />
+            <CartLink />
 
             {/* Mobile menu: <details> works without JavaScript. */}
             <details className="group relative md:hidden">

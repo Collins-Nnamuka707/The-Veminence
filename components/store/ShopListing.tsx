@@ -2,6 +2,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { t } from "@/lib/i18n-content";
+import type { Collection } from "@/lib/collections";
 import type { Category, CategorySlug, StoreProduct } from "@/lib/product-state";
 import { ProductCard } from "./ProductCard";
 import { rich } from "./rich";
@@ -9,7 +10,8 @@ import { rich } from "./rich";
 type Props = {
   categories: Category[];
   products: StoreProduct[];
-  active: CategorySlug | null;
+  /** A category, a collection (New in, Best sellers) or null for all wigs. */
+  active: CategorySlug | Collection | null;
 };
 
 export function ShopListing({ categories, products, active }: Props) {
@@ -19,6 +21,8 @@ export function ShopListing({ categories, products, active }: Props) {
 
   const filters = [
     { href: "/shop", label: tr("all"), current: active === null },
+    { href: "/shop/new", label: tr("collections.new"), current: active === "new" },
+    { href: "/shop/bestsellers", label: tr("collections.bestsellers"), current: active === "bestsellers" },
     ...categories.map((c) => ({
       href: `/shop/${c.slug}`,
       label: t(c.name, locale),
@@ -29,7 +33,11 @@ export function ShopListing({ categories, products, active }: Props) {
   return (
     <div className="container-page pt-12 pb-24">
       <h1 className="font-display text-4xl font-medium sm:text-5xl">
-        {activeCategory ? t(activeCategory.name, locale) : tr.rich("heading", rich)}
+        {activeCategory
+          ? t(activeCategory.name, locale)
+          : active === "new" || active === "bestsellers"
+            ? tr(`collections.${active}`)
+            : tr.rich("heading", rich)}
       </h1>
       <p className="mt-2 text-sm text-muted">{tr("count", { count: products.length })}</p>
 

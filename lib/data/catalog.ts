@@ -1,3 +1,4 @@
+import { bestSellers, newIn } from "@/lib/collections";
 import type { Category, StoreProduct } from "@/lib/product-state";
 import { sampleCategories, sampleProducts } from "./sample-catalog";
 
@@ -12,8 +13,12 @@ export async function getProducts(): Promise<StoreProduct[]> {
   return sampleProducts;
 }
 
-export async function getNewArrivals(limit = 4): Promise<StoreProduct[]> {
-  return sampleProducts.filter((p) => p.isNew).slice(0, limit);
+export async function getNewArrivals(limit?: number): Promise<StoreProduct[]> {
+  return newIn(sampleProducts).slice(0, limit);
+}
+
+export async function getBestSellers(limit?: number): Promise<StoreProduct[]> {
+  return bestSellers(sampleProducts, limit);
 }
 
 export async function getProductBySlug(slug: string): Promise<StoreProduct | null> {

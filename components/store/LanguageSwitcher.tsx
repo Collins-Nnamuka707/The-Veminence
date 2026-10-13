@@ -16,12 +16,14 @@ export function LanguageSwitcher() {
       locale={other}
       hrefLang={other}
       lang={other}
-      className="inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 text-sm font-medium hover:bg-stone"
+      aria-label={t("switchTo")}
+      className="inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-2 text-sm font-medium hover:bg-stone sm:px-3"
     >
-      <span aria-hidden="true" className="text-xs tracking-widest text-olive uppercase">
-        {other}
+      <span className="text-xs tracking-widest text-olive uppercase">{other}</span>
+      {/* The full language name only fits next to the icons on wider screens. */}
+      <span aria-hidden="true" className="hidden sm:inline">
+        {t("switchTo")}
       </span>
-      <span>{t("switchTo")}</span>
     </Link>
   );
 }

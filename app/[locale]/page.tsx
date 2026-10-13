@@ -46,7 +46,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
         </ul>
       </section>
 
-      <section aria-labelledby="new-title" id="new-arrivals" className="container-page scroll-mt-24 pt-20">
+      <section aria-labelledby="new-title" id="new-arrivals" className="container-page scroll-mt-24 pt-20 pb-24">
         <SectionHeading
           id="new-title"
           eyebrow={tr("newArrivals.eyebrow")}
@@ -58,13 +58,11 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
           ))}
         </div>
         <div className="mt-10 text-center">
-          <Link href="/shop" className="btn-outline">
+          <Link href="/shop/new" className="btn-outline">
             {tr("newArrivals.viewAll")}
           </Link>
         </div>
       </section>
-
-      <HowItWorks />
     </>
   );
 }
@@ -88,9 +86,6 @@ async function Hero({ locale, featured }: { locale: Locale; featured?: StoreProd
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/shop" className="btn-gold">
               {tr("cta")}
-            </Link>
-            <Link href="/#how-it-works" className="btn border border-cream/40 hover:bg-cream hover:text-ink">
-              {tr("secondary")}
             </Link>
           </div>
         </div>
@@ -145,38 +140,5 @@ function CategoryCard({ category, locale, cta }: { category: Category; locale: L
         </span>
       </span>
     </Link>
-  );
-}
-
-async function HowItWorks() {
-  const tr = await getTranslations("Home.howItWorks");
-  const steps = [1, 2, 3] as const;
-
-  return (
-    <section
-      id="how-it-works"
-      aria-labelledby="how-title"
-      className="on-dark mt-24 scroll-mt-24 bg-olive py-20 text-cream"
-    >
-      <div className="container-page">
-        <SectionHeading
-          id="how-title"
-          tone="dark"
-          eyebrow={tr("eyebrow")}
-          title={tr.rich("title", rich)}
-        />
-        <ol className="mt-12 grid gap-10 md:grid-cols-3">
-          {steps.map((n) => (
-            <li key={n} className="text-center">
-              <span className="mx-auto flex size-14 items-center justify-center rounded-full border border-gold font-display text-2xl">
-                {n}
-              </span>
-              <h3 className="mt-4 font-display text-2xl font-medium">{tr(`step${n}Title`)}</h3>
-              <p className="mx-auto mt-2 max-w-xs text-sm text-cream/85">{tr(`step${n}Text`)}</p>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
   );
 }

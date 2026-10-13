@@ -14,36 +14,74 @@ When SPEC.md is added, its "Build phases" section takes precedence; reconcile th
 - Sample catalogue in `lib/data/sample-catalog.ts` behind `lib/data/catalog.ts`
 - Vitest unit tests and Playwright e2e at 375px and desktop
 
-## Phase 2 — Database (Supabase, EU region)
+## Owner decisions (2026-10-13)
 
-Needs: a Supabase project (EU) or local Supabase CLI + Docker.
+Customers pay on the site; WhatsApp is only a contact link. Stripe for payments. Delivery by
+InPost parcel locker, courier, or personal pickup. Guest checkout with an optional account.
+Not VAT registered. An earlier "order on WhatsApp" approach was dropped the same day.
 
-- Migrations: categories, products, variants, price_history, settings, orders, order_items,
-  reservations, stock_movements, order_events, admin roles (`owner`, `staff`)
-- RLS on every table (public reads published content only)
-- Views/functions for available stock (`stock_on_hand` − active reservations) and 30-day lowest price
+## Phase 2 — Cart ✅
+
+- Cart stored in the browser (product/variant ids and quantities only); header cart icon with count
+- "Add to cart" on the product page; cart page to change quantities and remove items
+- Totals shown in the cart are a preview; the server recomputes everything at checkout
+- "You may also like" on product pages and "Complete your look" suggestions in the cart
+
+## Phase 3 — Database (Supabase, EU region)
+
+Needs: a Supabase project in the EU region (the owner creates it).
+
+- Migrations: categories, products, variants, price_history, settings, customers, addresses,
+  orders, order_items, reservations, stock_movements, order_events, payments, admin roles
+- RLS on every table (public reads published content; customers read only their own orders)
+- Views/functions for available stock and the 30-day lowest price; `create_order` function
 - Seed data; swap `lib/data/catalog.ts` from sample data to Supabase queries
 - Product photos in Supabase Storage, served via `next/image`
 
-## Phase 3 — Cart and checkout
+## Phase 4 — Checkout and payment (started early)
 
-- Cart (client stores only variant ids + quantities), variant picker on the product page
-- Checkout form (Zod), honeypot, rate limiting per IP and phone
-- `create_order` database function (single transaction, locks variants, writes reservations)
-- Confirmation page at an `access_token` URL, WhatsApp link, Resend confirmation email
-- Reservation expiry job
+Needs: a Stripe account in test mode (the owner creates it).
 
-## Phase 4 — Admin (`/admin`, English only)
+Done: checkout page (contact, delivery method, locker code or address, notes), live totals with
+delivery fees, Zod validation on both sides, honeypot, server-side pricing, Stripe Checkout
+session (cards, BLIK, Przelewy24, wallets) with delivery details in metadata, success page.
+Still to do (needs the database): create_order and stock reservations, Stripe webhook marking
+orders paid, order expiry, confirmation email, rate limiting.
 
-- Supabase Auth; checks in `proxy.ts` and in every server action
-- Products, variants, gross prices (every change writes `price_history`), stock movements
-- Orders: status changes via server actions writing `order_events`; mark paid / cancel / expire
-- Settings: WhatsApp number, PL/EN message templates, low-stock threshold
+- Checkout form (Zod): email, name, phone, delivery method; locker code or address
+- Delivery fees from `settings`; honeypot and rate limiting
+- `create_order` reserves stock; Stripe payment for the server-side total (cards, BLIK, Przelewy24)
+- Stripe webhook marks the order paid and converts reservations to stock movements
+- Unpaid orders expire and release stock; confirmation page at an `access_token` URL; email via Resend
 
-## Phase 5 — Content, legal and launch
+## Phase 5 — Customer accounts (started early)
+
+Needs: the Supabase project (keys in `.env.local`).
+
+Done: create account (with email confirmation), log in, log out, forgot/reset password,
+My account page with editable name and phone, optional "also create an account" box at
+checkout (guest checkout stays the default), header account icon, session refresh in
+`proxy.ts`, email links handled at `/auth/confirm`, checkout prefill and "log in" link,
+Supabase user id attached to the Stripe payment.
+Still to do (needs the database): order history and status, saved addresses,
+linking earlier guest orders with the same email.
+
+## Phase 6 — Admin (`/admin`, English only)
+
+- Admin login (`owner`, `staff`); checks in `proxy.ts` and in every server action
+- Dashboard: revenue this month, a chart of revenue for each of the last six months,
+  order count and average order value, low-stock alerts
+- Orders: list and filters, order detail with delivery details, status changes
+  (paid → processing → shipped → delivered, cancel) writing `order_events`
+- Products: create and edit, photos, prices (every change writes `price_history`), sales
+- Stock: current stock per product, manual adjustments with a reason (`stock_movements`)
+- Settings: delivery fees, contact number, low-stock threshold
+
+## Phase 7 — Content, legal and launch
 
 - About, contact, delivery & returns, FAQ
-- Legal pages required in Poland: regulamin (terms), privacy policy (RODO/GDPR), returns/withdrawal
+- Legal pages required in Poland for online sales: regulamin (terms), privacy policy (RODO/GDPR),
+  14-day right of withdrawal and returns form, complaints (reklamacje)
 - Cookie consent if analytics are added
 - sitemap.xml, robots.txt, Open Graph images, structured data
-- Vercel deployment, domain, environment variables
+- Stripe live mode, Vercel deployment, domain, environment variables

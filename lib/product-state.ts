@@ -26,6 +26,8 @@ export type StoreProduct = {
   allowPreorder: boolean;
   status: "published" | "coming_soon";
   isNew: boolean;
+  /** Units sold in paid orders; drives "Best sellers". Sample values until orders are stored. */
+  salesCount: number;
 };
 
 export type Availability = "in_stock" | "low_stock" | "out_of_stock" | "preorder" | "coming_soon";
