@@ -1,0 +1,98 @@
+{
+  "Meta": {
+    "title": "The Veminence — peruki z naturalnych włosów",
+    "description": "Peruki z naturalnych włosów z wysyłką w całej Polsce. Zamów online i zapłać przez WhatsApp."
+  },
+  "Header": {
+    "announcement": "Zamów online, zapłać przez WhatsApp",
+    "skipToContent": "Przejdź do treści",
+    "home": "The Veminence — strona główna",
+    "menu": "Menu",
+    "nav": {
+      "shop": "Sklep",
+      "categories": "Kategorie",
+      "howItWorks": "Jak zamawiać"
+    },
+    "language": "Język",
+    "switchTo": "English"
+  },
+  "Home": {
+    "hero": {
+      "eyebrow": "Peruki z naturalnych włosów",
+      "title": "Poczuj się <script>pięknie</script> każdego dnia",
+      "text": "Starannie wybrane peruki z naturalnych włosów. Zamów online, a płatność i dostawę potwierdzimy z Tobą na WhatsAppie.",
+      "cta": "Zobacz kolekcję",
+      "secondary": "Jak zamawiać"
+    },
+    "marquee": {
+      "one": "Naturalne włosy",
+      "two": "Lace front",
+      "three": "Wysyłka w całej Polsce",
+      "four": "Płatność przez WhatsApp"
+    },
+    "categories": {
+      "eyebrow": "Kategorie",
+      "title": "Wybierz swój <script>styl</script>",
+      "shopNow": "Zobacz"
+    },
+    "newArrivals": {
+      "eyebrow": "Nowości",
+      "title": "Najnowsze <script>peruki</script>",
+      "viewAll": "Zobacz wszystkie"
+    },
+    "howItWorks": {
+      "eyebrow": "Jak zamawiać",
+      "title": "Zamówienie w <script>trzech</script> krokach",
+      "step1Title": "Wybierz perukę",
+      "step1Text": "Dodaj wybrane produkty do koszyka i złóż zamówienie na stronie.",
+      "step2Title": "Napisz do nas na WhatsAppie",
+      "step2Text": "Po złożeniu zamówienia otworzysz gotową wiadomość z jego numerem.",
+      "step3Title": "Zapłać i czekaj na paczkę",
+      "step3Text": "Potwierdzimy płatność i wyślemy Twoje zamówienie."
+    }
+  },
+  "Product": {
+    "badge": {
+      "new": "Nowość",
+      "sale": "-{percent}%",
+      "soldOut": "Wyprzedane",
+      "preorder": "Przedsprzedaż",
+      "comingSoon": "Wkrótce"
+    },
+    "status": {
+      "inStock": "Dostępna",
+      "lowStock": "{count, plural, one {Została tylko # sztuka} few {Zostały tylko # sztuki} many {Zostało tylko # sztuk} other {Zostało tylko # sztuki}}",
+      "outOfStock": "Chwilowo niedostępna",
+      "preorder": "Dostępna w przedsprzedaży",
+      "comingSoon": "Wkrótce w sprzedaży"
+    },
+    "regularPrice": "Cena regularna",
+    "currentPrice": "Cena",
+    "salePrice": "Cena promocyjna",
+    "lowestPrice": "Najniższa cena z 30 dni przed obniżką: {price}",
+    "vatIncluded": "Cena zawiera VAT",
+    "imagePlaceholder": "Zdjęcie produktu {name} wkrótce",
+    "backToShop": "Wróć do sklepu",
+    "orderingSoon": "Zamawianie przez stronę uruchomimy już wkrótce."
+  },
+  "Shop": {
+    "title": "Sklep",
+    "all": "Wszystkie",
+    "heading": "Wszystkie <script>peruki</script>",
+    "count": "{count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}}"
+  },
+  "Footer": {
+    "tagline": "Peruki z naturalnych włosów dla kobiet w całej Polsce.",
+    "shop": "Sklep",
+    "help": "Pomoc",
+    "allWigs": "Wszystkie peruki",
+    "newArrivals": "Nowości",
+    "howToOrder": "Jak zamawiać",
+    "rights": "Wszelkie prawa zastrzeżone."
+  },
+  "NotFound": {
+    "title": "Nie znaleziono strony",
+    "text": "Ta strona nie istnieje lub została przeniesiona.",
+    "back": "Wróć na stronę główną"
+  }
+}
