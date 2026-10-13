@@ -15,6 +15,7 @@ const base: StoreProduct = {
   allowPreorder: false,
   status: "published",
   isNew: false,
+  salesCount: 0,
 };
 
 const state = (overrides: Partial<StoreProduct>) => getCardState({ ...base, ...overrides });

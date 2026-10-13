@@ -1,34 +1,35 @@
 {
   "Meta": {
     "title": "The Veminence — peruki z naturalnych włosów",
-    "description": "Peruki z naturalnych włosów z wysyłką w całej Polsce. Zamów online i zapłać przez WhatsApp."
+    "description": "Peruki z naturalnych włosów, które lśnią, układają się i wyglądają jak Twoje własne. Wysyłka w całej Polsce."
   },
   "Header": {
-    "announcement": "Zamów online, zapłać przez WhatsApp",
     "skipToContent": "Przejdź do treści",
     "home": "The Veminence — strona główna",
     "menu": "Menu",
     "nav": {
       "shop": "Sklep",
-      "categories": "Kategorie",
-      "howItWorks": "Jak zamawiać"
+      "newIn": "Nowości",
+      "bestSellers": "Bestsellery",
+      "categories": "Kategorie"
     },
     "language": "Język",
-    "switchTo": "English"
+    "switchTo": "English",
+    "cart": "{count, plural, =0 {Koszyk, pusty} one {Koszyk, # produkt} few {Koszyk, # produkty} many {Koszyk, # produktów} other {Koszyk, # produktu}}",
+    "account": "Moje konto"
   },
   "Home": {
     "hero": {
       "eyebrow": "Peruki z naturalnych włosów",
       "title": "Poczuj się <script>pięknie</script> każdego dnia",
-      "text": "Starannie wybrane peruki z naturalnych włosów. Zamów online, a płatność i dostawę potwierdzimy z Tobą na WhatsAppie.",
-      "cta": "Zobacz kolekcję",
-      "secondary": "Jak zamawiać"
+      "text": "Naturalne włosy, które lśnią, układają się i wyglądają jak Twoje własne. Na co dzień i na chwile, które zapamiętasz.",
+      "cta": "Zobacz kolekcję"
     },
     "marquee": {
       "one": "Naturalne włosy",
       "two": "Lace front",
       "three": "Wysyłka w całej Polsce",
-      "four": "Płatność przez WhatsApp"
+      "four": "Naturalny wygląd"
     },
     "categories": {
       "eyebrow": "Kategorie",
@@ -39,16 +40,6 @@
       "eyebrow": "Nowości",
       "title": "Najnowsze <script>peruki</script>",
       "viewAll": "Zobacz wszystkie"
-    },
-    "howItWorks": {
-      "eyebrow": "Jak zamawiać",
-      "title": "Zamówienie w <script>trzech</script> krokach",
-      "step1Title": "Wybierz perukę",
-      "step1Text": "Dodaj wybrane produkty do koszyka i złóż zamówienie na stronie.",
-      "step2Title": "Napisz do nas na WhatsAppie",
-      "step2Text": "Po złożeniu zamówienia otworzysz gotową wiadomość z jego numerem.",
-      "step3Title": "Zapłać i czekaj na paczkę",
-      "step3Text": "Potwierdzimy płatność i wyślemy Twoje zamówienie."
     }
   },
   "Product": {
@@ -70,29 +61,203 @@
     "currentPrice": "Cena",
     "salePrice": "Cena promocyjna",
     "lowestPrice": "Najniższa cena z 30 dni przed obniżką: {price}",
-    "vatIncluded": "Cena zawiera VAT",
-    "imagePlaceholder": "Zdjęcie produktu {name} wkrótce",
     "backToShop": "Wróć do sklepu",
-    "orderingSoon": "Zamawianie przez stronę uruchomimy już wkrótce."
+    "addToCart": "Dodaj do koszyka",
+    "preorderAddToCart": "Zamów w przedsprzedaży",
+    "addedToCart": "Dodano do koszyka.",
+    "maxInCart": "Masz w koszyku całą dostępną ilość.",
+    "viewCart": "Zobacz koszyk ({count})",
+    "related": "Może Ci się <script>spodobać</script>"
   },
   "Shop": {
     "title": "Sklep",
     "all": "Wszystkie",
     "heading": "Wszystkie <script>peruki</script>",
-    "count": "{count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}}"
+    "count": "{count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}}",
+    "collections": {
+      "new": "Nowości",
+      "bestsellers": "Bestsellery"
+    }
   },
   "Footer": {
     "tagline": "Peruki z naturalnych włosów dla kobiet w całej Polsce.",
     "shop": "Sklep",
-    "help": "Pomoc",
     "allWigs": "Wszystkie peruki",
     "newArrivals": "Nowości",
-    "howToOrder": "Jak zamawiać",
-    "rights": "Wszelkie prawa zastrzeżone."
+    "rights": "Wszelkie prawa zastrzeżone.",
+    "contact": "Kontakt",
+    "bestSellers": "Bestsellery"
   },
   "NotFound": {
     "title": "Nie znaleziono strony",
     "text": "Ta strona nie istnieje lub została przeniesiona.",
     "back": "Wróć na stronę główną"
+  },
+  "Cart": {
+    "title": "Koszyk",
+    "heading": "Twój <script>koszyk</script>",
+    "empty": "Twój koszyk jest pusty.",
+    "continueShopping": "Przeglądaj peruki",
+    "summary": "Podsumowanie",
+    "subtotal": "Wartość produktów ({count} szt.)",
+    "deliveryAtCheckout": "Koszt dostawy zobaczysz przy kasie.",
+    "checkout": "Przejdź do kasy",
+    "each": "{price} / szt.",
+    "unavailable": "Ten produkt jest teraz niedostępny i nie trafi do zamówienia.",
+    "quantityFor": "Ilość: {name}",
+    "decrease": "Zmniejsz ilość",
+    "increase": "Zwiększ ilość",
+    "remove": "Usuń",
+    "suggestions": "Uzupełnij swój <script>wybór</script>"
+  },
+  "Checkout": {
+    "title": "Kasa",
+    "heading": "Finalizacja <script>zamówienia</script>",
+    "backToCart": "Wróć do koszyka",
+    "browse": "Przeglądaj peruki",
+    "contact": "Dane kontaktowe",
+    "email": "E-mail",
+    "fullName": "Imię i nazwisko",
+    "phone": "Telefon",
+    "phoneHint": "Kurier lub InPost może się z Tobą skontaktować w sprawie dostawy.",
+    "delivery": "Dostawa",
+    "methods": {
+      "inpost_locker": {
+        "name": "Paczkomat InPost",
+        "description": "Odbiór w wybranym paczkomacie, o dowolnej porze."
+      },
+      "courier": {
+        "name": "Kurier",
+        "description": "Dostawa pod wskazany adres."
+      },
+      "pickup": {
+        "name": "Odbiór osobisty",
+        "description": "Adres i termin odbioru prześlemy e-mailem."
+      }
+    },
+    "free": "Za darmo",
+    "lockerCode": "Kod paczkomatu",
+    "lockerHint": "Np. KRA010M.",
+    "findLocker": "Znajdź paczkomat na mapie",
+    "street": "Ulica i numer domu",
+    "apartment": "Nr lokalu (opcjonalnie)",
+    "postcode": "Kod pocztowy",
+    "city": "Miejscowość",
+    "notes": "Uwagi do zamówienia (opcjonalnie)",
+    "summary": "Twoje zamówienie",
+    "subtotal": "Produkty",
+    "deliveryFee": "Dostawa",
+    "total": "Do zapłaty",
+    "pay": "Zamawiam i płacę",
+    "paying": "Przechodzę do płatności…",
+    "securePayment": "Bezpieczna płatność przez Stripe: karta, BLIK, Przelewy24, Apple Pay, Google Pay.",
+    "errors": {
+      "required": "To pole jest wymagane.",
+      "invalidEmail": "Podaj poprawny adres e-mail.",
+      "invalidPhone": "Podaj poprawny numer telefonu.",
+      "invalidPostcode": "Wpisz kod pocztowy w formacie 00-000.",
+      "invalidLocker": "Podaj poprawny kod paczkomatu, np. KRA010M.",
+      "tooLong": "Ten tekst jest za długi.",
+      "fixErrors": "Popraw zaznaczone pola, aby przejść do płatności.",
+      "cartEmpty": "Twój koszyk jest pusty.",
+      "itemsUnavailable": "Niektóre produkty nie są już dostępne w wybranej ilości. Sprawdź koszyk.",
+      "paymentUnavailable": "Nie udało się rozpocząć płatności. Spróbuj ponownie za chwilę.",
+      "generic": "Coś poszło nie tak. Spróbuj ponownie.",
+      "passwordTooShort": "Hasło musi mieć co najmniej 8 znaków.",
+      "weakPassword": "To hasło jest za słabe. Wybierz dłuższe lub mniej oczywiste."
+    },
+    "success": {
+      "title": "Dziękujemy",
+      "paidHeading": "Dziękujemy za <script>zamówienie</script>",
+      "paidText": "Płatność została przyjęta. Gdy wyślemy Twoje zamówienie, napiszemy na adres {email}.",
+      "processingHeading": "Płatność w <script>toku</script>",
+      "processingText": "Czekamy na potwierdzenie płatności z banku. Damy Ci znać e-mailem, gdy tylko je otrzymamy.",
+      "notFoundHeading": "Sprawdźmy <script>płatność</script>",
+      "notFound": "Nie znaleźliśmy tej płatności. Jeśli pieniądze zostały pobrane, skontaktuj się z nami.",
+      "continue": "Wróć do sklepu",
+      "accountOffer": "Chcesz następnym razem zamawiać szybciej?",
+      "accountOfferLink": "Załóż konto"
+    },
+    "haveAccount": "Masz konto?",
+    "login": "Zaloguj się, aby uzupełnić dane automatycznie.",
+    "guestNote": "Nie musisz zakładać konta, aby złożyć zamówienie.",
+    "createAccount": "Załóż też konto (opcjonalnie)",
+    "createAccountHint": "Zapiszemy Twoje dane, by następne zakupy były szybsze.",
+    "accountPassword": "Hasło do konta",
+    "accountPasswordHint": "Co najmniej 8 znaków. Link potwierdzający konto wyślemy e-mailem."
+  },
+  "Account": {
+    "fullName": "Imię i nazwisko",
+    "email": "E-mail",
+    "password": "Hasło",
+    "newPassword": "Nowe hasło",
+    "phone": "Telefon (opcjonalnie)",
+    "passwordHint": "Co najmniej {min} znaków.",
+    "showPassword": "Pokaż",
+    "hidePassword": "Ukryj",
+    "register": {
+      "title": "Załóż konto",
+      "heading": "Załóż <script>konto</script>",
+      "intro": "Zapisz swoje dane, by szybciej robić zakupy i śledzić zamówienia.",
+      "submit": "Załóż konto",
+      "busy": "Zakładam konto…",
+      "haveAccount": "Masz już konto?",
+      "checkEmailTitle": "Sprawdź swoją skrzynkę",
+      "checkEmail": "Wysłaliśmy wiadomość na adres {email}. Kliknij link w środku, aby potwierdzić konto."
+    },
+    "login": {
+      "title": "Zaloguj się",
+      "heading": "Witaj <script>ponownie</script>",
+      "intro": "Zaloguj się, aby zobaczyć swoje konto.",
+      "submit": "Zaloguj się",
+      "busy": "Loguję…",
+      "forgot": "Nie pamiętasz hasła?",
+      "noAccount": "Nie masz konta?"
+    },
+    "forgot": {
+      "title": "Nie pamiętasz hasła?",
+      "heading": "Nowe <script>hasło</script>",
+      "intro": "Podaj adres e-mail konta, a wyślemy link do ustawienia nowego hasła.",
+      "submit": "Wyślij link",
+      "busy": "Wysyłam…",
+      "sent": "Jeśli konto z adresem {email} istnieje, wysłaliśmy na nie link do zmiany hasła.",
+      "back": "Wróć do logowania"
+    },
+    "reset": {
+      "title": "Ustaw nowe hasło",
+      "heading": "Ustaw nowe <script>hasło</script>",
+      "intro": "Wpisz hasło, którego będziesz używać od teraz.",
+      "submit": "Zapisz hasło",
+      "busy": "Zapisuję…"
+    },
+    "dashboard": {
+      "title": "Moje konto",
+      "heading": "Moje <script>konto</script>",
+      "signedInAs": "Zalogowano jako {email}",
+      "profile": "Twoje dane",
+      "logout": "Wyloguj się"
+    },
+    "profile": {
+      "submit": "Zapisz zmiany",
+      "busy": "Zapisuję…",
+      "saved": "Zapisano zmiany.",
+      "phoneHint": "Uzupełnimy go za Ciebie przy zamówieniu."
+    },
+    "errors": {
+      "required": "To pole jest wymagane.",
+      "invalidEmail": "Podaj poprawny adres e-mail.",
+      "invalidPhone": "Podaj poprawny numer telefonu.",
+      "passwordTooShort": "Hasło musi mieć co najmniej 8 znaków.",
+      "tooLong": "Ten tekst jest za długi.",
+      "fixErrors": "Popraw zaznaczone pola.",
+      "invalidCredentials": "Nieprawidłowy e-mail lub hasło.",
+      "emailNotConfirmed": "Najpierw potwierdź adres e-mail, klikając link z wiadomości, którą wysłaliśmy.",
+      "weakPassword": "To hasło jest za słabe. Wybierz dłuższe lub mniej oczywiste.",
+      "samePassword": "Nowe hasło musi różnić się od obecnego.",
+      "linkExpired": "Link wygasł lub został już użyty. Poproś o nowy.",
+      "tooManyAttempts": "Zbyt wiele prób. Spróbuj ponownie za kilka minut.",
+      "authUnavailable": "Nie udało się połączyć z kontem. Spróbuj ponownie za chwilę.",
+      "generic": "Coś poszło nie tak. Spróbuj ponownie."
+    }
   }
 }

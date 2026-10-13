@@ -5,8 +5,10 @@ import { notFound } from "next/navigation";
 import { Footer } from "@/components/store/Footer";
 import { Header } from "@/components/store/Header";
 import { routing } from "@/i18n/routing";
+import { getStoreSettings } from "@/lib/data/settings";
 import { display, sans, script } from "@/lib/fonts";
 import { localeAlternates, siteUrl } from "@/lib/seo";
+import { buildWhatsAppChatLink } from "@/lib/whatsapp";
 import "../globals.css";
 
 export function generateStaticParams() {
@@ -38,7 +40,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
           <main id="main" className="flex-1">
             {children}
           </main>
-          <Footer />
+          <Footer whatsappHref={buildWhatsAppChatLink(getStoreSettings().whatsappNumber)} />
         </NextIntlClientProvider>
       </body>
     </html>

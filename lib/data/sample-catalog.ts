@@ -44,6 +44,7 @@ export const sampleProducts: StoreProduct[] = [
     allowPreorder: false,
     status: "published",
     isNew: true,
+    salesCount: 34,
   },
   {
     id: "p2",
@@ -62,6 +63,7 @@ export const sampleProducts: StoreProduct[] = [
     allowPreorder: false,
     status: "published",
     isNew: false,
+    salesCount: 51,
   },
   {
     id: "p3",
@@ -80,6 +82,7 @@ export const sampleProducts: StoreProduct[] = [
     allowPreorder: false,
     status: "published",
     isNew: true,
+    salesCount: 12,
   },
   {
     id: "p4",
@@ -98,6 +101,7 @@ export const sampleProducts: StoreProduct[] = [
     allowPreorder: false,
     status: "published",
     isNew: false,
+    salesCount: 27,
   },
   {
     id: "p5",
@@ -116,6 +120,7 @@ export const sampleProducts: StoreProduct[] = [
     allowPreorder: true,
     status: "published",
     isNew: true,
+    salesCount: 0,
   },
   {
     id: "p6",
@@ -134,6 +139,7 @@ export const sampleProducts: StoreProduct[] = [
     allowPreorder: false,
     status: "coming_soon",
     isNew: true,
+    salesCount: 0,
   },
   {
     id: "p7",
@@ -152,6 +158,7 @@ export const sampleProducts: StoreProduct[] = [
     allowPreorder: false,
     status: "published",
     isNew: false,
+    salesCount: 19,
   },
   {
     id: "p8",
@@ -170,5 +177,6 @@ export const sampleProducts: StoreProduct[] = [
     allowPreorder: false,
     status: "published",
     isNew: false,
+    salesCount: 8,
   },
 ];

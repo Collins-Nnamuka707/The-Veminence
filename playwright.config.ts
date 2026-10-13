@@ -16,5 +16,6 @@ export default defineConfig({
     url: `http://localhost:${port}/pl`,
     reuseExistingServer: !process.env.CI,
     timeout: 240_000,
+    env: { WHATSAPP_NUMBER: "+48 000 000 000", NEXT_PUBLIC_SITE_URL: `http://localhost:${port}` },
   },
 });

@@ -1,7 +1,11 @@
 # The Veminence — project guide for Claude Code
 
-Online wig shop for a business in Poland. Customers browse, add to cart and place an order;
-payment happens on WhatsApp, not on the site. The owner runs everything from an English-only admin.
+Online wig shop for a business in Poland. Customers add wigs to a cart, enter delivery details and
+pay on the site with Stripe. Checkout works as a guest; a customer account is optional and keeps
+addresses and order history. The owner runs everything from an English-only admin: orders and
+their status, revenue per month (current month and the last six), products, prices and stock.
+(Owner's decisions, 2026-10-13: Stripe; InPost locker, courier and personal pickup; guest or
+account; not VAT registered.)
 
 Full requirements: `docs/SPEC.md` (not yet added; until then follow `docs/PLAN.md`).
 Design references (local only, git-ignored): `docs/design/` (`verde.webp` = structure, `femmez.webp` = look,
@@ -18,6 +22,7 @@ Design references (local only, git-ignored): `docs/design/` (`verde.webp` = stru
   reusable classes are declared with `@utility`), shadcn/ui for admin components only
 - next-intl for the storefront (`/pl`, `/en`); admin at `/admin`, English only, no i18n
 - Supabase (EU region): Postgres, Auth, Storage; migrations in `supabase/migrations`
+- Stripe for payments (cards, BLIK, Przelewy24, Apple Pay, Google Pay), in PLN
 - Zod for all validation; Resend for email; Vitest + Playwright for tests
 - Hosted on Vercel
 
@@ -41,7 +46,8 @@ Run lint, typecheck and tests before saying a task is done.
   thousands from five digits up, e.g. 12 345,00 zł). Never floats.
 - Format only with `formatPrice()` in `lib/money.ts`
   (`Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' })`), on both languages.
-- Prices shown to customers include VAT. The admin only asks for gross prices.
+- The owner is not VAT registered: prices are final prices, with no VAT line and no NIP field.
+  The admin asks for the final price only.
 - Every price or sale change writes a row to `price_history` (needed for the Omnibus
   "lowest price in the last 30 days" line). Never update a price without it.
 
@@ -56,6 +62,28 @@ Run lint, typecheck and tests before saying a task is done.
 - Marking paid converts reservations into `stock_movements`. Cancelling or expiring releases them.
 - Every stock change writes a `stock_movements` row with a reason and actor.
 - `order_items` stores a snapshot of product name, variant label and unit price.
+- Delivery methods: InPost parcel locker (store the locker code), courier to the door (full
+  address), personal pickup (free). Fees come from `settings`; the server adds them to the total.
+
+### Payments (Stripe)
+- The server creates the Stripe payment from the order total in the database, never from
+  amounts sent by the browser.
+- An order becomes `paid` only from the Stripe webhook, after verifying its signature,
+  never from the customer's return to the success page. Handle each event once (idempotent).
+- Unpaid orders expire after the reservation window; expiry releases the reservations.
+- Never log or store card details; Stripe holds them. Keys stay in environment variables.
+
+### Customer accounts
+- Supabase Auth. An account is never required to buy (owner's rule): guest checkout needs only
+  contact and delivery details. Checkout offers an unticked "also create an account" box; creating
+  that account is best effort and must never stop the payment.
+- Clients: `lib/supabase/server.ts` (server code), `lib/supabase/client.ts` (browser, publishable key
+  only). `proxy.ts` refreshes the session only when an `sb-` cookie exists, so shop pages stay static.
+- Pages reading the user render inside `<Suspense>`; never read cookies in shared layouts.
+- Email links land on `/auth/confirm`; redirect targets go through `safeNextPath()` in `lib/auth.ts`.
+- Auth forms never reveal whether an email has an account.
+- A customer can read only their own orders and addresses (RLS on `auth.uid()`).
+- A guest order placed with an email can be linked to an account later with the same email.
 
 ### Languages
 - No customer-facing string hard-coded in components: use `messages/pl.json` and `messages/en.json`.
@@ -106,9 +134,10 @@ Do not copy images, logos or text from the reference screenshots.
 
 ## WhatsApp
 
-- Order link: `https://wa.me/<number>?text=<encoded message>`; number and PL/EN templates come
-  from `settings`. Build it with `buildWhatsAppLink()` in `lib/whatsapp.ts`.
-- Keep the message short (reference, items, delivery, total, name); long links fail on some phones.
+- WhatsApp is a contact channel only, not for ordering or payment (owner's decision, 2026-10-13).
+- The footer contact link is built with `buildWhatsAppChatLink()` in `lib/whatsapp.ts`; the number
+  comes from `getStoreSettings()` in `lib/data/settings.ts`.
+- Don't mention WhatsApp in marketing copy (banners, hero, taglines, meta descriptions).
 
 ## Working style
 

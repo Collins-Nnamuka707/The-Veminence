@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { buildWhatsAppLink, MAX_ITEMS_IN_MESSAGE, type WhatsAppOrder } from "@/lib/whatsapp";
+import {
+  buildWhatsAppChatLink,
+  buildWhatsAppLink,
+  MAX_ITEMS_IN_MESSAGE,
+  type WhatsAppOrder,
+} from "@/lib/whatsapp";
 
 const template = "Zamówienie {reference}\n{items}\nDostawa: {delivery}\nRazem: {total}\n{name}";
 
@@ -44,5 +49,11 @@ describe("buildWhatsAppLink", () => {
 
   it("rejects a number that is too short", () => {
     expect(() => buildWhatsAppLink("600", template, order)).toThrow();
+  });
+});
+
+describe("buildWhatsAppChatLink", () => {
+  it("links to a chat without a message", () => {
+    expect(buildWhatsAppChatLink("+48 600-100-200")).toBe("https://wa.me/48600100200");
   });
 });

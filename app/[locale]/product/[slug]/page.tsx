@@ -3,13 +3,17 @@ import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Price } from "@/components/store/Price";
-import { StatusLine } from "@/components/store/ProductCard";
+import { ProductCard, StatusLine } from "@/components/store/ProductCard";
 import { ProductImage } from "@/components/store/ProductImage";
+import { rich } from "@/components/store/rich";
+import { AddToCartButton } from "@/components/store/cart/AddToCartButton";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { getProductBySlug, getProducts } from "@/lib/data/catalog";
 import { t } from "@/lib/i18n-content";
 import { getCardState } from "@/lib/product-state";
+import { maxQuantity } from "@/lib/cart";
+import { getRelatedProducts } from "@/lib/related";
 import { localeAlternates } from "@/lib/seo";
 
 type Props = PageProps<"/[locale]/product/[slug]">;
@@ -29,7 +33,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// Phase 1: read-only. Variant picker and add-to-cart arrive with the cart phase.
 // The URL-specific part sits behind Suspense so navigation can show the shell instantly.
 export default async function ProductPage({ params }: Props) {
   const tr = await getTranslations("Product");
@@ -49,33 +52,57 @@ export default async function ProductPage({ params }: Props) {
 async function ProductDetails({ params }: Pick<Props, "params">) {
   const { locale: rawLocale, slug } = await params;
   const locale = rawLocale as Locale;
-  const product = await getProductBySlug(slug);
+  const [product, all] = await Promise.all([getProductBySlug(slug), getProducts()]);
   if (!product) notFound();
 
   const tr = await getTranslations("Product");
   const state = getCardState(product);
+  const related = getRelatedProducts(product, all);
+  const name = t(product.name, locale);
 
   return (
-    <div className="mt-4 grid gap-10 md:grid-cols-2">
-      <ProductImage
-        product={product}
-        locale={locale}
-        sizes="(min-width: 768px) 50vw, 100vw"
-        priority
-        dimmed={state.availability === "out_of_stock"}
-      />
+    <>
+      <div className="mt-4 grid gap-10 md:grid-cols-2">
+        <ProductImage
+          product={product}
+          locale={locale}
+          sizes="(min-width: 768px) 50vw, 100vw"
+          priority
+          dimmed={state.availability === "out_of_stock"}
+        />
 
-      <div className="md:pt-6">
-        <h1 className="font-display text-4xl font-medium sm:text-5xl">{t(product.name, locale)}</h1>
-        <div className="mt-4">
-          <Price state={state} size="lg" />
-          <p className="mt-1 text-xs text-muted">{tr("vatIncluded")}</p>
+        <div className="md:pt-6">
+          <h1 className="font-display text-4xl font-medium sm:text-5xl">{name}</h1>
+          <div className="mt-4">
+            <Price state={state} size="lg" />
+          </div>
+          <StatusLine product={product} state={state} />
+          {state.canBuy && (
+            <div className="mt-6">
+              <AddToCartButton
+                productId={product.id}
+                max={maxQuantity(product)}
+                preorder={state.availability === "preorder"}
+              />
+            </div>
+          )}
+          <p className="mt-6 leading-relaxed">{t(product.description, locale)}</p>
         </div>
-        <StatusLine product={product} state={state} />
-        <p className="mt-6 leading-relaxed">{t(product.description, locale)}</p>
-        <p className="mt-8 rounded-2xl bg-stone p-4 text-sm">{tr("orderingSoon")}</p>
       </div>
-    </div>
+
+      {related.length > 0 && (
+        <section aria-labelledby="related-title" className="mt-24">
+          <h2 id="related-title" className="font-display text-3xl font-medium sm:text-4xl">
+            {tr.rich("related", rich)}
+          </h2>
+          <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4">
+            {related.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </section>
+      )}
+    </>
   );
 }
 

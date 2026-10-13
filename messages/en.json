@@ -1,34 +1,35 @@
 {
   "Meta": {
     "title": "The Veminence — human hair wigs",
-    "description": "Human hair wigs delivered across Poland. Order online and pay on WhatsApp."
+    "description": "Human hair wigs that shine, move and look like your own. Delivered across Poland."
   },
   "Header": {
-    "announcement": "Order online, pay on WhatsApp",
     "skipToContent": "Skip to content",
     "home": "The Veminence — home",
     "menu": "Menu",
     "nav": {
       "shop": "Shop",
-      "categories": "Categories",
-      "howItWorks": "How to order"
+      "newIn": "New in",
+      "bestSellers": "Best sellers",
+      "categories": "Categories"
     },
     "language": "Language",
-    "switchTo": "Polski"
+    "switchTo": "Polski",
+    "cart": "{count, plural, =0 {Cart, empty} one {Cart, # item} other {Cart, # items}}",
+    "account": "My account"
   },
   "Home": {
     "hero": {
       "eyebrow": "Human hair wigs",
       "title": "Feel <script>beautiful</script> every day",
-      "text": "Carefully chosen human hair wigs. Order online, and we'll confirm payment and delivery with you on WhatsApp.",
-      "cta": "Shop the collection",
-      "secondary": "How to order"
+      "text": "Real human hair that shines, moves and looks like your own. For every day, and for the moments you'll remember.",
+      "cta": "Shop the collection"
     },
     "marquee": {
       "one": "Human hair",
       "two": "Lace front",
       "three": "Delivery across Poland",
-      "four": "Pay on WhatsApp"
+      "four": "A natural look"
     },
     "categories": {
       "eyebrow": "Categories",
@@ -39,16 +40,6 @@
       "eyebrow": "New in",
       "title": "New <script>arrivals</script>",
       "viewAll": "View all"
-    },
-    "howItWorks": {
-      "eyebrow": "How to order",
-      "title": "Order in <script>three</script> steps",
-      "step1Title": "Choose your wig",
-      "step1Text": "Add what you love to your cart and place your order on the site.",
-      "step2Title": "Message us on WhatsApp",
-      "step2Text": "After you order, a ready-made message with your order number opens.",
-      "step3Title": "Pay and await your parcel",
-      "step3Text": "We confirm your payment and ship your order."
     }
   },
   "Product": {
@@ -70,29 +61,203 @@
     "currentPrice": "Price",
     "salePrice": "Sale price",
     "lowestPrice": "Lowest price in the 30 days before the discount: {price}",
-    "vatIncluded": "Price includes VAT",
-    "imagePlaceholder": "Photo of {name} coming soon",
     "backToShop": "Back to shop",
-    "orderingSoon": "Ordering through the site is coming soon."
+    "addToCart": "Add to cart",
+    "preorderAddToCart": "Pre-order",
+    "addedToCart": "Added to cart.",
+    "maxInCart": "You have all available stock in your cart.",
+    "viewCart": "View cart ({count})",
+    "related": "You may also <script>like</script>"
   },
   "Shop": {
     "title": "Shop",
     "all": "All",
     "heading": "All <script>wigs</script>",
-    "count": "{count, plural, one {# product} other {# products}}"
+    "count": "{count, plural, one {# product} other {# products}}",
+    "collections": {
+      "new": "New in",
+      "bestsellers": "Best sellers"
+    }
   },
   "Footer": {
     "tagline": "Human hair wigs for women across Poland.",
     "shop": "Shop",
-    "help": "Help",
     "allWigs": "All wigs",
     "newArrivals": "New arrivals",
-    "howToOrder": "How to order",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "contact": "Contact",
+    "bestSellers": "Best sellers"
   },
   "NotFound": {
     "title": "Page not found",
     "text": "This page doesn't exist or has moved.",
     "back": "Back to the home page"
+  },
+  "Cart": {
+    "title": "Cart",
+    "heading": "Your <script>cart</script>",
+    "empty": "Your cart is empty.",
+    "continueShopping": "Browse wigs",
+    "summary": "Summary",
+    "subtotal": "{count, plural, one {Subtotal (# item)} other {Subtotal (# items)}}",
+    "deliveryAtCheckout": "Delivery is calculated at checkout.",
+    "checkout": "Go to checkout",
+    "each": "{price} each",
+    "unavailable": "This item is no longer available and won't be included in your order.",
+    "quantityFor": "Quantity for {name}",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "remove": "Remove",
+    "suggestions": "Complete your <script>look</script>"
+  },
+  "Checkout": {
+    "title": "Checkout",
+    "heading": "Complete your <script>order</script>",
+    "backToCart": "Back to cart",
+    "browse": "Browse wigs",
+    "contact": "Contact details",
+    "email": "Email",
+    "fullName": "Full name",
+    "phone": "Phone",
+    "phoneHint": "The courier or InPost may contact you about delivery.",
+    "delivery": "Delivery",
+    "methods": {
+      "inpost_locker": {
+        "name": "InPost parcel locker",
+        "description": "Collect from a locker of your choice, any time."
+      },
+      "courier": {
+        "name": "Courier",
+        "description": "Delivered to your door."
+      },
+      "pickup": {
+        "name": "Personal pickup",
+        "description": "We'll email you the pickup address and time."
+      }
+    },
+    "free": "Free",
+    "lockerCode": "Locker code",
+    "lockerHint": "For example KRA010M.",
+    "findLocker": "Find a locker on the map",
+    "street": "Street and house number",
+    "apartment": "Apartment (optional)",
+    "postcode": "Postcode",
+    "city": "City",
+    "notes": "Order notes (optional)",
+    "summary": "Your order",
+    "subtotal": "Products",
+    "deliveryFee": "Delivery",
+    "total": "Total",
+    "pay": "Place order and pay",
+    "paying": "Going to payment…",
+    "securePayment": "Secure payment by Stripe: card, BLIK, Przelewy24, Apple Pay, Google Pay.",
+    "errors": {
+      "required": "This field is required.",
+      "invalidEmail": "Enter a valid email address.",
+      "invalidPhone": "Enter a valid phone number.",
+      "invalidPostcode": "Enter the postcode as 00-000.",
+      "invalidLocker": "Enter a valid locker code, for example KRA010M.",
+      "tooLong": "This text is too long.",
+      "fixErrors": "Please correct the highlighted fields to continue to payment.",
+      "cartEmpty": "Your cart is empty.",
+      "itemsUnavailable": "Some items are no longer available in the chosen quantity. Please check your cart.",
+      "paymentUnavailable": "We couldn't start the payment. Please try again in a moment.",
+      "generic": "Something went wrong. Please try again.",
+      "passwordTooShort": "Your password must be at least 8 characters.",
+      "weakPassword": "This password is too weak. Choose a longer or less obvious one."
+    },
+    "success": {
+      "title": "Thank you",
+      "paidHeading": "Thank you for your <script>order</script>",
+      "paidText": "Your payment has been received. We'll email you at {email} when your order ships.",
+      "processingHeading": "Payment in <script>progress</script>",
+      "processingText": "We're waiting for your bank to confirm the payment. We'll email you as soon as it does.",
+      "notFoundHeading": "Let's check your <script>payment</script>",
+      "notFound": "We couldn't find this payment. If you were charged, please contact us.",
+      "continue": "Back to the shop",
+      "accountOffer": "Want to check out faster next time?",
+      "accountOfferLink": "Create an account"
+    },
+    "haveAccount": "Have an account?",
+    "login": "Log in to fill in your details automatically.",
+    "guestNote": "You don't need an account to order.",
+    "createAccount": "Also create an account (optional)",
+    "createAccountHint": "We'll save your details so next time is faster.",
+    "accountPassword": "Account password",
+    "accountPasswordHint": "At least 8 characters. We'll email you a link to confirm the account."
+  },
+  "Account": {
+    "fullName": "Full name",
+    "email": "Email",
+    "password": "Password",
+    "newPassword": "New password",
+    "phone": "Phone (optional)",
+    "passwordHint": "At least {min} characters.",
+    "showPassword": "Show",
+    "hidePassword": "Hide",
+    "register": {
+      "title": "Create an account",
+      "heading": "Create an <script>account</script>",
+      "intro": "Save your details to check out faster and keep track of your orders.",
+      "submit": "Create account",
+      "busy": "Creating your account…",
+      "haveAccount": "Already have an account?",
+      "checkEmailTitle": "Check your inbox",
+      "checkEmail": "We've sent an email to {email}. Click the link inside to confirm your account."
+    },
+    "login": {
+      "title": "Log in",
+      "heading": "Welcome <script>back</script>",
+      "intro": "Log in to see your account.",
+      "submit": "Log in",
+      "busy": "Logging in…",
+      "forgot": "Forgot your password?",
+      "noAccount": "Don't have an account?"
+    },
+    "forgot": {
+      "title": "Forgot your password?",
+      "heading": "New <script>password</script>",
+      "intro": "Enter your account email and we'll send you a link to set a new password.",
+      "submit": "Send link",
+      "busy": "Sending…",
+      "sent": "If an account exists for {email}, we've sent it a link to reset the password.",
+      "back": "Back to log in"
+    },
+    "reset": {
+      "title": "Set a new password",
+      "heading": "Set a new <script>password</script>",
+      "intro": "Enter the password you'll use from now on.",
+      "submit": "Save password",
+      "busy": "Saving…"
+    },
+    "dashboard": {
+      "title": "My account",
+      "heading": "My <script>account</script>",
+      "signedInAs": "Signed in as {email}",
+      "profile": "Your details",
+      "logout": "Log out"
+    },
+    "profile": {
+      "submit": "Save changes",
+      "busy": "Saving…",
+      "saved": "Changes saved.",
+      "phoneHint": "We'll fill it in for you at checkout."
+    },
+    "errors": {
+      "required": "This field is required.",
+      "invalidEmail": "Enter a valid email address.",
+      "invalidPhone": "Enter a valid phone number.",
+      "passwordTooShort": "Your password must be at least 8 characters.",
+      "tooLong": "This text is too long.",
+      "fixErrors": "Please correct the highlighted fields.",
+      "invalidCredentials": "Incorrect email or password.",
+      "emailNotConfirmed": "Please confirm your email first by clicking the link we sent you.",
+      "weakPassword": "This password is too weak. Choose a longer or less obvious one.",
+      "samePassword": "Your new password must be different from the current one.",
+      "linkExpired": "This link has expired or was already used. Please request a new one.",
+      "tooManyAttempts": "Too many attempts. Please try again in a few minutes.",
+      "authUnavailable": "We couldn't reach your account right now. Please try again in a moment.",
+      "generic": "Something went wrong. Please try again."
+    }
   }
 }
