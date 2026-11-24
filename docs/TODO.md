@@ -30,4 +30,3 @@
 - [ ] Localized URL paths (`/pl/sklep`, `/pl/produkt/...`) via next-intl `pathnames` — better Polish SEO
 - [ ] Move `LOW_STOCK_THRESHOLD` (`lib/product-state.ts`) into `settings`
 - [ ] Variant picker (length/colour) on the product page
-- [ ] `npm audit` reports 5 high-severity issues in dev dependencies from the Next.js template; review before launch
