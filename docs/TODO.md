@@ -7,7 +7,11 @@
 - [ ] Product photos (cards show a decorative hair-pattern placeholder until then)
 - [ ] Real product list, prices and descriptions (Phase 1 uses `lib/data/sample-catalog.ts`)
 - [ ] Real WhatsApp contact number: set `WHATSAPP_NUMBER` in `.env.local` (currently the placeholder +48 000 000 000) and in Vercel
-- [ ] Create a Supabase project (EU region) and put the URL and publishable key in `.env.local`
+- [x] Create a Supabase project (EU region) and put the URL and publishable key in `.env.local`
+- [ ] Before launch: upgrade Supabase to Pro (daily backups, no pausing after a week of inactivity)
+- [ ] Buy the shop's domain (needed for the website address and for sending email)
+- [ ] Before launch: Resend with that domain as Supabase's SMTP sender (Authentication → Emails → Set up SMTP); the built-in sender is test-only and allows ~2 emails/hour
+- [ ] Then paste the email templates from `docs/email-templates.md` (Supabase only allows editing them with custom SMTP)
 - [ ] Supabase Auth settings: Site URL, Redirect URLs (`http://localhost:3000/**` and the live domain), email templates in Polish, minimum password length 8
 - [ ] Create a Stripe account (test mode is enough to start), enable BLIK and Przelewy24, put the test secret key in `.env.local`
 - [ ] Delivery fees: PLACEHOLDERS in `lib/data/settings.ts` (locker 15,99 zł, courier 19,99 zł, pickup free); confirm real fees and any free-delivery threshold

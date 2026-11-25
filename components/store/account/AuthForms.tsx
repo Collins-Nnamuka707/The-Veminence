@@ -7,6 +7,7 @@ import {
   login,
   register,
   requestPasswordReset,
+  resendConfirmation,
   resetPassword,
   updateProfile,
   type AuthState,
@@ -93,14 +94,23 @@ export function LoginForm() {
   const form = useValidatedForm(loginSchema, { email: "", password: "" });
   const errors = useErrors(state, form.clientErrors);
   const next = params.get("next") ?? "";
-  const linkFailed = params.get("error") === "link" && state.status === "idle";
+  const linkError = state.status === "idle" ? params.get("error") : null;
+  const notConfirmed = state.status === "error" && state.formError === "emailNotConfirmed";
 
   return (
     <form action={action} onSubmit={form.onSubmit} noValidate className="space-y-5">
       <input type="hidden" name="locale" value={form.locale} />
       <input type="hidden" name="next" value={next} />
-      {linkFailed && <FormAlert>{t("errors.linkExpired")}</FormAlert>}
-      {errors.alert && <FormAlert>{errors.alert}</FormAlert>}
+      {linkError === "link" && <FormAlert>{t("errors.linkFailed")}</FormAlert>}
+      {(linkError === "expired" || notConfirmed) && (
+        <FormAlert>
+          {linkError === "expired" ? t("errors.confirmLinkExpired") : t("errors.emailNotConfirmed")}{" "}
+          <Link href="/account/resend-confirmation" className="font-medium underline underline-offset-4">
+            {t("resend.link")}
+          </Link>
+        </FormAlert>
+      )}
+      {errors.alert && !notConfirmed && <FormAlert>{errors.alert}</FormAlert>}
       <TextField name="email" type="email" label={t("email")} autoComplete="email"
         value={form.values.email} onValue={form.set("email")} error={errors.field("email")} />
       <PasswordField name="password" label={t("password")} autoComplete="current-password"
@@ -138,6 +148,32 @@ export function ForgotPasswordForm() {
       <TextField name="email" type="email" label={t("email")} autoComplete="email"
         value={form.values.email} onValue={form.set("email")} error={errors.field("email")} />
       <Submit pending={pending} label={t("forgot.submit")} busy={t("forgot.busy")} />
+      <p className="text-center text-sm">
+        <Link href="/account/login" className="underline underline-offset-4">
+          {t("forgot.back")}
+        </Link>
+      </p>
+    </form>
+  );
+}
+
+export function ResendConfirmationForm() {
+  const t = useTranslations("Account");
+  const [state, action, pending] = useActionState(resendConfirmation, idle);
+  const form = useValidatedForm(forgotPasswordSchema, { email: "" });
+  const errors = useErrors(state, form.clientErrors);
+
+  if (state.status === "done") {
+    return <FormAlert tone="success">{t("resend.sent", { email: form.values.email })}</FormAlert>;
+  }
+
+  return (
+    <form action={action} onSubmit={form.onSubmit} noValidate className="space-y-5">
+      <input type="hidden" name="locale" value={form.locale} />
+      {errors.alert && <FormAlert>{errors.alert}</FormAlert>}
+      <TextField name="email" type="email" label={t("email")} autoComplete="email"
+        value={form.values.email} onValue={form.set("email")} error={errors.field("email")} />
+      <Submit pending={pending} label={t("resend.submit")} busy={t("resend.busy")} />
       <p className="text-center text-sm">
         <Link href="/account/login" className="underline underline-offset-4">
           {t("forgot.back")}

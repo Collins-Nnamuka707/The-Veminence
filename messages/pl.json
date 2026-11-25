@@ -184,7 +184,8 @@
     "createAccount": "Załóż też konto (opcjonalnie)",
     "createAccountHint": "Zapiszemy Twoje dane, by następne zakupy były szybsze.",
     "accountPassword": "Hasło do konta",
-    "accountPasswordHint": "Co najmniej 8 znaków. Link potwierdzający konto wyślemy e-mailem."
+    "accountPasswordHint": "Co najmniej 8 znaków. Link potwierdzający konto wyślemy e-mailem.",
+    "currencyNote": "Płatność pobieramy w złotych (PLN). Kwoty w euro są orientacyjne, według dzisiejszego kursu NBP."
   },
   "Account": {
     "fullName": "Imię i nazwisko",
@@ -257,7 +258,18 @@
       "linkExpired": "Link wygasł lub został już użyty. Poproś o nowy.",
       "tooManyAttempts": "Zbyt wiele prób. Spróbuj ponownie za kilka minut.",
       "authUnavailable": "Nie udało się połączyć z kontem. Spróbuj ponownie za chwilę.",
-      "generic": "Coś poszło nie tak. Spróbuj ponownie."
+      "generic": "Coś poszło nie tak. Spróbuj ponownie.",
+      "linkFailed": "Nie udało się zalogować z tego linku. Jeśli był to link potwierdzający konto, spróbuj po prostu zalogować się poniżej, bo adres mógł zostać już potwierdzony. Jeśli był to link do zmiany hasła, poproś o nowy.",
+      "confirmLinkExpired": "Ten link potwierdzający wygasł lub został już użyty. Linki działają przez godzinę i tylko z najnowszej wiadomości."
+    },
+    "resend": {
+      "title": "Wyślij link ponownie",
+      "heading": "Nowy link <script>potwierdzający</script>",
+      "intro": "Podaj adres e-mail, na który zakładasz konto, a wyślemy nowy link potwierdzający.",
+      "submit": "Wyślij nowy link",
+      "busy": "Wysyłam…",
+      "sent": "Jeśli konto z adresem {email} czeka na potwierdzenie, wysłaliśmy nowy link. Kliknij go w ciągu godziny i użyj tylko najnowszej wiadomości.",
+      "link": "Wyślij nowy link potwierdzający"
     }
   }
 }

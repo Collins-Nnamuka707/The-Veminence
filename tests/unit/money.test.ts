@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatPrice } from "@/lib/money";
+import { formatEurEquivalent, formatPrice } from "@/lib/money";
 
 // Intl uses non-breaking spaces; normalise them so expectations are readable.
 const plain = (s: string) => s.replace(/[  ]/g, " ");
@@ -15,5 +15,17 @@ describe("formatPrice", () => {
   it("rejects non-integer amounts", () => {
     expect(() => formatPrice(12.5)).toThrow(TypeError);
     expect(() => formatPrice(Number.NaN)).toThrow(TypeError);
+  });
+});
+
+describe("formatEurEquivalent", () => {
+  it("shows the whole-euro equivalent at the given rate", () => {
+    expect(plain(formatEurEquivalent(169900, 4.4809, "en"))).toBe("€379");
+    expect(plain(formatEurEquivalent(169900, 4.4809, "pl"))).toBe("379 €");
+    expect(plain(formatEurEquivalent(94900, 4.25, "en"))).toBe("€223");
+  });
+
+  it("rejects non-integer amounts like formatPrice", () => {
+    expect(() => formatEurEquivalent(12.5, 4.25, "en")).toThrow(TypeError);
   });
 });

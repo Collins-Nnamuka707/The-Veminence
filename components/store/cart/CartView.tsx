@@ -10,6 +10,7 @@ import { t } from "@/lib/i18n-content";
 import { formatPrice } from "@/lib/money";
 import type { StoreProduct } from "@/lib/product-state";
 import { getCartSuggestions } from "@/lib/related";
+import { EurPrice } from "../currency/EurPrice";
 import { ProductCard } from "../ProductCard";
 import { ProductImage } from "../ProductImage";
 import { rich } from "../rich";
@@ -59,7 +60,10 @@ export function CartView({ products }: { products: StoreProduct[] }) {
         </h2>
         <dl className="mt-4 flex items-baseline justify-between gap-4">
           <dt>{tr("subtotal", { count: itemCount })}</dt>
-          <dd className="text-lg font-medium whitespace-nowrap">{formatPrice(subtotal)}</dd>
+          <dd className="text-right text-lg font-medium">
+            {formatPrice(subtotal)}
+            <EurPrice grosze={subtotal} inline={false} />
+          </dd>
         </dl>
         <p className="mt-2 text-sm text-ink">{tr("deliveryAtCheckout")}</p>
         {itemCount > 0 && (

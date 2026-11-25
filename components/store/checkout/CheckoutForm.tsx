@@ -18,6 +18,7 @@ import {
 } from "@/lib/schemas/checkout";
 import { fieldErrors } from "@/lib/schemas/errors";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { EurPrice } from "../currency/EurPrice";
 import { PasswordField } from "../forms/PasswordField";
 import { TextField as Field } from "../forms/TextField";
 
@@ -325,6 +326,7 @@ export function CheckoutForm({ products, deliveryFees }: Props) {
             <dt>{tr("total")}</dt>
             <dd className="text-lg whitespace-nowrap" data-testid="checkout-total">
               {formatPrice(subtotal + deliveryFee)}
+              <EurPrice grosze={subtotal + deliveryFee} inline={false} />
             </dd>
           </div>
         </dl>
@@ -332,6 +334,7 @@ export function CheckoutForm({ products, deliveryFees }: Props) {
           {pending ? tr("paying") : tr("pay")}
         </button>
         <p className="mt-3 text-center text-xs text-ink">{tr("securePayment")}</p>
+        <p className="mt-2 text-center text-xs text-ink">{tr("currencyNote")}</p>
       </aside>
     </form>
   );
