@@ -12,10 +12,18 @@ export async function GET(request: NextRequest) {
   const { searchParams, origin } = request.nextUrl;
   const next = safeNextPath(searchParams.get("next"), `/${routing.defaultLocale}/account`);
   const locale = routing.locales.find((l) => next.startsWith(`/${l}/`)) ?? routing.defaultLocale;
-  const failed = NextResponse.redirect(new URL(`/${locale}/account/login?error=link`, origin));
+  const fail = (reason: "expired" | "link") =>
+    NextResponse.redirect(new URL(`/${locale}/account/login?error=${reason}`, origin));
+
+  // Supabase's own verify page sends its error back here, e.g. error_code=otp_expired.
+  const supabaseError = searchParams.get("error_code");
+  if (supabaseError) {
+    console.error(`Auth confirm: Supabase rejected the email link (${supabaseError}).`);
+    return fail(supabaseError === "otp_expired" ? "expired" : "link");
+  }
 
   const supabase = await createSupabaseServerClient();
-  if (!supabase) return failed;
+  if (!supabase) return fail("link");
 
   const code = searchParams.get("code");
   const tokenHash = searchParams.get("token_hash");
@@ -27,5 +35,9 @@ export async function GET(request: NextRequest) {
       ? await supabase.auth.verifyOtp({ token_hash: tokenHash, type })
       : { error: new Error("Missing code") };
 
-  return error ? failed : NextResponse.redirect(new URL(next, origin));
+  if (error) {
+    console.error(`Auth confirm: the email link could not be used (${"code" in error ? error.code : error.message}).`);
+    return fail("code" in error && error.code === "otp_expired" ? "expired" : "link");
+  }
+  return NextResponse.redirect(new URL(next, origin));
 }

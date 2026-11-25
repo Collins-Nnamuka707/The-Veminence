@@ -36,7 +36,9 @@ const formValues = (formData: FormData) =>
 const emailLink = (next: string) =>
   `${siteUrl.origin}/auth/confirm?next=${encodeURIComponent(next)}`;
 
-function authError(error: { code?: string; status?: number }): AuthFormError {
+/** Maps a Supabase error to a form message, logging the reason (never the email or password). */
+function authError(error: { code?: string; status?: number; message?: string }): AuthFormError {
+  console.error(`Auth: Supabase refused the request (code=${error.code}, status=${error.status}): ${error.message}`);
   switch (error.code) {
     case "invalid_credentials":
       return "invalidCredentials";
@@ -74,12 +76,13 @@ export async function register(_prev: AuthState, formData: FormData): Promise<Au
       emailRedirectTo: emailLink(`/${locale}/account`),
     },
   });
+  // An email that already has an account gets the same "check your inbox" answer as a new one,
+  // so the form cannot be used to find out who is registered.
+  if (error?.code === "user_already_exists" || error?.code === "email_exists") return { status: "done" };
   if (error) return { status: "error", formError: authError(error) };
 
   // With email confirmation off, the customer is signed in straight away.
   if (data.session) redirect(`/${locale}/account`);
-  // Otherwise ask them to confirm. The same message is shown for existing emails,
-  // so the form cannot be used to find out who has an account.
   return { status: "done" };
 }
 
@@ -104,6 +107,26 @@ export async function logout(formData: FormData) {
   const supabase = await createSupabaseServerClient();
   await supabase?.auth.signOut();
   redirect(`/${locale}`);
+}
+
+export async function resendConfirmation(_prev: AuthState, formData: FormData): Promise<AuthState> {
+  const parsed = forgotPasswordSchema.safeParse(formValues(formData));
+  if (!parsed.success) return { status: "error", fieldErrors: fieldErrors(parsed.error) };
+
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return unavailable;
+
+  const { locale, email } = parsed.data;
+  const { error } = await supabase.auth.resend({
+    type: "signup",
+    email,
+    options: { emailRedirectTo: emailLink(`/${locale}/account`) },
+  });
+  if (error && authError(error) === "tooManyAttempts") {
+    return { status: "error", formError: "tooManyAttempts" };
+  }
+  // Always "sent", whether or not the email has an unconfirmed account.
+  return { status: "done" };
 }
 
 export async function requestPasswordReset(_prev: AuthState, formData: FormData): Promise<AuthState> {

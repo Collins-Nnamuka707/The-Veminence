@@ -20,3 +20,19 @@ export function formatPrice(grosze: Grosze): string {
   assertGrosze(grosze);
   return plnFormatter.format(grosze / 100);
 }
+
+const eurFormatters = {
+  en: new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }),
+  pl: new Intl.NumberFormat("pl-PL", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }),
+};
+
+/**
+ * Display-only euro equivalent of a złoty amount, rounded to whole euros ("€379").
+ * Customers always pay in PLN; never use this for totals, payments or stored values.
+ * `plnPerEur` is the NBP mid rate (złoty for 1 euro).
+ */
+export function formatEurEquivalent(grosze: Grosze, plnPerEur: number, locale: "en" | "pl"): string {
+  assertGrosze(grosze);
+  const euros = Math.round(grosze / (plnPerEur * 100));
+  return eurFormatters[locale].format(euros);
+}

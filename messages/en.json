@@ -184,7 +184,8 @@
     "createAccount": "Also create an account (optional)",
     "createAccountHint": "We'll save your details so next time is faster.",
     "accountPassword": "Account password",
-    "accountPasswordHint": "At least 8 characters. We'll email you a link to confirm the account."
+    "accountPasswordHint": "At least 8 characters. We'll email you a link to confirm the account.",
+    "currencyNote": "You'll be charged in Polish złoty (PLN). Euro amounts are approximate, at today's NBP exchange rate."
   },
   "Account": {
     "fullName": "Full name",
@@ -257,7 +258,18 @@
       "linkExpired": "This link has expired or was already used. Please request a new one.",
       "tooManyAttempts": "Too many attempts. Please try again in a few minutes.",
       "authUnavailable": "We couldn't reach your account right now. Please try again in a moment.",
-      "generic": "Something went wrong. Please try again."
+      "generic": "Something went wrong. Please try again.",
+      "linkFailed": "We couldn't sign you in from that link. If it was your account confirmation link, try logging in below, as your email may already be confirmed. If it was a password reset link, please request a new one.",
+      "confirmLinkExpired": "This confirmation link has expired or was already used. Links work for one hour, and only from the newest email."
+    },
+    "resend": {
+      "title": "Resend confirmation",
+      "heading": "A new confirmation <script>link</script>",
+      "intro": "Enter the email you signed up with and we'll send you a new confirmation link.",
+      "submit": "Send new link",
+      "busy": "Sending…",
+      "sent": "If an account for {email} is waiting to be confirmed, we've sent a new link. Click it within an hour and use only the newest email.",
+      "link": "Send a new confirmation email"
     }
   }
 }

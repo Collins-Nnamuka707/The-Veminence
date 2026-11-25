@@ -1,9 +1,9 @@
 import { expect, test } from "@playwright/test";
 
-// The root URL follows the browser language and falls back to Polish (the default).
+// The root URL always opens English (the default), whatever the browser language.
 for (const [browserLocale, expected] of [
-  ["pl-PL", "pl"],
-  ["de-DE", "pl"],
+  ["pl-PL", "en"],
+  ["de-DE", "en"],
   ["en-GB", "en"],
 ] as const) {
   test(`root redirects a ${browserLocale} browser to /${expected}`, async ({ browser, baseURL }) => {
@@ -192,7 +192,7 @@ test("log in, forgot password and register pages link to each other", async ({ p
 
 test("an expired email link explains what happened", async ({ page }) => {
   await page.goto("/en/account/login?error=link");
-  await expect(page.locator("main").getByRole("alert")).toContainText("This link has expired");
+  await expect(page.locator("main").getByRole("alert")).toContainText("your email may already be confirmed");
 });
 
 test("checkout offers to log in and returns to checkout afterwards", async ({ page }) => {
@@ -245,4 +245,26 @@ test("menu links to New in and Best sellers", async ({ page }) => {
   // Most sold first: Bianka (51), Amelia (34), Dalia (27)...
   await expect(page.getByRole("article").first()).toContainText("Bianka");
   await expect(page.getByRole("article").nth(1)).toContainText("Amelia");
+});
+
+test("an expired confirmation link offers a new email", async ({ page }) => {
+  await page.goto("/en/account/login?error=expired");
+  await expect(page.locator("main").getByRole("alert")).toContainText("expired or was already used");
+  await page.getByRole("link", { name: "Send a new confirmation email" }).click();
+  await expect(page).toHaveURL(/\/en\/account\/resend-confirmation$/);
+
+  await page.getByRole("textbox", { name: "Email" }).fill("anna@example.com");
+  await page.getByRole("button", { name: "Send new link" }).click();
+  // The test server has no Supabase project, so the server answers with a polite error.
+  await expect(page.locator("main").getByRole("alert")).toContainText("couldn't reach your account");
+});
+
+test("prices show the euro equivalent next to złoty", async ({ page }) => {
+  // The test server uses a fixed rate of 4.25 zł per euro.
+  await page.goto("/en/product/amelia");
+  await expect(page.getByRole("main").getByText("1299,00 zł").first()).toBeVisible();
+  await expect(page.getByRole("main").getByText("/ €306").first()).toBeVisible();
+
+  await page.goto("/pl/shop");
+  await expect(page.getByRole("main").getByText(/\/ 306\s€/).first()).toBeVisible();
 });

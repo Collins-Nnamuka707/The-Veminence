@@ -20,7 +20,7 @@ Design references (local only, git-ignored): `docs/design/` (`verde.webp` = stru
   Await `params` inside a `<Suspense>` child, not at the top of a page (instant navigation).
 - Tailwind CSS v4 (design tokens in `tailwind.config.ts`, loaded via `@config` in `app/globals.css`;
   reusable classes are declared with `@utility`), shadcn/ui for admin components only
-- next-intl for the storefront (`/pl`, `/en`); admin at `/admin`, English only, no i18n
+- next-intl for the storefront (`/en` default, `/pl`); admin at `/admin`, English only, no i18n
 - Supabase (EU region): Postgres, Auth, Storage; migrations in `supabase/migrations`
 - Stripe for payments (cards, BLIK, Przelewy24, Apple Pay, Google Pay), in PLN
 - Zod for all validation; Resend for email; Vitest + Playwright for tests
@@ -46,6 +46,10 @@ Run lint, typecheck and tests before saying a task is done.
   thousands from five digits up, e.g. 12 345,00 zł). Never floats.
 - Format only with `formatPrice()` in `lib/money.ts`
   (`Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' })`), on both languages.
+- Prices also show an approximate euro amount after the złoty price ("1299,00 zł / €290",
+  owner's request 2026-11-25), via `<EurPrice>` and `formatEurEquivalent()`. It is display-only: the
+  NBP daily mid rate from `getEurRate()` (cached hourly, hidden when unavailable), whole euros,
+  without an "≈" sign (owner's request); the checkout note says euro amounts are approximate. Customers pay, and everything is stored and charged, in PLN.
 - The owner is not VAT registered: prices are final prices, with no VAT line and no NIP field.
   The admin asks for the final price only.
 - Every price or sale change writes a row to `price_history` (needed for the Omnibus
@@ -89,7 +93,9 @@ Run lint, typecheck and tests before saying a task is done.
 - No customer-facing string hard-coded in components: use `messages/pl.json` and `messages/en.json`.
 - Owner-managed text is stored as `{ pl, en }`. Use `t(field, locale)` from `lib/i18n-content.ts`,
   which falls back to Polish when English is empty.
-- Polish is the default locale. Every storefront page needs `hreflang` alternates.
+- English is the default locale (owner's decision, 2026-11-25): `/` opens `/en` for everyone, with no
+  browser-language detection; visitors switch to Polish in the header. Every storefront page needs
+  `hreflang` alternates.
 - Fonts must include the Latin Extended subset (ą ć ę ł ń ó ś ź ż).
 
 ### Security

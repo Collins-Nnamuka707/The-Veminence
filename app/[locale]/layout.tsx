@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { Footer } from "@/components/store/Footer";
 import { Header } from "@/components/store/Header";
 import { routing } from "@/i18n/routing";
+import { EurRateProvider } from "@/components/store/currency/EurPrice";
+import { getEurRate } from "@/lib/data/exchange-rate";
 import { getStoreSettings } from "@/lib/data/settings";
 import { display, sans, script } from "@/lib/fonts";
 import { localeAlternates, siteUrl } from "@/lib/seo";
@@ -31,16 +33,19 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
 export default async function LocaleLayout({ children, params }: LayoutProps<"/[locale]">) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
+  const eurRate = await getEurRate();
 
   return (
     <html lang={locale} data-scroll-behavior="smooth" className={`${sans.variable} ${display.variable} ${script.variable}`}>
       <body className="flex min-h-dvh flex-col">
         <NextIntlClientProvider>
-          <Header />
-          <main id="main" className="flex-1">
-            {children}
-          </main>
-          <Footer whatsappHref={buildWhatsAppChatLink(getStoreSettings().whatsappNumber)} />
+          <EurRateProvider rate={eurRate}>
+            <Header />
+            <main id="main" className="flex-1">
+              {children}
+            </main>
+            <Footer whatsappHref={buildWhatsAppChatLink(getStoreSettings().whatsappNumber)} />
+          </EurRateProvider>
         </NextIntlClientProvider>
       </body>
     </html>

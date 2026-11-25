@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { formatPrice } from "@/lib/money";
+import { EurPrice } from "./currency/EurPrice";
 import type { CardState } from "@/lib/product-state";
 
 type Props = { state: CardState; size?: "sm" | "lg" };
@@ -13,6 +14,7 @@ export function Price({ state, size = "sm" }: Props) {
       <p className={main}>
         <span className="sr-only">{t("currentPrice")}: </span>
         {formatPrice(state.currentPrice)}
+        <EurPrice grosze={state.currentPrice} />
       </p>
     );
   }
@@ -23,6 +25,7 @@ export function Price({ state, size = "sm" }: Props) {
         <span className={`${main} font-medium text-sale`}>
           <span className="sr-only">{t("salePrice")}: </span>
           {formatPrice(state.currentPrice)}
+          <EurPrice grosze={state.currentPrice} />
         </span>
         <s className="text-sm text-muted">
           <span className="sr-only">{t("regularPrice")}: </span>
