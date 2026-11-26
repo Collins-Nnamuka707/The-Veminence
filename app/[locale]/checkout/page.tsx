@@ -19,8 +19,11 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/checkout
 }
 
 export default async function CheckoutPage() {
-  const [tr, products] = await Promise.all([getTranslations("Checkout"), getProducts()]);
-  const { deliveryFees } = getStoreSettings();
+  const [tr, products, { deliveryFees }] = await Promise.all([
+    getTranslations("Checkout"),
+    getProducts(),
+    getStoreSettings(),
+  ]);
 
   return (
     <div className="container-page pt-8 pb-24">

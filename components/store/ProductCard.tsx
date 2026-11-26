@@ -1,7 +1,7 @@
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
-import { t } from "@/lib/i18n-content";
+import { langAttr, t } from "@/lib/i18n-content";
 import { getCardState, type CardState, type StoreProduct } from "@/lib/product-state";
 import { Price } from "./Price";
 import { ProductImage } from "./ProductImage";
@@ -33,7 +33,7 @@ export function ProductCard({ product, priority = false }: Props) {
         <Badges product={product} state={state} />
       </div>
 
-      <h3 className="mt-3 font-display text-xl font-medium">
+      <h3 className="mt-3 font-display text-xl font-medium" lang={langAttr(product.name, locale)}>
         {/* The link covers the whole card. */}
         <Link
           href={`/product/${product.slug}`}

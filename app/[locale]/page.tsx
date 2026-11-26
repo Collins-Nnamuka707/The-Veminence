@@ -9,7 +9,7 @@ import { SectionHeading } from "@/components/store/SectionHeading";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { getCategories, getNewArrivals } from "@/lib/data/catalog";
-import { t } from "@/lib/i18n-content";
+import { langAttr, t } from "@/lib/i18n-content";
 import { getCardState, type Category, type StoreProduct } from "@/lib/product-state";
 import { localeAlternates } from "@/lib/seo";
 
@@ -111,7 +111,9 @@ function FeaturedCard({ product, locale }: { product: StoreProduct; locale: Loca
         <HairPattern variant="straight" color="#6B5E3F" className="size-full" />
       </div>
       <div>
-        <p className="font-display text-lg leading-tight font-medium">{t(product.name, locale)}</p>
+        <p className="font-display text-lg leading-tight font-medium" lang={langAttr(product.name, locale)}>
+          {t(product.name, locale)}
+        </p>
         <Price state={getCardState(product)} />
       </div>
     </Link>

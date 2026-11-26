@@ -26,6 +26,8 @@ export default defineConfig({
       STRIPE_SECRET_KEY: "",
       // Fixed euro rate so tests don't depend on the live NBP service.
       EUR_PLN_RATE: "4.25",
+      // Tests use the built-in sample catalogue, never the real database.
+      CATALOG_SOURCE: "sample",
     },
   },
 });

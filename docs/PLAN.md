@@ -27,7 +27,7 @@ Not VAT registered. An earlier "order on WhatsApp" approach was dropped the same
 - Totals shown in the cart are a preview; the server recomputes everything at checkout
 - "You may also like" on product pages and "Complete your look" suggestions in the cart
 
-## Phase 3 — Database (Supabase, EU region)
+## Phase 3 — Database (Supabase, EU region) ✅ catalogue part
 
 Needs: a Supabase project in the EU region (the owner creates it).
 
@@ -37,6 +37,11 @@ Needs: a Supabase project in the EU region (the owner creates it).
 - Views/functions for available stock and the 30-day lowest price; `create_order` function
 - Seed data; swap `lib/data/catalog.ts` from sample data to Supabase queries
 - Product photos in Supabase Storage, served via `next/image`
+
+Done (2026-11-25): migrations `supabase/migrations/2026112518*` (categories, products, variants,
+images, price_history + trigger, Omnibus function, stock_movements + trigger, settings, admin roles,
+RLS, storage bucket), sample seed, behaviour tests in `supabase/tests`, storefront reading from
+Supabase with tag-based caching. Orders, reservations and payments tables come with step 4.
 
 ## Phase 4 — Checkout and payment (started early)
 

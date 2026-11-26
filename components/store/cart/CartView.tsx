@@ -6,7 +6,7 @@ import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { resolveCart, type CartRow } from "@/lib/cart";
 import { useCart } from "@/lib/cart-store";
-import { t } from "@/lib/i18n-content";
+import { langAttr, t } from "@/lib/i18n-content";
 import { formatPrice } from "@/lib/money";
 import type { StoreProduct } from "@/lib/product-state";
 import { getCartSuggestions } from "@/lib/related";
@@ -48,8 +48,8 @@ export function CartView({ products }: { products: StoreProduct[] }) {
           <CartRowItem
             key={row.product.id}
             row={row}
-            onQuantity={(q) => cart.setQuantity(row.product.id, q)}
-            onRemove={() => cart.remove(row.product.id)}
+            onQuantity={(q) => cart.setQuantity(row.product.variantId, q)}
+            onRemove={() => cart.remove(row.product.variantId)}
           />
         ))}
       </ul>
@@ -117,7 +117,11 @@ function CartRowItem({
 
       <div className="flex min-w-0 flex-1 flex-col gap-2">
         <div className="flex items-start justify-between gap-3">
-          <Link href={`/product/${row.product.slug}`} className="font-display text-xl font-medium">
+          <Link
+            href={`/product/${row.product.slug}`}
+            lang={langAttr(row.product.name, locale)}
+            className="font-display text-xl font-medium"
+          >
             {name}
           </Link>
           <p className="font-medium whitespace-nowrap">{formatPrice(row.lineTotal)}</p>

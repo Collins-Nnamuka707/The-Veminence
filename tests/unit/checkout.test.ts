@@ -84,7 +84,7 @@ describe("priceOrder", () => {
     expect(priceOrder([{ id: "b", quantity: 2 }], products, "pickup", fees)).toEqual({
       ok: false,
       reason: "unavailable",
-      productIds: ["b"],
+      variantIds: ["b"],
     });
     expect(priceOrder([{ id: "zzz", quantity: 1 }], products, "pickup", fees)).toMatchObject({
       reason: "unavailable",
@@ -101,7 +101,7 @@ describe("buildCheckoutSessionParams", () => {
       lockerCode: "WAW22A",
       notes: "Prosze o kontakt",
     });
-    const order = priceOrder([{ id: "a", quantity: 1 }], [product({ id: "a", name: { pl: "Amelia" } })], "inpost_locker", fees);
+    const order = priceOrder([{ id: "a", quantity: 1 }], [product({ id: "a", name: { en: "Amelia" } })], "inpost_locker", fees);
     if (!order.ok) throw new Error("expected priced order");
 
     const params = buildCheckoutSessionParams(input, order, {

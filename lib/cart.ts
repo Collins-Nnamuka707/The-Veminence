@@ -63,11 +63,11 @@ export function resolveCart(
   lines: CartLine[],
   products: StoreProduct[],
 ): { rows: CartRow[]; subtotal: Grosze } {
-  const byId = new Map(products.map((p) => [p.id, p]));
+  const byVariant = new Map(products.map((p) => [p.variantId, p]));
   const rows: CartRow[] = [];
 
   for (const line of lines) {
-    const product = byId.get(line.id);
+    const product = byVariant.get(line.id);
     if (!product) continue;
     const max = maxQuantity(product);
     const quantity = max > 0 ? Math.min(line.quantity, max) : line.quantity;

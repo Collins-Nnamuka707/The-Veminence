@@ -3,10 +3,11 @@ import { getCardState, LOW_STOCK_THRESHOLD, type StoreProduct } from "@/lib/prod
 
 const base: StoreProduct = {
   id: "p",
+  variantId: "v",
   slug: "p",
   category: "straight",
-  name: { pl: "P" },
-  description: { pl: "" },
+  name: { en: "P" },
+  description: { en: "" },
   image: null,
   price: 100000,
   salePrice: null,

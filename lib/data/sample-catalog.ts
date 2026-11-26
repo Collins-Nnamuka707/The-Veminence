@@ -29,6 +29,7 @@ export const sampleCategories: Category[] = [
 export const sampleProducts: StoreProduct[] = [
   {
     id: "p1",
+    variantId: "v1",
     slug: "amelia",
     category: "lace-front",
     name: { pl: "Amelia", en: "Amelia" },
@@ -48,6 +49,7 @@ export const sampleProducts: StoreProduct[] = [
   },
   {
     id: "p2",
+    variantId: "v2",
     slug: "bianka",
     category: "wavy",
     name: { pl: "Bianka", en: "Bianka" },
@@ -67,6 +69,7 @@ export const sampleProducts: StoreProduct[] = [
   },
   {
     id: "p3",
+    variantId: "v3",
     slug: "celina",
     category: "curly",
     name: { pl: "Celina", en: "Celina" },
@@ -86,6 +89,7 @@ export const sampleProducts: StoreProduct[] = [
   },
   {
     id: "p4",
+    variantId: "v4",
     slug: "dalia",
     category: "straight",
     name: { pl: "Dalia", en: "Dalia" },
@@ -105,6 +109,7 @@ export const sampleProducts: StoreProduct[] = [
   },
   {
     id: "p5",
+    variantId: "v5",
     slug: "lucja",
     category: "wavy",
     name: { pl: "Łucja", en: "Łucja" },
@@ -124,6 +129,7 @@ export const sampleProducts: StoreProduct[] = [
   },
   {
     id: "p6",
+    variantId: "v6",
     slug: "florentyna",
     category: "curly",
     name: { pl: "Florentyna", en: "Florentyna" },
@@ -143,6 +149,7 @@ export const sampleProducts: StoreProduct[] = [
   },
   {
     id: "p7",
+    variantId: "v7",
     slug: "gaja",
     category: "wavy",
     name: { pl: "Gaja", en: "Gaja" },
@@ -162,6 +169,7 @@ export const sampleProducts: StoreProduct[] = [
   },
   {
     id: "p8",
+    variantId: "v8",
     slug: "helena",
     category: "straight",
     name: { pl: "Helena", en: "Helena" },
