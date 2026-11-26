@@ -8,7 +8,7 @@ import { routing } from "@/i18n/routing";
 import { EurRateProvider } from "@/components/store/currency/EurPrice";
 import { getEurRate } from "@/lib/data/exchange-rate";
 import { getStoreSettings } from "@/lib/data/settings";
-import { display, sans, script } from "@/lib/fonts";
+import { sans } from "@/lib/fonts";
 import { localeAlternates, siteUrl } from "@/lib/seo";
 import { buildWhatsAppChatLink } from "@/lib/whatsapp";
 import "../globals.css";
@@ -36,7 +36,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const [eurRate, settings] = await Promise.all([getEurRate(), getStoreSettings()]);
 
   return (
-    <html lang={locale} data-scroll-behavior="smooth" className={`${sans.variable} ${display.variable} ${script.variable}`}>
+    <html lang={locale} data-scroll-behavior="smooth" className={sans.variable}>
       <body className="flex min-h-dvh flex-col">
         <NextIntlClientProvider>
           <EurRateProvider rate={eurRate}>

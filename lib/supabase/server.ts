@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 import { getSupabaseConfig } from "./config";
+import type { Database } from "./database.types";
 
 /**
  * Supabase client for Server Components, Server Actions and Route Handlers.
@@ -11,7 +13,7 @@ export async function createSupabaseServerClient() {
   if (!config) return null;
   const cookieStore = await cookies();
 
-  return createServerClient(config.url, config.key, {
+  return createServerClient<Database>(config.url, config.key, {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll(cookiesToSet) {
@@ -27,6 +29,9 @@ export async function createSupabaseServerClient() {
 
 /** The signed-in user, or null (also when Supabase is not configured). */
 export async function getCurrentUser() {
+  // Per-request only: the Supabase client reads the clock (session expiry), which Next.js does
+  // not allow while prerendering.
+  await connection();
   const supabase = await createSupabaseServerClient();
   if (!supabase) return null;
   const { data } = await supabase.auth.getUser();

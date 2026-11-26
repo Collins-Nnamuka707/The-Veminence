@@ -1,82 +1,90 @@
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
+import type { CollectionKey } from "@/lib/collections";
 import { t } from "@/lib/i18n-content";
-import type { Collection } from "@/lib/collections";
-import type { Category, CategorySlug, StoreProduct } from "@/lib/product-state";
+import type { Category, StoreProduct } from "@/lib/product-state";
+import { CollectionHero } from "./CollectionHero";
+import { NAV_ITEMS } from "./Header";
 import { ProductCard } from "./ProductCard";
-import { rich } from "./rich";
 
 type Props = {
+  title: string;
+  intro?: string;
+  /** Language of title/intro when it differs from the page (owner texts without Polish). */
+  lang?: string;
   categories: Category[];
   products: StoreProduct[];
-  /** A category, a collection (New in, Best sellers) or null for all wigs. */
-  active: CategorySlug | Collection | null;
+  /** The collection being shown, or null for the whole shop. */
+  active: CollectionKey | null;
 };
 
-export function ShopListing({ categories, products, active }: Props) {
+/** Collection page: banner, filters by type and texture, product grid. */
+export function ShopListing({ title, intro, lang, categories, products, active }: Props) {
   const tr = useTranslations("Shop");
+  const nav = useTranslations("Header.nav");
   const locale = useLocale() as Locale;
-  const activeCategory = categories.find((c) => c.slug === active);
 
-  const filters = [
-    { href: "/shop", label: tr("all"), current: active === null },
-    { href: "/shop/new", label: tr("collections.new"), current: active === "new" },
-    { href: "/shop/bestsellers", label: tr("collections.bestsellers"), current: active === "bestsellers" },
-    ...categories.map((c) => ({
-      href: `/shop/${c.slug}`,
-      label: t(c.name, locale),
-      current: c.slug === active,
-    })),
-  ];
+  const typeFilters = NAV_ITEMS.map((item) => ({
+    href: item.href,
+    label: nav(item.key),
+    current: item.href === "/shop" ? active === null : item.href === `/shop/${active}`,
+  }));
+  const textureFilters = categories.map((c) => ({
+    href: `/shop/${c.slug}`,
+    label: t(c.name, locale),
+    current: c.slug === active,
+  }));
 
   return (
-    <div className="container-page pt-12 pb-24">
-      <h1 className="font-display text-4xl font-medium sm:text-5xl">
-        {activeCategory
-          ? t(activeCategory.name, locale)
-          : active === "new" || active === "bestsellers"
-            ? tr(`collections.${active}`)
-            : tr.rich("heading", rich)}
-      </h1>
-      <p className="mt-2 text-sm text-muted">{tr("count", { count: products.length })}</p>
+    <>
+      <CollectionHero title={title} intro={intro} lang={lang} />
 
-      <nav aria-label={tr("title")} className="mt-8 -mx-4 overflow-x-auto px-4">
-        <ul className="flex gap-2">
-          {filters.map((f) => (
-            <li key={f.href}>
-              <Link
-                href={f.href}
-                aria-current={f.current ? "page" : undefined}
-                className={`btn min-h-10 px-5 whitespace-nowrap ${
-                  f.current ? "bg-ink text-cream" : "border border-stone hover:border-ink"
-                }`}
-              >
-                {f.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <div className="container-page pt-8 pb-24">
+        <div className="flex flex-col gap-4 border-b border-stone pb-6">
+          <FilterRow label={tr("typeFilter")} filters={typeFilters} />
+          <FilterRow label={tr("textureFilter")} filters={textureFilters} />
+        </div>
+        <p className="mt-6 text-center text-xs tracking-[0.15em] text-muted uppercase">{tr("count", { count: products.length })}</p>
 
-      <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
-        {products.map((product, i) => (
-          <ProductCard key={product.id} product={product} priority={i < 2} />
-        ))}
+        {products.length === 0 ? (
+          <div className="mx-auto mt-10 max-w-md text-center">
+            <p className="text-sm text-muted">{tr("empty")}</p>
+            <Link href="/shop" className="btn-ink mt-6">
+              {nav("shopAll")}
+            </Link>
+          </div>
+        ) : (
+          <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-12 sm:gap-x-6 lg:grid-cols-4">
+            {products.map((product, i) => (
+              <ProductCard key={product.id} product={product} priority={i < 2} />
+            ))}
+          </div>
+        )}
       </div>
-    </div>
+    </>
   );
 }
 
-export function ShopListingSkeleton() {
+function FilterRow({ label, filters }: { label: string; filters: { href: string; label: string; current: boolean }[] }) {
   return (
-    <div className="container-page animate-pulse pt-12 pb-24" aria-hidden="true">
-      <div className="h-12 w-48 rounded-full bg-stone" />
-      <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
-        {Array.from({ length: 4 }, (_, i) => (
-          <div key={i} className="aspect-[4/5] rounded-image bg-stone" />
+    <nav aria-label={label} className="-mx-4 overflow-x-auto px-4">
+      <ul className="flex items-center gap-2">
+        <li className="mr-2 shrink-0 text-[0.65rem] font-semibold tracking-[0.2em] text-muted uppercase">{label}</li>
+        {filters.map((f) => (
+          <li key={f.href} className="shrink-0">
+            <Link
+              href={f.href}
+              aria-current={f.current ? "page" : undefined}
+              className={`inline-flex min-h-9 items-center border px-4 text-[0.65rem] font-semibold tracking-[0.15em] whitespace-nowrap uppercase transition-colors ${
+                f.current ? "border-ink bg-ink text-white" : "border-stone hover:border-ink"
+              }`}
+            >
+              {f.label}
+            </Link>
+          </li>
         ))}
-      </div>
-    </div>
+      </ul>
+    </nav>
   );
 }

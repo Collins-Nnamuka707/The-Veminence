@@ -71,7 +71,24 @@ Supabase user id attached to the Stripe payment.
 Still to do (needs the database): order history and status, saved addresses,
 linking earlier guest orders with the same email.
 
-## Phase 6 — Admin (`/admin`, English only)
+## Phase 6 — Admin (`/admin`, English only) — login and layout ✅
+
+Done (2026-11-26): admin login with shop accounts that have a role in `admin_users`, guard in
+`proxy.ts` and `requireAdmin()`, sidebar/mobile menu, read-only Dashboard (products, stock alerts),
+Products, Stock and Settings from the database; Orders and revenue wait for orders (Phase 4).
+Done (2026-11-26, step 3): add and edit products (English with optional Polish, category, status,
+new/pre-order flags, price and sale in złoty, SKU, opening stock), photos uploaded from the browser
+to the product-images bucket, stock changes (delivery, return, damaged, stock count) with a log.
+Database functions `admin_create_product`, `admin_update_product`, `admin_adjust_stock` keep each
+change in one transaction; `supabase/tests/admin_rules.sql` checks them as an owner and a customer.
+Next: orders (Phase 4), then the revenue dashboard.
+
+Granting admin access (database only, never through the site):
+
+```bash
+npx supabase db query --remote "insert into public.admin_users (user_id, role) select id, 'staff' from auth.users where email = 'person@example.com'"
+```
+
 
 - Admin login (`owner`, `staff`); checks in `proxy.ts` and in every server action
 - Dashboard: revenue this month, a chart of revenue for each of the last six months,

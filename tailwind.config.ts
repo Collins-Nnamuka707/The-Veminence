@@ -1,27 +1,28 @@
 import type { Config } from "tailwindcss";
 
-// Design tokens. See CLAUDE.md "Design tokens" for usage rules:
-// gold is for fills and for text on ink only; on cream use ink or olive for text.
+// Design tokens (redesign 2026-11-26): white pages, black type and buttons, gold accents,
+// a soft beige for quiet sections. See CLAUDE.md "Design tokens" for contrast rules.
 const config: Config = {
   theme: {
     extend: {
       colors: {
         ink: "#141210",
-        cream: "#FAF6EE",
+        cream: "#F4F1EA",
         gold: "#D4AF6A",
         "gold-dark": "#B8924C",
+        "gold-tint": "#F5EEDF",
         olive: "#6B5E3F",
-        stone: "#E9E1D3",
+        stone: "#EFEDE8",
         muted: "#6F6A63",
         sale: "#B4442F",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        display: ["var(--font-display)", "Georgia", "serif"],
-        script: ["var(--font-script)", "cursive"],
+        // Headings use the same typeface; kept as an alias so `font-display` keeps working.
+        display: ["var(--font-sans)", "system-ui", "sans-serif"],
       },
       borderRadius: {
-        image: "16px",
+        image: "0px",
       },
     },
   },

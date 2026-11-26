@@ -33,7 +33,7 @@ export function CartView({ products }: { products: StoreProduct[] }) {
   if (rows.length === 0) {
     return (
       <div className="mt-10 rounded-image bg-stone px-6 py-16 text-center">
-        <p className="font-display text-2xl">{tr("empty")}</p>
+        <p className="text-lg font-bold uppercase">{tr("empty")}</p>
         <Link href="/shop" className="btn-ink mt-6">
           {tr("continueShopping")}
         </Link>
@@ -55,7 +55,7 @@ export function CartView({ products }: { products: StoreProduct[] }) {
       </ul>
 
       <aside className="h-fit rounded-image bg-stone p-6" aria-labelledby="summary-title">
-        <h2 id="summary-title" className="font-display text-2xl font-medium">
+        <h2 id="summary-title" className="text-sm font-bold tracking-[0.15em] uppercase">
           {tr("summary")}
         </h2>
         <dl className="mt-4 flex items-baseline justify-between gap-4">
@@ -84,7 +84,7 @@ function Suggestions({ products }: { products: StoreProduct[] }) {
 
   return (
     <section aria-labelledby="suggestions-title" className="pt-10 lg:col-span-2">
-      <h2 id="suggestions-title" className="font-display text-3xl font-medium">
+      <h2 id="suggestions-title" className="heading">
         {tr.rich("suggestions", rich)}
       </h2>
       <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4">
@@ -120,7 +120,7 @@ function CartRowItem({
           <Link
             href={`/product/${row.product.slug}`}
             lang={langAttr(row.product.name, locale)}
-            className="font-display text-xl font-medium"
+            className="text-sm font-bold uppercase"
           >
             {name}
           </Link>
@@ -135,12 +135,12 @@ function CartRowItem({
 
         <div className="mt-auto flex items-center justify-between gap-3">
           {row.available ? (
-            <div className="flex items-center rounded-full border border-stone" role="group" aria-label={tr("quantityFor", { name })}>
+            <div className="flex items-center border border-stone" role="group" aria-label={tr("quantityFor", { name })}>
               <button
                 type="button"
                 onClick={() => onQuantity(row.quantity - 1)}
                 aria-label={tr("decrease")}
-                className="flex size-11 items-center justify-center rounded-full hover:bg-stone"
+                className="flex size-11 items-center justify-center hover:bg-stone"
               >
                 −
               </button>
@@ -152,7 +152,7 @@ function CartRowItem({
                 onClick={() => onQuantity(row.quantity + 1)}
                 disabled={row.quantity >= row.max}
                 aria-label={tr("increase")}
-                className="flex size-11 items-center justify-center rounded-full hover:bg-stone disabled:opacity-40"
+                className="flex size-11 items-center justify-center hover:bg-stone disabled:opacity-40"
               >
                 +
               </button>

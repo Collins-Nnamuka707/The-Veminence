@@ -1,17 +1,15 @@
+import { BadgeCheck, CreditCard, Package, Plus, Ruler, ShieldCheck, Sparkles, Truck } from "lucide-react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
-import { HairPattern } from "@/components/store/HairPattern";
-import { Marquee } from "@/components/store/Marquee";
-import { Price } from "@/components/store/Price";
 import { ProductCard } from "@/components/store/ProductCard";
-import { rich } from "@/components/store/rich";
 import { SectionHeading } from "@/components/store/SectionHeading";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
-import { getCategories, getNewArrivals } from "@/lib/data/catalog";
+import { getBestSellers, getCategories } from "@/lib/data/catalog";
 import { langAttr, t } from "@/lib/i18n-content";
-import { getCardState, type Category, type StoreProduct } from "@/lib/product-state";
 import { localeAlternates } from "@/lib/seo";
+import heroImage from "@/public/images/hero-hair.webp";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await params;
@@ -20,127 +18,167 @@ export async function generateMetadata({ params }: PageProps<"/[locale]">): Prom
 
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const locale = (await params).locale as Locale;
-  const tr = await getTranslations("Home");
-  const [categories, newArrivals] = await Promise.all([getCategories(), getNewArrivals(4)]);
+  const [tr, nav, bestsellers, categories] = await Promise.all([
+    getTranslations("Home"),
+    getTranslations("Header.nav"),
+    getBestSellers(4),
+    getCategories(),
+  ]);
+
+  const trust = [
+    { icon: Sparkles, label: tr("trust.hair") },
+    { icon: Truck, label: tr("trust.delivery") },
+    { icon: Package, label: tr("trust.lockers") },
+    { icon: CreditCard, label: tr("trust.payment") },
+  ];
+  const types = [
+    { href: "/shop/wigs", label: nav("wigs") },
+    { href: "/shop/bundles", label: nav("bundles") },
+    { href: "/shop/closures-frontals", label: nav("closuresFrontals") },
+  ];
+  const reasons = [
+    { icon: BadgeCheck, title: tr("why.one"), text: tr("why.oneText") },
+    { icon: Ruler, title: tr("why.two"), text: tr("why.twoText") },
+    { icon: ShieldCheck, title: tr("why.three"), text: tr("why.threeText") },
+  ];
+  const faq = [1, 2, 3, 4] as const;
 
   return (
     <>
-      <Hero locale={locale} featured={newArrivals[0]} />
-
-      <Marquee
-        items={[tr("marquee.one"), tr("marquee.two"), tr("marquee.three"), tr("marquee.four")]}
-      />
-
-      <section aria-labelledby="categories-title" id="categories" className="container-page scroll-mt-24 pt-20">
-        <SectionHeading
-          id="categories-title"
-          eyebrow={tr("categories.eyebrow")}
-          title={tr.rich("categories.title", rich)}
+      <section className="on-dark relative overflow-hidden bg-ink text-white">
+        {/* Decorative background photo; the text sits on a dark gradient so it stays readable. */}
+        <Image
+          src={heroImage}
+          alt=""
+          fill
+          priority
+          placeholder="blur"
+          quality={90}
+          sizes="100vw"
+          className="object-cover object-center"
         />
-        <ul className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {categories.map((category) => (
-            <li key={category.slug}>
-              <CategoryCard category={category} locale={locale} cta={tr("categories.shopNow")} />
+        {/* Darken only behind the text (left on wide screens, bottom on phones); the rest stays vivid. */}
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/80 via-ink/45 via-45% to-transparent" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/25 to-transparent sm:hidden" aria-hidden="true" />
+        <div className="container-page relative flex min-h-[32rem] flex-col justify-end py-14 sm:min-h-[38rem] lg:py-20">
+          <p className="eyebrow text-gold [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]">{tr("hero.eyebrow")}</p>
+          <h1 className="mt-4 max-w-3xl text-4xl leading-[1.05] font-extrabold tracking-tight uppercase sm:text-6xl lg:text-7xl">
+            {tr("hero.title")}
+          </h1>
+          <p className="mt-6 max-w-xl text-sm leading-relaxed font-medium text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.75)] sm:text-base">
+            {tr("hero.text")}
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/shop" className="btn-light">
+              {tr("hero.cta")}
+            </Link>
+            <Link href="/shop/wigs" className="btn border border-white/60 text-white hover:bg-white hover:text-ink">
+              {tr("hero.secondary")}
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <ul className="container-page grid grid-cols-2 gap-x-4 gap-y-5 border-b border-stone py-6 lg:grid-cols-4">
+        {trust.map(({ icon: Icon, label }) => (
+          <li key={label} className="flex items-center gap-3 text-[0.65rem] font-semibold tracking-[0.15em] uppercase">
+            <Icon className="size-5 shrink-0 text-gold-dark" aria-hidden="true" />
+            {label}
+          </li>
+        ))}
+      </ul>
+
+      <section aria-labelledby="bestsellers-title" className="container-page pt-16">
+        <SectionHeading
+          id="bestsellers-title"
+          title={tr("bestsellers.title")}
+          text={tr("bestsellers.text")}
+          action={
+            <Link href="/shop/bestsellers" className="btn-ink">
+              {tr("bestsellers.viewAll")}
+            </Link>
+          }
+        />
+        <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-12 sm:gap-x-6 lg:grid-cols-4">
+          {bestsellers.map((product, i) => (
+            <ProductCard key={product.id} product={product} priority={i < 2} />
+          ))}
+        </div>
+      </section>
+
+      <section aria-labelledby="types-title" className="container-page pt-20">
+        <SectionHeading id="types-title" title={tr("types.title")} text={tr("types.text")} />
+        <ul className="mt-8 grid gap-4 sm:grid-cols-3">
+          {types.map((type) => (
+            <li key={type.href}>
+              <Link href={type.href} className="group on-dark relative flex aspect-[16/9] flex-col justify-end overflow-hidden bg-ink p-6 text-white sm:aspect-[4/5]">
+                <span
+                  className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,106,0.25),transparent_65%)] transition-opacity duration-500 group-hover:opacity-60"
+                  aria-hidden="true"
+                />
+                <span className="relative text-2xl font-extrabold tracking-tight uppercase">{type.label}</span>
+                <span className="relative mt-2 text-[0.65rem] font-semibold tracking-[0.2em] text-gold uppercase underline-offset-4 group-hover:underline">
+                  {tr("types.shop")} →
+                </span>
+              </Link>
             </li>
           ))}
         </ul>
       </section>
 
-      <section aria-labelledby="new-title" id="new-arrivals" className="container-page scroll-mt-24 pt-20 pb-24">
-        <SectionHeading
-          id="new-title"
-          eyebrow={tr("newArrivals.eyebrow")}
-          title={tr.rich("newArrivals.title", rich)}
-        />
-        <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4">
-          {newArrivals.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+      <section aria-labelledby="why-title" className="on-dark mt-24 bg-ink py-20 text-white">
+        <div className="container-page">
+          <h2 id="why-title" className="heading text-center">
+            {tr("why.title")}
+          </h2>
+          <ul className="mt-12 grid gap-10 md:grid-cols-3">
+            {reasons.map(({ icon: Icon, title, text }) => (
+              <li key={title} className="text-center">
+                <Icon className="mx-auto size-8 text-gold" aria-hidden="true" />
+                <h3 className="mt-4 text-sm font-bold tracking-[0.15em] uppercase">{title}</h3>
+                <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-white/75">{text}</p>
+              </li>
+            ))}
+          </ul>
         </div>
-        <div className="mt-10 text-center">
-          <Link href="/shop/new" className="btn-outline">
-            {tr("newArrivals.viewAll")}
-          </Link>
+      </section>
+
+      <section aria-labelledby="textures-title" className="container-page pt-20">
+        <SectionHeading id="textures-title" title={tr("textures.title")} text={tr("textures.text")} />
+        <ul className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {categories.map((category) => (
+            <li key={category.slug}>
+              <Link href={`/shop/${category.slug}`} className="group relative flex aspect-square items-end overflow-hidden bg-stone p-5">
+                <span
+                  className="text-lg font-extrabold tracking-[0.1em] uppercase underline-offset-4 group-hover:underline"
+                  lang={langAttr(category.name, locale)}
+                >
+                  {t(category.name, locale)}
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section id="faq" aria-labelledby="faq-title" className="mt-24 scroll-mt-24 bg-cream py-20">
+        <div className="container-page grid gap-10 lg:grid-cols-[1fr_1.4fr]">
+          <h2 id="faq-title" className="text-4xl leading-none font-extrabold tracking-tight uppercase sm:text-5xl">
+            {tr("faq.title")}
+          </h2>
+          <div className="divide-y divide-ink/15 border-y border-ink/15">
+            {faq.map((n) => (
+              <details key={n} className="group py-5">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-xs font-semibold tracking-[0.12em] uppercase [&::-webkit-details-marker]:hidden">
+                  {tr(`faq.q${n}`)}
+                  <Plus className="size-5 shrink-0 rounded-full border border-ink p-0.5 transition-transform group-open:rotate-45" aria-hidden="true" />
+                </summary>
+                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ink">{tr(`faq.a${n}`)}</p>
+              </details>
+            ))}
+          </div>
         </div>
       </section>
     </>
-  );
-}
-
-async function Hero({ locale, featured }: { locale: Locale; featured?: StoreProduct }) {
-  const tr = await getTranslations("Home.hero");
-
-  return (
-    <section className="on-dark relative overflow-hidden bg-ink text-cream">
-      <div className="container-page grid items-center gap-12 py-16 md:grid-cols-2 md:py-24">
-        <div>
-          <p className="eyebrow text-gold">{tr("eyebrow")}</p>
-          <h1 className="mt-4 font-display text-5xl leading-[1.05] font-medium sm:text-6xl">
-            {tr.rich("title", {
-              script: (chunks) => (
-                <span className="font-script px-[0.12em] text-[1.15em] font-normal text-gold">{chunks}</span>
-              ),
-            })}
-          </h1>
-          <p className="mt-6 max-w-md text-cream/80">{tr("text")}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/shop" className="btn-gold">
-              {tr("cta")}
-            </Link>
-          </div>
-        </div>
-
-        <div className="relative mx-auto w-full max-w-sm">
-          <div className="aspect-[4/5] overflow-hidden rounded-t-full rounded-b-image bg-olive">
-            <HairPattern variant="wavy" color="#D4AF6A" className="size-full" />
-          </div>
-          {featured && <FeaturedCard product={featured} locale={locale} />}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function FeaturedCard({ product, locale }: { product: StoreProduct; locale: Locale }) {
-  return (
-    <Link
-      href={`/product/${product.slug}`}
-      className="absolute -bottom-6 -left-2 flex items-center gap-3 rounded-2xl bg-cream p-3 pr-5 text-ink shadow-xl sm:-left-10"
-    >
-      <div className="size-14 overflow-hidden rounded-xl bg-stone">
-        <HairPattern variant="straight" color="#6B5E3F" className="size-full" />
-      </div>
-      <div>
-        <p className="font-display text-lg leading-tight font-medium" lang={langAttr(product.name, locale)}>
-          {t(product.name, locale)}
-        </p>
-        <Price state={getCardState(product)} />
-      </div>
-    </Link>
-  );
-}
-
-function CategoryCard({ category, locale, cta }: { category: Category; locale: Locale; cta: string }) {
-  const pattern = category.slug === "curly" ? "curly" : category.slug === "wavy" ? "wavy" : "straight";
-
-  return (
-    <Link
-      href={`/shop/${category.slug}`}
-      className="group on-dark relative flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-image bg-ink p-5 text-cream sm:aspect-[3/4]"
-    >
-      <HairPattern
-        variant={pattern}
-        color="#D4AF6A"
-        className="absolute inset-0 size-full opacity-60 transition-transform duration-500 group-hover:scale-105"
-      />
-      <span className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" />
-      <span className="relative">
-        <span className="block font-display text-2xl font-medium sm:text-3xl">{t(category.name, locale)}</span>
-        <span className="mt-1 hidden text-sm text-cream/80 sm:block">{t(category.description, locale)}</span>
-        <span className="mt-3 inline-block text-sm text-gold underline-offset-4 group-hover:underline">
-          {cta} →
-        </span>
-      </span>
-    </Link>
   );
 }

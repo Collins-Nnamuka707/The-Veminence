@@ -1,7 +1,20 @@
 import type { Grosze } from "./money";
 import type { LocalizedText } from "./i18n-content";
 
-export type CategorySlug = "straight" | "wavy" | "curly" | "lace-front";
+/** Textures (the `categories` table). */
+export type CategorySlug = "straight" | "wavy" | "curly" | "kinky";
+
+export const PRODUCT_TYPES = ["wig", "bundle", "closure", "frontal"] as const;
+export type ProductType = (typeof PRODUCT_TYPES)[number];
+
+/** Fixed details of a product (a 12" and a 16" version are separate products). */
+export type ProductDetails = {
+  lengthInches: number | null;
+  laceSize: string | null;
+  density: string | null;
+  colour: string | null;
+  hairOrigin: string | null;
+};
 
 export type Category = {
   slug: CategorySlug;
@@ -9,13 +22,15 @@ export type Category = {
   description: LocalizedText;
 };
 
-/** A product as the storefront sees it. Prices are gross (VAT included). */
+/** A product as the storefront sees it. Prices are final prices (the owner is not VAT registered). */
 export type StoreProduct = {
   id: string;
   /** The variant this product sells (length/colour picker comes later). Carts hold variant ids. */
   variantId: string;
   slug: string;
   category: CategorySlug;
+  productType: ProductType;
+  details: ProductDetails;
   name: LocalizedText;
   description: LocalizedText;
   image: { src: string; alt: LocalizedText } | null;

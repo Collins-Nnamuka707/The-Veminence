@@ -83,7 +83,7 @@ export function CheckoutForm({ products, deliveryFees }: Props) {
   if (rows.length === 0) {
     return (
       <div className="mt-10 rounded-image bg-stone px-6 py-16 text-center">
-        <p className="font-display text-2xl">{tr("errors.cartEmpty")}</p>
+        <p className="text-lg font-bold uppercase">{tr("errors.cartEmpty")}</p>
         <Link href="/shop" className="btn-ink mt-6">
           {tr("browse")}
         </Link>
@@ -141,7 +141,7 @@ export function CheckoutForm({ products, deliveryFees }: Props) {
 
       <div className="space-y-10">
         {(hasFieldErrors || formError) && (
-          <div role="alert" className="rounded-2xl border border-sale bg-cream p-4 text-sm text-sale">
+          <div role="alert" className="border border-sale bg-cream p-4 text-sm text-sale">
             {formError ? tr(`errors.${formError}`) : tr("errors.fixErrors")}
             {formError === "itemsUnavailable" && (
               <>
@@ -155,7 +155,7 @@ export function CheckoutForm({ products, deliveryFees }: Props) {
         )}
 
         <fieldset className="space-y-4">
-          <legend className="font-display text-2xl font-medium">{tr("contact")}</legend>
+          <legend className="text-sm font-bold tracking-[0.15em] uppercase">{tr("contact")}</legend>
           {!signedIn && (
             <p className="text-sm">
               {tr("guestNote")} {tr("haveAccount")}{" "}
@@ -175,7 +175,7 @@ export function CheckoutForm({ products, deliveryFees }: Props) {
             value={values.phone} onValue={set("phone")} error={errorText("phone")} />
 
           {!signedIn && (
-            <div className="rounded-2xl border border-stone p-4">
+            <div className="border border-stone p-4">
               <label className="flex cursor-pointer items-start gap-3">
                 <input
                   type="checkbox"
@@ -208,12 +208,12 @@ export function CheckoutForm({ products, deliveryFees }: Props) {
         </fieldset>
 
         <fieldset className="space-y-4">
-          <legend className="font-display text-2xl font-medium">{tr("delivery")}</legend>
+          <legend className="text-sm font-bold tracking-[0.15em] uppercase">{tr("delivery")}</legend>
           <div className="grid gap-3">
             {DELIVERY_METHODS.map((method) => (
               <label
                 key={method}
-                className="flex cursor-pointer items-start gap-3 rounded-2xl border border-stone p-4 has-[:checked]:border-ink has-[:checked]:bg-stone/50"
+                className="flex cursor-pointer items-start gap-3 border border-stone p-4 has-[:checked]:border-ink has-[:checked]:bg-stone/50"
               >
                 <input
                   type="radio"
@@ -293,14 +293,14 @@ export function CheckoutForm({ products, deliveryFees }: Props) {
             value={values.notes}
             onChange={(e) => set("notes")(e.target.value)}
             aria-invalid={errors.notes ? true : undefined}
-            className="mt-1 block w-full rounded-2xl border border-muted bg-cream px-4 py-3"
+            className="mt-1 block w-full border border-muted bg-cream px-4 py-3"
           />
           {errorText("notes") && <p className="mt-1 text-sm text-sale">{errorText("notes")}</p>}
         </div>
       </div>
 
       <aside className="h-fit rounded-image bg-stone p-6 lg:sticky lg:top-24" aria-labelledby="order-title">
-        <h2 id="order-title" className="font-display text-2xl font-medium">
+        <h2 id="order-title" className="text-sm font-bold tracking-[0.15em] uppercase">
           {tr("summary")}
         </h2>
         <ul className="mt-4 space-y-2 text-sm">

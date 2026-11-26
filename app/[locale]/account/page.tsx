@@ -39,11 +39,11 @@ async function AccountDetails({ params }: Pick<Props, "params">) {
 
   return (
     <>
-      <h1 className="font-display text-4xl font-medium sm:text-5xl">{t.rich("heading", rich)}</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight uppercase sm:text-4xl">{t.rich("heading", rich)}</h1>
       <p className="mt-3 text-muted">{t("signedInAs", { email: user.email ?? "" })}</p>
 
       <section aria-labelledby="profile-title" className="mt-10 rounded-image bg-stone p-6 sm:p-8">
-        <h2 id="profile-title" className="font-display text-2xl font-medium">
+        <h2 id="profile-title" className="text-sm font-bold tracking-[0.15em] uppercase">
           {t("profile")}
         </h2>
         <div className="mt-6">

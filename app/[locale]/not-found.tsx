@@ -6,7 +6,7 @@ export default function NotFound() {
 
   return (
     <section className="container-page py-24 text-center">
-      <h1 className="font-display text-4xl font-medium">{t("title")}</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight uppercase">{t("title")}</h1>
       <p className="mt-4 text-muted">{t("text")}</p>
       <Link href="/" className="btn-ink mt-8">
         {t("back")}

@@ -27,7 +27,7 @@ test("language switcher keeps the current page", async ({ page }) => {
   await page.goto("/pl/shop");
   await page.getByRole("link", { name: /English/ }).click();
   await expect(page).toHaveURL(/\/en\/shop$/);
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("All");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Shop all");
 });
 
 test("shop shows every product card state", async ({ page }) => {
@@ -63,13 +63,13 @@ test("no horizontal scroll", async ({ page }) => {
 
 test("add wigs to the cart, change quantities and remove them", async ({ page }) => {
   await page.goto("/pl/product/gaja");
-  await page.getByRole("button", { name: "Dodaj do koszyka" }).click();
+  await page.getByRole("button", { name: "Do koszyka", exact: true }).click();
   await expect(page.getByText("Dodano do koszyka.")).toBeVisible();
   // Gaja has 1 left, so the button is now disabled.
-  await expect(page.getByRole("button", { name: "Dodaj do koszyka" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Do koszyka", exact: true })).toBeDisabled();
 
   await page.goto("/pl/product/amelia");
-  await page.getByRole("button", { name: "Dodaj do koszyka" }).click();
+  await page.getByRole("button", { name: "Do koszyka", exact: true }).click();
   await expect(page.getByRole("link", { name: "Koszyk, 2 produkty" })).toBeVisible();
 
   await page.getByRole("link", { name: /Zobacz koszyk/ }).click();
@@ -104,7 +104,7 @@ test("pre-order product has a pre-order button", async ({ page }) => {
 test("sold-out and coming-soon products cannot be added to the cart", async ({ page }) => {
   for (const slug of ["dalia", "florentyna"]) {
     await page.goto(`/pl/product/${slug}`);
-    await expect(page.getByRole("button", { name: /Dodaj do koszyka|Zamów w przedsprzedaży/ })).toHaveCount(0);
+    await expect(page.getByRole("main").locator("> div > div").first().getByRole("button", { name: /^(Do koszyka|Zamów w przedsprzedaży)$/ })).toHaveCount(0);
   }
 });
 
@@ -117,7 +117,7 @@ test("product page suggests related wigs", async ({ page }) => {
 
 test("checkout: validation, delivery fees and payment hand-off", async ({ page }) => {
   await page.goto("/pl/product/amelia");
-  await page.getByRole("button", { name: "Dodaj do koszyka" }).click();
+  await page.getByRole("button", { name: "Do koszyka", exact: true }).click();
   await page.goto("/pl/cart");
   await expect(page.getByRole("heading", { name: /Uzupełnij swój/ })).toBeVisible();
   await page.getByRole("link", { name: "Przejdź do kasy" }).click();
@@ -158,7 +158,7 @@ test("checkout with an empty cart points back to the shop", async ({ page }) => 
 
 test("account icon leads to log in when signed out", async ({ page }) => {
   await page.goto("/pl");
-  await page.getByRole("link", { name: "Moje konto" }).click();
+  await page.getByRole("banner").getByRole("link", { name: "Moje konto" }).click();
   await expect(page).toHaveURL(/\/pl\/account\/login$/);
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Witaj");
 });
@@ -197,7 +197,7 @@ test("an expired email link explains what happened", async ({ page }) => {
 
 test("checkout offers to log in and returns to checkout afterwards", async ({ page }) => {
   await page.goto("/pl/product/helena");
-  await page.getByRole("button", { name: "Dodaj do koszyka" }).click();
+  await page.getByRole("button", { name: "Do koszyka", exact: true }).click();
   await page.goto("/pl/checkout");
   const link = page.getByRole("link", { name: /Zaloguj się, aby uzupełnić/ });
   await expect(link).toHaveAttribute("href", "/pl/account/login?next=%2Fpl%2Fcheckout");
@@ -205,7 +205,7 @@ test("checkout offers to log in and returns to checkout afterwards", async ({ pa
 
 test("checkout: buying as a guest is the default, an account is optional", async ({ page }) => {
   await page.goto("/en/product/helena");
-  await page.getByRole("button", { name: "Add to cart" }).click();
+  await page.getByRole("button", { name: "Add to bag", exact: true }).click();
   await page.goto("/en/checkout");
 
   await expect(page.getByText("You don't need an account to order.")).toBeVisible();
@@ -233,12 +233,12 @@ test("menu links to New in and Best sellers", async ({ page }) => {
   await page.goto("/en");
   const nav = page.getByRole("navigation", { name: "Menu" });
   // On phones the menu sits behind the menu button.
-  if (!(await nav.first().isVisible())) await page.locator("summary").click();
+  if (!(await nav.first().isVisible())) await page.getByRole("banner").locator("summary").click();
 
-  await page.getByRole("link", { name: "New in" }).first().click();
+  await page.getByRole("banner").getByRole("link", { name: "New in" }).first().click();
   await expect(page).toHaveURL(/\/en\/shop\/new$/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("New in");
-  await expect(page.getByRole("link", { name: "New in" }).last()).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("navigation", { name: "Type" }).getByRole("link", { name: "New in" })).toHaveAttribute("aria-current", "page");
 
   await page.goto("/pl/shop/bestsellers");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Bestsellery");

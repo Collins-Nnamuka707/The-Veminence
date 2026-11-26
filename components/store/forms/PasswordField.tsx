@@ -16,7 +16,7 @@ export function PasswordField(props: Omit<TextFieldProps, "type">) {
         type="button"
         onClick={() => setVisible((v) => !v)}
         aria-pressed={visible}
-        className="absolute top-7 right-2 flex min-h-11 items-center rounded-full px-3 text-sm underline underline-offset-4"
+        className="absolute top-7 right-2 flex min-h-11 items-center px-3 text-sm underline underline-offset-4"
       >
         {visible ? t("hidePassword") : t("showPassword")}
       </button>

@@ -1,9 +1,12 @@
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
+import { maxQuantity } from "@/lib/cart";
 import { langAttr, t } from "@/lib/i18n-content";
 import { getCardState, type CardState, type StoreProduct } from "@/lib/product-state";
+import { QuickAddButton } from "./cart/QuickAddButton";
 import { Price } from "./Price";
+import { ProductDetailsLine } from "./ProductDetailsLine";
 import { ProductImage } from "./ProductImage";
 
 type Props = {
@@ -21,32 +24,36 @@ export function ProductCard({ product, priority = false }: Props) {
   const name = t(product.name, locale);
 
   return (
-    <article className="group relative" data-availability={state.availability}>
+    <article className="group relative flex flex-col" data-availability={state.availability}>
       <div className="relative">
         <ProductImage
           product={product}
           locale={locale}
-          sizes="(min-width: 768px) 25vw, 50vw"
+          sizes="(min-width: 1024px) 25vw, 50vw"
           priority={priority}
           dimmed={state.availability === "out_of_stock"}
         />
         <Badges product={product} state={state} />
       </div>
 
-      <h3 className="mt-3 font-display text-xl font-medium" lang={langAttr(product.name, locale)}>
-        {/* The link covers the whole card. */}
-        <Link
-          href={`/product/${product.slug}`}
-          className="after:absolute after:inset-0 after:rounded-image after:content-['']"
-        >
+      <h3 className="mt-4 text-xs leading-snug font-bold tracking-[0.12em] uppercase" lang={langAttr(product.name, locale)}>
+        {/* The link covers the whole card; the Add to bag button sits above it. */}
+        <Link href={`/product/${product.slug}`} className="after:absolute after:inset-0 after:content-['']">
           {name}
         </Link>
       </h3>
+      <ProductDetailsLine product={product} className="mt-1 text-xs text-muted" />
 
-      <div className="mt-1">
+      <div className="mt-2 text-sm">
         <Price state={state} />
       </div>
       <StatusLine product={product} state={state} />
+
+      {state.canBuy && (
+        <div className="relative z-10 mt-3">
+          <QuickAddButton variantId={product.variantId} max={maxQuantity(product)} productName={name} />
+        </div>
+      )}
     </article>
   );
 }
@@ -56,27 +63,27 @@ function Badges({ product, state }: { product: StoreProduct; state: CardState })
   const badges: Array<{ label: string; className: string }> = [];
 
   if (state.availability === "coming_soon") {
-    badges.push({ label: tr("comingSoon"), className: "bg-ink text-cream" });
+    badges.push({ label: tr("comingSoon"), className: "bg-ink text-white" });
   } else if (state.availability === "out_of_stock") {
-    badges.push({ label: tr("soldOut"), className: "bg-ink text-cream" });
+    badges.push({ label: tr("soldOut"), className: "bg-ink text-white" });
   } else if (state.availability === "preorder") {
     badges.push({ label: tr("preorder"), className: "bg-gold text-ink" });
   }
   if (state.onSale && state.discountPercent) {
-    badges.push({ label: tr("sale", { percent: state.discountPercent }), className: "bg-sale text-cream" });
+    badges.push({ label: tr("sale", { percent: state.discountPercent }), className: "bg-sale text-white" });
   }
   if (product.isNew && state.availability !== "coming_soon" && badges.length < 2) {
-    badges.push({ label: tr("new"), className: "bg-cream text-ink" });
+    badges.push({ label: tr("new"), className: "bg-white text-ink" });
   }
 
   if (badges.length === 0) return null;
 
   return (
-    <ul className="absolute top-3 left-3 flex flex-col items-start gap-1.5">
+    <ul className="absolute top-3 right-3 flex flex-col items-end gap-1.5">
       {badges.map((badge) => (
         <li
           key={badge.label}
-          className={`rounded-full px-3 py-1 text-[0.7rem] font-medium tracking-wide uppercase ${badge.className}`}
+          className={`px-2.5 py-1 text-[0.6rem] font-semibold tracking-[0.15em] uppercase ${badge.className}`}
         >
           {badge.label}
         </li>
@@ -97,5 +104,5 @@ export function StatusLine({ product, state }: { product: StoreProduct; state: C
   } as const;
   const line = lines[state.availability];
 
-  return <p className={`mt-1 text-xs ${line.className}`}>{line.text}</p>;
+  return <p className={`mt-1 text-[0.7rem] font-medium tracking-wide uppercase ${line.className}`}>{line.text}</p>;
 }

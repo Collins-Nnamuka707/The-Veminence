@@ -30,7 +30,7 @@ export default async function CheckoutPage() {
       <Link href="/cart" className="inline-flex min-h-11 items-center text-sm text-olive hover:underline">
         ← {tr("backToCart")}
       </Link>
-      <h1 className="mt-2 font-display text-4xl font-medium sm:text-5xl">{tr.rich("heading", rich)}</h1>
+      <h1 className="mt-2 text-3xl font-extrabold tracking-tight uppercase sm:text-4xl">{tr.rich("heading", rich)}</h1>
       <CheckoutForm products={products} deliveryFees={deliveryFees} />
     </div>
   );

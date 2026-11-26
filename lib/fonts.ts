@@ -1,22 +1,9 @@
-import { Cormorant_Garamond, Jost, Pinyon_Script } from "next/font/google";
+import { Montserrat } from "next/font/google";
 
-// latin-ext is required for Polish (ą ć ę ł ń ó ś ź ż).
-export const sans = Jost({
+// One typeface for the whole site (owner's choice, 2026-11-26). latin-ext covers Polish
+// (ą ć ę ł ń ó ś ź ż); the variable font provides every weight from 100 to 900.
+export const sans = Montserrat({
   subsets: ["latin", "latin-ext"],
   variable: "--font-sans",
-  display: "swap",
-});
-
-export const display = Cormorant_Garamond({
-  subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-export const script = Pinyon_Script({
-  subsets: ["latin", "latin-ext"],
-  weight: "400",
-  variable: "--font-script",
   display: "swap",
 });

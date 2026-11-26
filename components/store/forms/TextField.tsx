@@ -36,7 +36,7 @@ export function TextField({
         onChange={(e) => onValue(e.target.value)}
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy}
-        className={`mt-1 block min-h-11 w-full rounded-full border bg-cream px-4 ${
+        className={`mt-1 block min-h-11 w-full border bg-cream px-4 ${
           error ? "border-sale" : "border-muted"
         } ${className}`}
         {...rest}
