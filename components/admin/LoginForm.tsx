@@ -25,7 +25,7 @@ export function LoginForm() {
         <Label htmlFor="password">Password</Label>
         <Input id="password" name="password" type="password" autoComplete="current-password" required />
       </div>
-      <Button type="submit" disabled={pending} className="mt-2">
+      <Button type="submit" disabled={pending} size="lg" className="mt-2 w-full">
         {pending ? "Logging in…" : "Log in"}
       </Button>
     </form>

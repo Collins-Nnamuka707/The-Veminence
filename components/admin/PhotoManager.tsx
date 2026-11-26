@@ -1,15 +1,15 @@
 "use client";
 
-import { ImagePlus, Trash2 } from "lucide-react";
+import { ImageIcon, ImagePlus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { addProductImage, removeProductImage } from "@/app/admin/(panel)/products/actions";
 import { Alert, AlertDescription } from "@/components/admin/ui/alert";
-import { Button } from "@/components/admin/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/admin/ui/card";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { productImageUrl } from "@/lib/supabase/public";
+import { cn } from "@/lib/utils";
+import { Panel } from "./Panel";
 
 const TYPES: Record<string, string> = {
   "image/jpeg": "jpg",
@@ -78,12 +78,8 @@ export function PhotoManager({ productId, productName, images }: Props) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Photos</CardTitle>
-        <CardDescription>The first photo is the main one in the shop. JPG, PNG, WebP or AVIF, up to 10 MB each.</CardDescription>
-      </CardHeader>
-      <CardContent className="grid gap-4">
+    <Panel title="Photos" icon={ImageIcon} description="The first photo is the main one in the shop.">
+      <div className="grid gap-4">
         {problems.length > 0 && (
           <Alert variant="destructive">
             <AlertDescription>
@@ -94,42 +90,54 @@ export function PhotoManager({ productId, productName, images }: Props) {
           </Alert>
         )}
 
-        {images.length > 0 ? (
-          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {images.length > 0 && (
+          <ul className="grid grid-cols-3 gap-3 lg:grid-cols-2">
             {images.map((image, index) => (
-              <li key={image.id} className="relative overflow-hidden rounded-lg border">
-                <div className="relative aspect-[4/5] bg-muted">
-                  <Image src={productImageUrl(image.storagePath)} alt={image.altEn} fill sizes="200px" className="object-cover" />
+              <li key={image.id} className="group relative overflow-hidden rounded-lg bg-muted ring-1 ring-foreground/10">
+                <div className="relative aspect-square">
+                  <Image src={productImageUrl(image.storagePath)} alt={image.altEn} fill sizes="(min-width: 1024px) 150px, 33vw" className="object-cover" />
                 </div>
-                <div className="flex items-center justify-between gap-2 p-2 text-xs">
-                  <span className="text-muted-foreground">{index === 0 ? "Main photo" : `Photo ${index + 1}`}</span>
-                  <Button type="button" variant="ghost" size="sm" disabled={busy} onClick={() => remove(image.id)} aria-label={`Remove photo ${index + 1}`}>
-                    <Trash2 className="size-4" />
-                  </Button>
-                </div>
+                {index === 0 && (
+                  <span className="absolute top-2 left-2 rounded-full bg-ink px-2 py-0.5 text-[0.65rem] font-semibold tracking-wide text-gold uppercase">
+                    Main
+                  </span>
+                )}
+                <button
+                  type="button"
+                  disabled={busy}
+                  onClick={() => remove(image.id)}
+                  aria-label={`Remove photo ${index + 1}`}
+                  title="Remove photo"
+                  className="absolute top-2 right-2 flex size-8 items-center justify-center rounded-full bg-white/90 text-foreground shadow-sm transition-colors hover:bg-red-50 hover:text-red-700 focus-visible:outline-2 focus-visible:outline-ring disabled:opacity-50"
+                >
+                  <Trash2 className="size-4" aria-hidden="true" />
+                </button>
               </li>
             ))}
           </ul>
-        ) : (
-          <p className="text-sm text-muted-foreground">No photos yet. The shop shows a pattern placeholder until you add one.</p>
         )}
 
-        <div>
-          <input
-            ref={input}
-            type="file"
-            accept={Object.keys(TYPES).join(",")}
-            multiple
-            className="sr-only"
-            id="photo-upload"
-            onChange={(e) => e.target.files?.length && upload(e.target.files)}
-          />
-          <Button type="button" variant="outline" disabled={busy} onClick={() => input.current?.click()}>
-            <ImagePlus className="size-4" />
-            {busy ? "Working…" : "Add photos"}
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+        <input
+          ref={input}
+          type="file"
+          accept={Object.keys(TYPES).join(",")}
+          multiple
+          className="peer sr-only"
+          id="photo-upload"
+          onChange={(e) => e.target.files?.length && upload(e.target.files)}
+        />
+        <label
+          htmlFor="photo-upload"
+          className={cn(
+            "flex cursor-pointer flex-col items-center gap-1 rounded-lg border-2 border-dashed border-input px-4 py-6 text-center transition-colors hover:border-gold-dark hover:bg-gold-tint/40 peer-focus-visible:border-ring peer-focus-visible:ring-3 peer-focus-visible:ring-ring/50",
+            busy && "pointer-events-none opacity-60",
+          )}
+        >
+          <ImagePlus className="size-6 text-[#6b5e3f]" aria-hidden="true" />
+          <span className="text-sm font-semibold">{busy ? "Uploading…" : images.length > 0 ? "Add more photos" : "Add photos"}</span>
+          <span className="text-xs text-muted-foreground">JPG, PNG, WebP or AVIF, up to 10 MB each</span>
+        </label>
+      </div>
+    </Panel>
   );
 }

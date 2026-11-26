@@ -132,6 +132,9 @@ Run lint, typecheck and tests before saying a task is done.
   `app/admin/(panel)/` (shell + `requireAdmin()`); `proxy.ts` also blocks non-admins. Admin data
   reads use the cookie client (`lib/admin/*`), never `"use cache"`; each page wraps its data in
   `<Suspense>`. Admin text is English and may be written inline (no next-intl).
+  Admin look (2026-11-26): ink sidebar with gold accents, light only (no dark mode). Build pages from
+  `PageHeader`, `Panel`/`EmptyState`, `StatCard`, `Pill`/status badges, `ProductThumb` and
+  `FilterChips`; lists become cards below `md`.
 - Admin writes go through the `admin_*` database functions (one transaction each, security
   invoker) or row-level-secured tables, then `updateTag(CATALOG_TAG)` so the shop updates at once.
   Photos upload from the browser to the `product-images` bucket; the action only records the path.

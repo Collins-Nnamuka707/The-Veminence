@@ -21,7 +21,8 @@ test("admin pages require logging in", async ({ page }) => {
 test("admin login page works without a session", async ({ page }) => {
   await page.goto("/admin/login");
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
-  await expect(page.getByText("The Veminence admin")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Log in" })).toBeVisible();
+  await expect(page.getByText("The Veminence", { exact: true })).toBeVisible();
 
   await page.getByLabel("Email").fill("owner@example.com");
   await page.getByLabel("Password").fill("not-a-real-password");
