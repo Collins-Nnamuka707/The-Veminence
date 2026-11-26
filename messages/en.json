@@ -8,38 +8,67 @@
     "home": "The Veminence — home",
     "menu": "Menu",
     "nav": {
-      "shop": "Shop",
+      "shopAll": "Shop all",
+      "wigs": "Wigs",
+      "bundles": "Bundles",
+      "closuresFrontals": "Closures & frontals",
       "newIn": "New in",
-      "bestSellers": "Best sellers",
-      "categories": "Categories"
+      "bestSellers": "Best sellers"
     },
     "language": "Language",
     "switchTo": "Polski",
     "cart": "{count, plural, =0 {Cart, empty} one {Cart, # item} other {Cart, # items}}",
-    "account": "My account"
+    "account": "My account",
+    "announcement": "100% human hair · Delivery across Poland",
+    "search": "Search"
   },
   "Home": {
     "hero": {
-      "eyebrow": "Human hair wigs",
-      "title": "Feel <script>beautiful</script> every day",
-      "text": "Real human hair that shines, moves and looks like your own. For every day, and for the moments you'll remember.",
-      "cta": "Shop the collection"
+      "eyebrow": "The Veminence",
+      "title": "Real human hair. Your signature look.",
+      "text": "Wigs, bundles, closures and frontals in 100% human hair, with every length and lace size clearly listed.",
+      "cta": "Shop all",
+      "secondary": "Shop wigs"
     },
-    "marquee": {
-      "one": "Human hair",
-      "two": "Lace front",
-      "three": "Delivery across Poland",
-      "four": "A natural look"
+    "trust": {
+      "hair": "100% human hair",
+      "delivery": "Delivery across Poland",
+      "lockers": "InPost lockers & courier",
+      "payment": "Pay by card, BLIK or Przelewy24"
     },
-    "categories": {
-      "eyebrow": "Categories",
-      "title": "Choose your <script>style</script>",
-      "shopNow": "Shop now"
-    },
-    "newArrivals": {
-      "eyebrow": "New in",
-      "title": "New <script>arrivals</script>",
+    "bestsellers": {
+      "title": "Bestsellers",
+      "text": "Our customers' favourites right now.",
       "viewAll": "View all"
+    },
+    "types": {
+      "title": "Shop by type",
+      "text": "Find exactly what you need.",
+      "shop": "Shop now"
+    },
+    "why": {
+      "title": "Why The Veminence?",
+      "one": "Human hair only",
+      "oneText": "Every wig, bundle, closure and frontal is made from real human hair that you can style, curl and straighten.",
+      "two": "Details you can trust",
+      "twoText": "Length, lace size, density, colour and origin are listed on every product, so you know exactly what arrives.",
+      "three": "Easy to order",
+      "threeText": "Check out as a guest or with an account, pay by card, BLIK or Przelewy24, and pick an InPost locker, courier or pickup."
+    },
+    "textures": {
+      "title": "Shop by texture",
+      "text": "From sleek straight to defined kinky curls."
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "q1": "How can I pay?",
+      "a1": "Securely through Stripe by card, BLIK, Przelewy24, Apple Pay or Google Pay. You're always charged in Polish złoty (PLN); euro amounts on the site are approximate.",
+      "q2": "Which delivery options are there?",
+      "a2": "InPost parcel locker, courier to your door, or personal pickup (free). You'll see the delivery fee at checkout before you pay.",
+      "q3": "Do I need an account to order?",
+      "a3": "No. You can check out as a guest with just your contact and delivery details. An account is optional and lets you check out faster next time.",
+      "q4": "What do the length and lace size mean?",
+      "a4": "Length is measured in inches from the roots to the ends. Lace size is the lace area in inches: a 5x5 closure is 5 by 5 inches, a 13x4 frontal covers 13 inches from ear to ear and 4 inches back."
     }
   },
   "Product": {
@@ -62,22 +91,57 @@
     "salePrice": "Sale price",
     "lowestPrice": "Lowest price in the 30 days before the discount: {price}",
     "backToShop": "Back to shop",
-    "addToCart": "Add to cart",
+    "addToCart": "Add to bag",
     "preorderAddToCart": "Pre-order",
     "addedToCart": "Added to cart.",
     "maxInCart": "You have all available stock in your cart.",
     "viewCart": "View cart ({count})",
-    "related": "You may also <script>like</script>"
+    "related": "You may also like",
+    "types": {
+      "wig": "Wig",
+      "bundle": "Bundle",
+      "closure": "Closure",
+      "frontal": "Frontal"
+    },
+    "specs": {
+      "title": "Details",
+      "type": "Type",
+      "texture": "Texture",
+      "length": "Length",
+      "lace": "Lace size",
+      "density": "Density",
+      "colour": "Colour",
+      "origin": "Hair origin"
+    },
+    "description": "Description",
+    "lace": "{size} lace",
+    "addToBag": "Add to bag",
+    "added": "Added",
+    "noPhoto": "Photo coming soon"
   },
   "Shop": {
     "title": "Shop",
     "all": "All",
-    "heading": "All <script>wigs</script>",
+    "heading": "All wigs",
     "count": "{count, plural, one {# product} other {# products}}",
     "collections": {
       "new": "New in",
-      "bestsellers": "Best sellers"
-    }
+      "newIntro": "The latest additions to the shop.",
+      "bestsellers": "Best sellers",
+      "bestsellersIntro": "The pieces our customers choose most.",
+      "wigs": "Wigs",
+      "wigsIntro": "Ready-to-wear human hair wigs, from short bobs to long lace fronts.",
+      "bundles": "Bundles",
+      "bundlesIntro": "Human hair bundles to sew in or blend, in a range of lengths.",
+      "closures-frontals": "Closures & frontals",
+      "closures-frontalsIntro": "Lace closures and frontals for a natural-looking hairline."
+    },
+    "breadcrumb": "Home",
+    "collectionsCrumb": "Collections",
+    "textureFilter": "Texture",
+    "typeFilter": "Type",
+    "empty": "Nothing here yet. Have a look at the full collection.",
+    "allIntro": "Every wig, bundle, closure and frontal in one place."
   },
   "Footer": {
     "tagline": "Human hair wigs for women across Poland.",
@@ -86,7 +150,11 @@
     "newArrivals": "New arrivals",
     "rights": "All rights reserved.",
     "contact": "Contact",
-    "bestSellers": "Best sellers"
+    "bestSellers": "Best sellers",
+    "help": "Help",
+    "account": "My account",
+    "cart": "Cart",
+    "faq": "FAQ"
   },
   "NotFound": {
     "title": "Page not found",
@@ -95,7 +163,7 @@
   },
   "Cart": {
     "title": "Cart",
-    "heading": "Your <script>cart</script>",
+    "heading": "Your cart",
     "empty": "Your cart is empty.",
     "continueShopping": "Browse wigs",
     "summary": "Summary",
@@ -108,11 +176,11 @@
     "decrease": "Decrease quantity",
     "increase": "Increase quantity",
     "remove": "Remove",
-    "suggestions": "Complete your <script>look</script>"
+    "suggestions": "Complete your look"
   },
   "Checkout": {
     "title": "Checkout",
-    "heading": "Complete your <script>order</script>",
+    "heading": "Complete your order",
     "backToCart": "Back to cart",
     "browse": "Browse wigs",
     "contact": "Contact details",
@@ -168,11 +236,11 @@
     },
     "success": {
       "title": "Thank you",
-      "paidHeading": "Thank you for your <script>order</script>",
+      "paidHeading": "Thank you for your order",
       "paidText": "Your payment has been received. We'll email you at {email} when your order ships.",
-      "processingHeading": "Payment in <script>progress</script>",
+      "processingHeading": "Payment in progress",
       "processingText": "We're waiting for your bank to confirm the payment. We'll email you as soon as it does.",
-      "notFoundHeading": "Let's check your <script>payment</script>",
+      "notFoundHeading": "Let's check your payment",
       "notFound": "We couldn't find this payment. If you were charged, please contact us.",
       "continue": "Back to the shop",
       "accountOffer": "Want to check out faster next time?",
@@ -198,7 +266,7 @@
     "hidePassword": "Hide",
     "register": {
       "title": "Create an account",
-      "heading": "Create an <script>account</script>",
+      "heading": "Create an account",
       "intro": "Save your details to check out faster and keep track of your orders.",
       "submit": "Create account",
       "busy": "Creating your account…",
@@ -208,7 +276,7 @@
     },
     "login": {
       "title": "Log in",
-      "heading": "Welcome <script>back</script>",
+      "heading": "Welcome back",
       "intro": "Log in to see your account.",
       "submit": "Log in",
       "busy": "Logging in…",
@@ -217,7 +285,7 @@
     },
     "forgot": {
       "title": "Forgot your password?",
-      "heading": "New <script>password</script>",
+      "heading": "New password",
       "intro": "Enter your account email and we'll send you a link to set a new password.",
       "submit": "Send link",
       "busy": "Sending…",
@@ -226,14 +294,14 @@
     },
     "reset": {
       "title": "Set a new password",
-      "heading": "Set a new <script>password</script>",
+      "heading": "Set a new password",
       "intro": "Enter the password you'll use from now on.",
       "submit": "Save password",
       "busy": "Saving…"
     },
     "dashboard": {
       "title": "My account",
-      "heading": "My <script>account</script>",
+      "heading": "My account",
       "signedInAs": "Signed in as {email}",
       "profile": "Your details",
       "logout": "Log out"
@@ -264,7 +332,7 @@
     },
     "resend": {
       "title": "Resend confirmation",
-      "heading": "A new confirmation <script>link</script>",
+      "heading": "A new confirmation link",
       "intro": "Enter the email you signed up with and we'll send you a new confirmation link.",
       "submit": "Send new link",
       "busy": "Sending…",

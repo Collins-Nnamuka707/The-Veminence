@@ -2,19 +2,23 @@ import type { ReactNode } from "react";
 
 type Props = {
   id?: string;
-  eyebrow: string;
-  title: ReactNode;
-  align?: "center" | "left";
+  title: string;
+  text?: string;
+  action?: ReactNode;
   tone?: "light" | "dark";
 };
 
-export function SectionHeading({ id, eyebrow, title, align = "center", tone = "light" }: Props) {
+/** Bold uppercase section title with an optional line of text and a button on the right. */
+export function SectionHeading({ id, title, text, action, tone = "light" }: Props) {
   return (
-    <div className={align === "center" ? "text-center" : ""}>
-      <p className={`eyebrow ${tone === "dark" ? "text-gold" : "text-olive"}`}>{eyebrow}</p>
-      <h2 id={id} className="mt-2 font-display text-3xl leading-tight font-medium sm:text-4xl">
-        {title}
-      </h2>
+    <div className="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <h2 id={id} className="heading">
+          {title}
+        </h2>
+        {text && <p className={`mt-2 text-sm ${tone === "dark" ? "text-white/75" : "text-muted"}`}>{text}</p>}
+      </div>
+      {action}
     </div>
   );
 }

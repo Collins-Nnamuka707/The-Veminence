@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bestSellers, newIn } from "@/lib/collections";
+import { bestSellers, collectionProducts, isCollectionKey, newIn } from "@/lib/collections";
 import { product } from "./fixtures";
 
 describe("collections", () => {
@@ -28,5 +28,29 @@ describe("collections", () => {
       product({ id: "y" }),
     ];
     expect(bestSellers(unsold).map((p) => p.id)).toEqual(["x", "y"]);
+  });
+});
+
+describe("collectionProducts", () => {
+  const all = [
+    product({ id: "w", productType: "wig", category: "wavy" }),
+    product({ id: "b", productType: "bundle", category: "straight" }),
+    product({ id: "c", productType: "closure", category: "straight" }),
+    product({ id: "f", productType: "frontal", category: "curly", isNew: true }),
+  ];
+  const ids = (key: Parameters<typeof collectionProducts>[0]) => collectionProducts(key, all).map((p) => p.id);
+
+  it("groups closures and frontals together, and filters by type and texture", () => {
+    expect(ids("wigs")).toEqual(["w"]);
+    expect(ids("bundles")).toEqual(["b"]);
+    expect(ids("closures-frontals")).toEqual(["c", "f"]);
+    expect(ids("straight")).toEqual(["b", "c"]);
+    expect(ids("new")).toEqual(["f"]);
+  });
+
+  it("knows which keys are collections", () => {
+    expect(isCollectionKey("wigs")).toBe(true);
+    expect(isCollectionKey("kinky")).toBe(true);
+    expect(isCollectionKey("lace-front")).toBe(false);
   });
 });

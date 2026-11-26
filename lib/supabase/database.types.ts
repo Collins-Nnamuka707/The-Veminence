@@ -149,13 +149,19 @@ export type Database = {
         Row: {
           allow_preorder: boolean
           category_id: string
+          colour: string | null
           created_at: string
+          density: string | null
           description_en: string
           description_pl: string | null
+          hair_origin: string | null
           id: string
           is_new: boolean
+          lace_size: string | null
+          length_inches: number | null
           name_en: string
           name_pl: string | null
+          product_type: string
           slug: string
           status: string
           updated_at: string
@@ -163,13 +169,19 @@ export type Database = {
         Insert: {
           allow_preorder?: boolean
           category_id: string
+          colour?: string | null
           created_at?: string
+          density?: string | null
           description_en?: string
           description_pl?: string | null
+          hair_origin?: string | null
           id?: string
           is_new?: boolean
+          lace_size?: string | null
+          length_inches?: number | null
           name_en: string
           name_pl?: string | null
+          product_type?: string
           slug: string
           status?: string
           updated_at?: string
@@ -177,13 +189,19 @@ export type Database = {
         Update: {
           allow_preorder?: boolean
           category_id?: string
+          colour?: string | null
           created_at?: string
+          density?: string | null
           description_en?: string
           description_pl?: string | null
+          hair_origin?: string | null
           id?: string
           is_new?: boolean
+          lace_size?: string | null
+          length_inches?: number | null
           name_en?: string
           name_pl?: string | null
+          product_type?: string
           slug?: string
           status?: string
           updated_at?: string
@@ -374,7 +392,63 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      admin_adjust_stock: {
+        Args: {
+          p_mode: string
+          p_note: string
+          p_quantity: number
+          p_reason: string
+          p_variant_id: string
+        }
+        Returns: number
+      }
+      admin_create_product: {
+        Args: {
+          p_allow_preorder: boolean
+          p_category_id: string
+          p_colour: string
+          p_density: string
+          p_description_en: string
+          p_description_pl: string
+          p_hair_origin: string
+          p_initial_stock: number
+          p_is_new: boolean
+          p_lace_size: string
+          p_length_inches: number
+          p_name_en: string
+          p_name_pl: string
+          p_price: number
+          p_product_type: string
+          p_sale_price: number
+          p_sku: string
+          p_slug: string
+          p_status: string
+        }
+        Returns: string
+      }
+      admin_update_product: {
+        Args: {
+          p_allow_preorder: boolean
+          p_category_id: string
+          p_colour: string
+          p_density: string
+          p_description_en: string
+          p_description_pl: string
+          p_hair_origin: string
+          p_is_new: boolean
+          p_lace_size: string
+          p_length_inches: number
+          p_name_en: string
+          p_name_pl: string
+          p_price: number
+          p_product_id: string
+          p_product_type: string
+          p_sale_price: number
+          p_sku: string
+          p_status: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

@@ -1,3 +1,4 @@
+import { Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { AccountLink } from "./AccountLink";
@@ -5,11 +6,13 @@ import { CartLink } from "./cart/CartLink";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Logo } from "./Logo";
 
-const navItems = [
-  { href: "/shop", key: "shop" },
+export const NAV_ITEMS = [
+  { href: "/shop", key: "shopAll" },
+  { href: "/shop/wigs", key: "wigs" },
+  { href: "/shop/bundles", key: "bundles" },
+  { href: "/shop/closures-frontals", key: "closuresFrontals" },
   { href: "/shop/new", key: "newIn" },
   { href: "/shop/bestsellers", key: "bestSellers" },
-  { href: "/#categories", key: "categories" },
 ] as const;
 
 export function Header() {
@@ -19,65 +22,34 @@ export function Header() {
     <>
       <a
         href="#main"
-        className="sr-only z-50 rounded-full bg-ink px-4 py-2 text-cream focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
+        className="sr-only z-50 bg-ink px-4 py-2 text-white focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
       >
         {t("skipToContent")}
       </a>
 
-      <header className="sticky top-0 z-40 border-b border-stone bg-cream/95 backdrop-blur">
-        <div className="container-page flex h-16 items-center justify-between gap-4">
-          <Link href="/" aria-label={t("home")} className="rounded-sm">
-            <Logo />
-          </Link>
+      <p className="bg-ink px-4 py-2.5 text-center text-[0.65rem] font-semibold tracking-[0.25em] text-white uppercase">
+        {t("announcement")}
+      </p>
 
-          <nav aria-label={t("menu")} className="hidden md:block">
-            <ul className="flex items-center gap-8 text-sm">
-              {navItems.map((item) => (
-                <li key={item.key}>
-                  <Link href={item.href} className="py-2 hover:text-olive">
-                    {t(`nav.${item.key}`)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
+      <header className="sticky top-0 z-40 border-b border-stone bg-white/95 backdrop-blur">
+        <div className="container-page flex h-[4.5rem] items-center justify-between gap-4">
           <div className="flex items-center gap-1">
-            <LanguageSwitcher />
-            <AccountLink />
-            <CartLink />
-
             {/* Mobile menu: <details> works without JavaScript. */}
-            <details className="group relative md:hidden">
-              <summary className="flex min-h-11 min-w-11 cursor-pointer list-none items-center justify-center rounded-full hover:bg-stone [&::-webkit-details-marker]:hidden">
-                <span className="sr-only">{t("menu")}</span>
-                <svg viewBox="0 0 24 24" className="size-6" aria-hidden="true">
-                  <path
-                    d="M4 7h16M4 12h16M4 17h16"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    className="group-open:hidden"
-                  />
-                  <path
-                    d="M6 6l12 12M18 6L6 18"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    className="hidden group-open:block"
-                  />
-                </svg>
-              </summary>
-              <nav
+            <details className="group relative lg:hidden">
+              <summary
+                className="flex min-h-11 min-w-11 cursor-pointer list-none items-center justify-center [&::-webkit-details-marker]:hidden"
                 aria-label={t("menu")}
-                className="absolute top-full right-0 mt-2 w-56 rounded-2xl border border-stone bg-cream p-2 shadow-lg"
               >
+                <Menu className="size-5 group-open:hidden" aria-hidden="true" />
+                <X className="hidden size-5 group-open:block" aria-hidden="true" />
+              </summary>
+              <nav aria-label={t("menu")} className="absolute top-full left-0 mt-3 w-64 border border-stone bg-white p-2 shadow-lg">
                 <ul>
-                  {navItems.map((item) => (
+                  {NAV_ITEMS.map((item) => (
                     <li key={item.key}>
                       <Link
                         href={item.href}
-                        className="flex min-h-11 items-center rounded-xl px-4 hover:bg-stone"
+                        className="flex min-h-11 items-center px-4 text-xs font-semibold tracking-[0.15em] uppercase hover:bg-stone"
                       >
                         {t(`nav.${item.key}`)}
                       </Link>
@@ -86,6 +58,30 @@ export function Header() {
                 </ul>
               </nav>
             </details>
+            <Link href="/" aria-label={t("home")}>
+              <Logo />
+            </Link>
+          </div>
+
+          <nav aria-label={t("menu")} className="hidden lg:block">
+            <ul className="flex items-center gap-7">
+              {NAV_ITEMS.map((item) => (
+                <li key={item.key}>
+                  <Link
+                    href={item.href}
+                    className="py-2 text-[0.7rem] font-semibold tracking-[0.15em] uppercase underline-offset-8 hover:underline"
+                  >
+                    {t(`nav.${item.key}`)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="flex items-center">
+            <LanguageSwitcher />
+            <AccountLink />
+            <CartLink />
           </div>
         </div>
       </header>

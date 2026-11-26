@@ -52,7 +52,7 @@ async function PaymentStatus({ searchParams }: Pick<Props, "searchParams">) {
   return (
     <>
       {status !== "unknown" && <ClearCart />}
-      <h1 className="font-display text-4xl font-medium sm:text-5xl">
+      <h1 className="text-3xl font-extrabold tracking-tight uppercase sm:text-4xl">
         {tr.rich(
           status === "paid" ? "paidHeading" : status === "processing" ? "processingHeading" : "notFoundHeading",
           rich,

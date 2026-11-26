@@ -1,0 +1,120 @@
+"use client";
+
+import { useActionState, useState } from "react";
+import { adjustStock, type StockFormState } from "@/app/admin/(panel)/stock/actions";
+import { Alert, AlertDescription } from "@/components/admin/ui/alert";
+import { Button } from "@/components/admin/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/admin/ui/dialog";
+import { Input } from "@/components/admin/ui/input";
+import { Label } from "@/components/admin/ui/label";
+import { STOCK_ACTIONS } from "@/lib/schemas/admin";
+
+type Props = { variantId: string; productName: string; onHand: number };
+
+const selectClass =
+  "h-9 w-full rounded-md border border-input bg-transparent px-3 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50";
+
+export function StockAdjustDialog({ variantId, productName, onHand }: Props) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline" size="sm">
+          Update stock
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{productName}</DialogTitle>
+          <DialogDescription>{onHand} in stock now. Every change is logged with a reason.</DialogDescription>
+        </DialogHeader>
+        {/* Remounted each time the dialog opens, so it starts empty. */}
+        {open && <StockForm variantId={variantId} onHand={onHand} onDone={() => setOpen(false)} />}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function StockForm({ variantId, onHand, onDone }: { variantId: string; onHand: number; onDone: () => void }) {
+  const [state, action, pending] = useActionState<StockFormState, FormData>(adjustStock, {});
+  const [kind, setKind] = useState<keyof typeof STOCK_ACTIONS>("restock");
+  const [quantity, setQuantity] = useState("");
+  const [note, setNote] = useState("");
+
+  if (state.newLevel !== undefined) {
+    return (
+      <>
+        <Alert>
+          <AlertDescription>Saved. Stock is now {state.newLevel}.</AlertDescription>
+        </Alert>
+        <DialogFooter>
+          <Button onClick={onDone}>Close</Button>
+        </DialogFooter>
+      </>
+    );
+  }
+
+  const isCount = STOCK_ACTIONS[kind].mode === "set";
+
+  return (
+    <form action={action} className="grid gap-4">
+      <input type="hidden" name="variantId" value={variantId} />
+      {state.error && (
+        <Alert variant="destructive">
+          <AlertDescription>{state.error}</AlertDescription>
+        </Alert>
+      )}
+      <div className="grid gap-2">
+        <Label htmlFor="action">What happened?</Label>
+        <select id="action" name="action" className={selectClass} value={kind} onChange={(e) => setKind(e.target.value as keyof typeof STOCK_ACTIONS)}>
+          {Object.entries(STOCK_ACTIONS).map(([key, value]) => (
+            <option key={key} value={key}>
+              {value.label}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="grid gap-2">
+        <Label htmlFor="quantity">{isCount ? "How many do you have?" : "How many?"}</Label>
+        <Input
+          id="quantity"
+          name="quantity"
+          type="number"
+          min={0}
+          step={1}
+          inputMode="numeric"
+          value={quantity}
+          onChange={(e) => setQuantity(e.target.value)}
+          aria-invalid={!!state.fieldErrors?.quantity}
+          required
+        />
+        {state.fieldErrors?.quantity ? (
+          <p className="text-sm text-destructive">{state.fieldErrors.quantity}</p>
+        ) : isCount && quantity !== "" ? (
+          <p className="text-xs text-muted-foreground">
+            Change: {Number(quantity) - onHand >= 0 ? "+" : ""}
+            {Number(quantity) - onHand}
+          </p>
+        ) : null}
+      </div>
+      <div className="grid gap-2">
+        <Label htmlFor="note">Note (optional)</Label>
+        <Input id="note" name="note" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Supplier, order number, what was damaged…" />
+      </div>
+      <DialogFooter>
+        <Button type="submit" disabled={pending}>
+          {pending ? "Saving…" : "Save"}
+        </Button>
+      </DialogFooter>
+    </form>
+  );
+}

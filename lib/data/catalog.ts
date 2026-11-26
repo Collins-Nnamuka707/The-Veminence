@@ -1,6 +1,6 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { bestSellers, newIn } from "@/lib/collections";
-import type { Category, CategorySlug, StoreProduct } from "@/lib/product-state";
+import type { Category, CategorySlug, ProductType, StoreProduct } from "@/lib/product-state";
 import { canUseSampleData, createPublicSupabaseClient, productImageUrl } from "@/lib/supabase/public";
 import { sampleCategories, sampleProducts } from "./sample-catalog";
 
@@ -28,7 +28,9 @@ async function loadCatalog(): Promise<Catalog> {
       .order("position"),
     supabase
       .from("products")
-      .select("id, slug, category_id, name_en, name_pl, description_en, description_pl, status, is_new, allow_preorder")
+      .select(
+        "id, slug, category_id, product_type, name_en, name_pl, description_en, description_pl, length_inches, lace_size, density, colour, hair_origin, status, is_new, allow_preorder",
+      )
       .order("created_at", { ascending: false }),
     // Visible products only (row-level security), active variants only (view).
     supabase.from("catalog_variants").select("*").order("position"),
@@ -57,6 +59,14 @@ async function loadCatalog(): Promise<Catalog> {
           variantId: variant.variant_id,
           slug: p.slug,
           category: categorySlug.get(p.category_id) ?? "straight",
+          productType: p.product_type as ProductType,
+          details: {
+            lengthInches: p.length_inches,
+            laceSize: p.lace_size,
+            density: p.density,
+            colour: p.colour,
+            hairOrigin: p.hair_origin,
+          },
           name: { en: p.name_en, pl: p.name_pl },
           description: { en: p.description_en, pl: p.description_pl },
           image: image

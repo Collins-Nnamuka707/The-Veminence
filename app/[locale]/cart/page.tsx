@@ -23,7 +23,7 @@ export default async function CartPage() {
 
   return (
     <div className="container-page pt-12 pb-24">
-      <h1 className="font-display text-4xl font-medium sm:text-5xl">{tr.rich("heading", rich)}</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight uppercase sm:text-4xl">{tr.rich("heading", rich)}</h1>
       <CartView products={products} />
     </div>
   );

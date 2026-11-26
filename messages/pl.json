@@ -8,38 +8,67 @@
     "home": "The Veminence — strona główna",
     "menu": "Menu",
     "nav": {
-      "shop": "Sklep",
+      "shopAll": "Wszystkie",
+      "wigs": "Peruki",
+      "bundles": "Pasma",
+      "closuresFrontals": "Closure i frontale",
       "newIn": "Nowości",
-      "bestSellers": "Bestsellery",
-      "categories": "Kategorie"
+      "bestSellers": "Bestsellery"
     },
     "language": "Język",
     "switchTo": "English",
     "cart": "{count, plural, =0 {Koszyk, pusty} one {Koszyk, # produkt} few {Koszyk, # produkty} many {Koszyk, # produktów} other {Koszyk, # produktu}}",
-    "account": "Moje konto"
+    "account": "Moje konto",
+    "announcement": "100% włosy naturalne · Wysyłka w całej Polsce",
+    "search": "Szukaj"
   },
   "Home": {
     "hero": {
-      "eyebrow": "Peruki z naturalnych włosów",
-      "title": "Poczuj się <script>pięknie</script> każdego dnia",
-      "text": "Naturalne włosy, które lśnią, układają się i wyglądają jak Twoje własne. Na co dzień i na chwile, które zapamiętasz.",
-      "cta": "Zobacz kolekcję"
+      "eyebrow": "The Veminence",
+      "title": "Prawdziwe włosy. Twój charakterystyczny styl.",
+      "text": "Peruki, pasma, closure i frontale ze 100% włosów naturalnych, z podaną długością i rozmiarem koronki przy każdym produkcie.",
+      "cta": "Zobacz wszystkie",
+      "secondary": "Zobacz peruki"
     },
-    "marquee": {
-      "one": "Naturalne włosy",
-      "two": "Lace front",
-      "three": "Wysyłka w całej Polsce",
-      "four": "Naturalny wygląd"
+    "trust": {
+      "hair": "100% włosy naturalne",
+      "delivery": "Wysyłka w całej Polsce",
+      "lockers": "Paczkomaty InPost i kurier",
+      "payment": "Płatność kartą, BLIK lub Przelewy24"
     },
-    "categories": {
-      "eyebrow": "Kategorie",
-      "title": "Wybierz swój <script>styl</script>",
-      "shopNow": "Zobacz"
-    },
-    "newArrivals": {
-      "eyebrow": "Nowości",
-      "title": "Najnowsze <script>peruki</script>",
+    "bestsellers": {
+      "title": "Bestsellery",
+      "text": "Ulubione produkty naszych klientek.",
       "viewAll": "Zobacz wszystkie"
+    },
+    "types": {
+      "title": "Wybierz rodzaj",
+      "text": "Znajdź dokładnie to, czego potrzebujesz.",
+      "shop": "Zobacz"
+    },
+    "why": {
+      "title": "Dlaczego The Veminence?",
+      "one": "Tylko włosy naturalne",
+      "oneText": "Każda peruka, pasmo, closure i frontal jest wykonane z prawdziwych włosów, które możesz układać, kręcić i prostować.",
+      "two": "Jasne informacje",
+      "twoText": "Długość, rozmiar koronki, gęstość, kolor i pochodzenie włosów podajemy przy każdym produkcie, więc wiesz, co otrzymasz.",
+      "three": "Wygodne zamawianie",
+      "threeText": "Zamów jako gość lub z kontem, zapłać kartą, BLIK lub Przelewy24 i wybierz paczkomat InPost, kuriera albo odbiór osobisty."
+    },
+    "textures": {
+      "title": "Wybierz teksturę",
+      "text": "Od gładkich prostych po wyraziste loki afro."
+    },
+    "faq": {
+      "title": "Najczęściej zadawane pytania",
+      "q1": "Jak mogę zapłacić?",
+      "a1": "Bezpiecznie przez Stripe: kartą, BLIK, Przelewy24, Apple Pay lub Google Pay. Płatność zawsze pobieramy w złotych (PLN); kwoty w euro na stronie są orientacyjne.",
+      "q2": "Jakie są opcje dostawy?",
+      "a2": "Paczkomat InPost, kurier pod drzwi lub odbiór osobisty (bezpłatny). Koszt dostawy zobaczysz w kasie przed płatnością.",
+      "q3": "Czy muszę mieć konto, żeby zamówić?",
+      "a3": "Nie. Możesz zamówić jako gość, podając tylko dane kontaktowe i adres dostawy. Konto jest opcjonalne i przyspiesza kolejne zakupy.",
+      "q4": "Co oznacza długość i rozmiar koronki?",
+      "a4": "Długość mierzymy w calach od nasady do końcówek. Rozmiar koronki to jej powierzchnia w calach: closure 5x5 ma 5 na 5 cali, a frontal 13x4 sięga 13 cali od ucha do ucha i 4 cale w głąb."
     }
   },
   "Product": {
@@ -62,22 +91,57 @@
     "salePrice": "Cena promocyjna",
     "lowestPrice": "Najniższa cena z 30 dni przed obniżką: {price}",
     "backToShop": "Wróć do sklepu",
-    "addToCart": "Dodaj do koszyka",
+    "addToCart": "Do koszyka",
     "preorderAddToCart": "Zamów w przedsprzedaży",
     "addedToCart": "Dodano do koszyka.",
     "maxInCart": "Masz w koszyku całą dostępną ilość.",
     "viewCart": "Zobacz koszyk ({count})",
-    "related": "Może Ci się <script>spodobać</script>"
+    "related": "Może Ci się spodobać",
+    "types": {
+      "wig": "Peruka",
+      "bundle": "Pasmo",
+      "closure": "Closure",
+      "frontal": "Frontal"
+    },
+    "specs": {
+      "title": "Szczegóły",
+      "type": "Rodzaj",
+      "texture": "Tekstura",
+      "length": "Długość",
+      "lace": "Rozmiar koronki",
+      "density": "Gęstość",
+      "colour": "Kolor",
+      "origin": "Pochodzenie włosów"
+    },
+    "description": "Opis",
+    "lace": "koronka {size}",
+    "addToBag": "Do koszyka",
+    "added": "Dodano",
+    "noPhoto": "Zdjęcie wkrótce"
   },
   "Shop": {
     "title": "Sklep",
     "all": "Wszystkie",
-    "heading": "Wszystkie <script>peruki</script>",
+    "heading": "Wszystkie peruki",
     "count": "{count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktu}}",
     "collections": {
       "new": "Nowości",
-      "bestsellers": "Bestsellery"
-    }
+      "newIntro": "Najnowsze produkty w sklepie.",
+      "bestsellers": "Bestsellery",
+      "bestsellersIntro": "Produkty, które nasze klientki wybierają najczęściej.",
+      "wigs": "Peruki",
+      "wigsIntro": "Gotowe do noszenia peruki z włosów naturalnych, od krótkich bobów po długie lace fronty.",
+      "bundles": "Pasma",
+      "bundlesIntro": "Pasma z włosów naturalnych do wszycia lub doczepienia, w różnych długościach.",
+      "closures-frontals": "Closure i frontale",
+      "closures-frontalsIntro": "Koronkowe closure i frontale dla naturalnej linii włosów."
+    },
+    "breadcrumb": "Strona główna",
+    "collectionsCrumb": "Kolekcje",
+    "textureFilter": "Tekstura",
+    "typeFilter": "Rodzaj",
+    "empty": "Na razie nic tu nie ma. Zobacz całą kolekcję.",
+    "allIntro": "Wszystkie peruki, pasma, closure i frontale w jednym miejscu."
   },
   "Footer": {
     "tagline": "Peruki z naturalnych włosów dla kobiet w całej Polsce.",
@@ -86,7 +150,11 @@
     "newArrivals": "Nowości",
     "rights": "Wszelkie prawa zastrzeżone.",
     "contact": "Kontakt",
-    "bestSellers": "Bestsellery"
+    "bestSellers": "Bestsellery",
+    "help": "Pomoc",
+    "account": "Moje konto",
+    "cart": "Koszyk",
+    "faq": "FAQ"
   },
   "NotFound": {
     "title": "Nie znaleziono strony",
@@ -95,7 +163,7 @@
   },
   "Cart": {
     "title": "Koszyk",
-    "heading": "Twój <script>koszyk</script>",
+    "heading": "Twój koszyk",
     "empty": "Twój koszyk jest pusty.",
     "continueShopping": "Przeglądaj peruki",
     "summary": "Podsumowanie",
@@ -108,11 +176,11 @@
     "decrease": "Zmniejsz ilość",
     "increase": "Zwiększ ilość",
     "remove": "Usuń",
-    "suggestions": "Uzupełnij swój <script>wybór</script>"
+    "suggestions": "Uzupełnij swój wybór"
   },
   "Checkout": {
     "title": "Kasa",
-    "heading": "Finalizacja <script>zamówienia</script>",
+    "heading": "Finalizacja zamówienia",
     "backToCart": "Wróć do koszyka",
     "browse": "Przeglądaj peruki",
     "contact": "Dane kontaktowe",
@@ -168,11 +236,11 @@
     },
     "success": {
       "title": "Dziękujemy",
-      "paidHeading": "Dziękujemy za <script>zamówienie</script>",
+      "paidHeading": "Dziękujemy za zamówienie",
       "paidText": "Płatność została przyjęta. Gdy wyślemy Twoje zamówienie, napiszemy na adres {email}.",
-      "processingHeading": "Płatność w <script>toku</script>",
+      "processingHeading": "Płatność w toku",
       "processingText": "Czekamy na potwierdzenie płatności z banku. Damy Ci znać e-mailem, gdy tylko je otrzymamy.",
-      "notFoundHeading": "Sprawdźmy <script>płatność</script>",
+      "notFoundHeading": "Sprawdźmy płatność",
       "notFound": "Nie znaleźliśmy tej płatności. Jeśli pieniądze zostały pobrane, skontaktuj się z nami.",
       "continue": "Wróć do sklepu",
       "accountOffer": "Chcesz następnym razem zamawiać szybciej?",
@@ -198,7 +266,7 @@
     "hidePassword": "Ukryj",
     "register": {
       "title": "Załóż konto",
-      "heading": "Załóż <script>konto</script>",
+      "heading": "Załóż konto",
       "intro": "Zapisz swoje dane, by szybciej robić zakupy i śledzić zamówienia.",
       "submit": "Załóż konto",
       "busy": "Zakładam konto…",
@@ -208,7 +276,7 @@
     },
     "login": {
       "title": "Zaloguj się",
-      "heading": "Witaj <script>ponownie</script>",
+      "heading": "Witaj ponownie",
       "intro": "Zaloguj się, aby zobaczyć swoje konto.",
       "submit": "Zaloguj się",
       "busy": "Loguję…",
@@ -217,7 +285,7 @@
     },
     "forgot": {
       "title": "Nie pamiętasz hasła?",
-      "heading": "Nowe <script>hasło</script>",
+      "heading": "Nowe hasło",
       "intro": "Podaj adres e-mail konta, a wyślemy link do ustawienia nowego hasła.",
       "submit": "Wyślij link",
       "busy": "Wysyłam…",
@@ -226,14 +294,14 @@
     },
     "reset": {
       "title": "Ustaw nowe hasło",
-      "heading": "Ustaw nowe <script>hasło</script>",
+      "heading": "Ustaw nowe hasło",
       "intro": "Wpisz hasło, którego będziesz używać od teraz.",
       "submit": "Zapisz hasło",
       "busy": "Zapisuję…"
     },
     "dashboard": {
       "title": "Moje konto",
-      "heading": "Moje <script>konto</script>",
+      "heading": "Moje konto",
       "signedInAs": "Zalogowano jako {email}",
       "profile": "Twoje dane",
       "logout": "Wyloguj się"
@@ -264,7 +332,7 @@
     },
     "resend": {
       "title": "Wyślij link ponownie",
-      "heading": "Nowy link <script>potwierdzający</script>",
+      "heading": "Nowy link potwierdzający",
       "intro": "Podaj adres e-mail, na który zakładasz konto, a wyślemy nowy link potwierdzający.",
       "submit": "Wyślij nowy link",
       "busy": "Wysyłam…",

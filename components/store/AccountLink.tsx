@@ -8,7 +8,7 @@ export function AccountLink() {
     <Link
       href="/account"
       aria-label={t("account")}
-      className="flex min-h-11 min-w-11 items-center justify-center rounded-full hover:bg-stone"
+      className="flex min-h-11 min-w-11 items-center justify-center hover:bg-stone"
     >
       <svg viewBox="0 0 24 24" className="size-6" aria-hidden="true" focusable="false">
         <circle cx="12" cy="8" r="3.5" fill="none" stroke="currentColor" strokeWidth="1.5" />

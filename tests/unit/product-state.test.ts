@@ -6,6 +6,8 @@ const base: StoreProduct = {
   variantId: "v",
   slug: "p",
   category: "straight",
+  productType: "wig",
+  details: { lengthInches: 16, laceSize: null, density: null, colour: null, hairOrigin: null },
   name: { en: "P" },
   description: { en: "" },
   image: null,

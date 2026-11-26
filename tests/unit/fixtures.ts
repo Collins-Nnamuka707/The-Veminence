@@ -4,6 +4,8 @@ export const product = (overrides: Partial<StoreProduct>): StoreProduct => ({
   id: "p",
   slug: "p",
   category: "straight",
+  productType: "wig",
+  details: { lengthInches: 16, laceSize: "5x5", density: null, colour: null, hairOrigin: null },
   name: { en: "P" },
   description: { en: "" },
   image: null,

@@ -4,7 +4,9 @@
 
 - [ ] Add `docs/SPEC.md` (CLAUDE.md refers to it; Phase 1 used `docs/PLAN.md` instead)
 - [ ] Logo file (header/footer use a text wordmark in `components/store/Logo.tsx`)
-- [ ] Product photos (cards show a decorative hair-pattern placeholder until then)
+- [ ] Product photos (cards show a plain grey placeholder until then), plus photos for the home banner, the three type tiles and the four texture tiles (dark/grey blocks until then)
+- [ ] Review the home page wording: hero headline, promise strip, "Why The Veminence?" and the FAQ answers (`messages/en.json`, `messages/pl.json`); add an offer to the banner when there is one
+- [ ] Add FAQ answers for returns and delivery times once the policies are decided
 - [ ] Real product list, prices and descriptions (Phase 1 uses `lib/data/sample-catalog.ts`)
 - [ ] Real WhatsApp contact number: set `WHATSAPP_NUMBER` in `.env.local` (currently the placeholder +48 000 000 000) and in Vercel
 - [x] Create a Supabase project (EU region) and put the URL and publishable key in `.env.local`
@@ -33,4 +35,7 @@
 
 - [ ] Localized URL paths (`/pl/sklep`, `/pl/produkt/...`) via next-intl `pathnames` — better Polish SEO
 - [ ] Use `settings.low_stock_threshold` (already in the database and `getStoreSettings()`) instead of the `LOW_STOCK_THRESHOLD` constant in `lib/product-state.ts`
-- [ ] Variant picker (length/colour) on the product page
+- [ ] Variant picker (length/colour) on the product page, and adding variants in the admin (products have one variant for now)
+- [ ] Admin: manage categories (add, rename, reorder); the 4 sample categories are fixed for now
+- [ ] Admin: reorder photos / choose the main photo (the first uploaded is the main one)
+- [ ] Admin: delete a product (for now, set it to Archived)

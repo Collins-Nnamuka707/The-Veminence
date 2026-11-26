@@ -8,8 +8,10 @@ their status, revenue per month (current month and the last six), products, pric
 account; not VAT registered.)
 
 Full requirements: `docs/SPEC.md` (not yet added; until then follow `docs/PLAN.md`).
-Design references (local only, git-ignored): `docs/design/` (`verde.webp` = structure, `femmez.webp` = look,
-`aura.webp` = accents). Read the relevant SPEC section before starting any phase.
+Design direction (owner, 2026-11-26): the clean, photo-led e-commerce style of the reference the owner
+shared (white pages, bold uppercase sans headings, square photos and buttons, collection banners),
+in black and white with gold accents. Earlier references in `docs/design/` (local only) are superseded.
+Copy the style only: never their photos, logos or text.
 
 ## Stack
 
@@ -103,7 +105,8 @@ Run lint, typecheck and tests before saying a task is done.
 - English is the default locale (owner's decision, 2026-11-25): `/` opens `/en` for everyone, with no
   browser-language detection; visitors switch to Polish in the header. Every storefront page needs
   `hreflang` alternates.
-- Fonts must include the Latin Extended subset (ą ć ę ł ń ó ś ź ż).
+- Fonts must include the Latin Extended subset (ą ć ę ł ń ó ś ź ż). The only typeface is Montserrat
+  (`lib/fonts.ts`); there is no script accent font any more.
 
 ### Security
 - Row-level security on every table. Public can read published content only; all writes go
@@ -123,8 +126,22 @@ Run lint, typecheck and tests before saying a task is done.
   The sample catalogue is only for tests (`CATALOG_SOURCE=sample`) and local dev without keys.
 - Carts, checkout and Stripe metadata use variant ids (`StoreProduct.variantId`), never product ids.
 - Shared storefront components in `components/store/`; admin components in `components/admin/`.
+- Admin: own root layout `app/admin/layout.tsx` with `app/admin/admin.css` (shadcn/ui, Nova preset,
+  components in `components/admin/ui`; `npx shadcn@latest add <name>` uses `components.json`).
+  Never import admin styles or components into the storefront. Pages live under
+  `app/admin/(panel)/` (shell + `requireAdmin()`); `proxy.ts` also blocks non-admins. Admin data
+  reads use the cookie client (`lib/admin/*`), never `"use cache"`; each page wraps its data in
+  `<Suspense>`. Admin text is English and may be written inline (no next-intl).
+- Admin writes go through the `admin_*` database functions (one transaction each, security
+  invoker) or row-level-secured tables, then `updateTag(CATALOG_TAG)` so the shop updates at once.
+  Photos upload from the browser to the `product-images` bucket; the action only records the path.
 - One `ProductCard` component handles every state: in stock, low stock, out of stock,
   pre-order, on sale, coming soon (see SPEC "Product card and states").
+- Products: types wig, bundle, closure, frontal; texture = the `categories` table (straight, wavy,
+  curly, kinky); fixed details per product (`length_inches`, `lace_size`, `density`, `colour`,
+  `hair_origin`): a 12" and a 16" version are separate products (owner, 2026-11-26).
+- Listings are collections at `/shop/[collection]` (`lib/collections.ts`): wigs, bundles,
+  closures-frontals, each texture, new, bestsellers; `/shop` shows everything.
 - Mobile-first. Test every storefront and admin screen at 375px wide.
 - Images through `next/image`, sized to how they display; lazy-load below the fold.
 - Accessibility: labels on every field, alt text on product images, visible focus, AA contrast.
@@ -135,18 +152,21 @@ Run lint, typecheck and tests before saying a task is done.
 
 ## Design tokens
 
-| Token | Value |
-| --- | --- |
-| ink | #141210 |
-| cream | #FAF6EE |
-| gold | #D4AF6A |
-| gold-dark | #B8924C |
-| olive | #6B5E3F |
-| stone | #E9E1D3 |
-| muted | #6F6A63 |
-| sale | #B4442F |
+| Token | Value | Use |
+| --- | --- | --- |
+| white | #FFFFFF | page background |
+| ink | #141210 | text, buttons, dark banners |
+| cream | #F4F1EA | quiet sections (FAQ, footer) |
+| gold-tint | #F5EEDF | collection intro strip |
+| gold | #D4AF6A | accents, badges, text on ink |
+| gold-dark | #B8924C | icons |
+| olive | #6B5E3F | small status text |
+| stone | #EFEDE8 | photo placeholders, borders |
+| muted | #6F6A63 | secondary text |
+| sale | #B4442F | sale prices and badges |
 
-Images: 16px radius. Buttons: pill shaped. Script accent font: at most one word per heading.
+Photos and buttons are square (no radius). Buttons: `btn-ink` / `btn-light` / `btn-outline`,
+uppercase with wide letter spacing. Section titles use the `heading` utility (bold uppercase).
 Do not copy images, logos or text from the reference screenshots.
 
 ## WhatsApp
