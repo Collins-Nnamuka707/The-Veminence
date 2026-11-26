@@ -8,7 +8,9 @@ insert into public.categories (slug, name_en, name_pl, description_en, descripti
   ('wavy',       'Wavy',       'Fale',       'Soft, natural waves',       'Miękkie, naturalne fale',       2),
   ('curly',      'Curly',      'Loki',       'Bouncy, voluminous curls',  'Sprężyste loki pełne objętości', 3),
   ('kinky',      'Kinky',      'Afro',       'Kinky straight and kinky curly, close to natural afro hair',
-                                             'Kinky straight i kinky curly, blisko naturalnych włosów afro', 4)
+                                             'Kinky straight i kinky curly, blisko naturalnych włosów afro', 4),
+  ('lace-front', 'Lace front', 'Lace front', 'A natural-looking hairline you can part and style',
+                                             'Naturalnie wyglądająca linia włosów, którą możesz dowolnie układać', 5)
 on conflict (slug) do nothing;
 
 with input (slug, category, product_type, name_en, description_en, description_pl, length_inches, lace_size, density, colour, hair_origin, price, status, is_new, preorder, stock, age_days) as (

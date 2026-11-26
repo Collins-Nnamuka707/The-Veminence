@@ -153,3 +153,39 @@ export async function removeProductImage(imageId: string): Promise<{ error?: str
   updateTag(CATALOG_TAG);
   return {};
 }
+
+/**
+ * Deletes a product for good: its variants, photos, price history and stock history go with it
+ * (the database cascades). Once orders exist, order_items will reference variants with
+ * `on delete restrict`, so a product that was ever ordered can't be deleted; the owner archives it
+ * instead, which keeps order history intact.
+ */
+export async function deleteProduct(productId: string): Promise<{ error?: string }> {
+  await requireAdmin();
+  if (!z.uuid().safeParse(productId).success) return { error: "Unknown product." };
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return { error: "Supabase is not configured." };
+
+  const { data: images } = await supabase.from("product_images").select("storage_path").eq("product_id", productId);
+
+  const { data: deleted, error } = await supabase.from("products").delete().eq("id", productId).select("id");
+  if (error) {
+    console.error(`Admin: product delete failed (${error.code}): ${error.message}`);
+    if (error.code === "23503") {
+      return { error: "This product is part of customer orders, so it can't be deleted. Set it to Archived to hide it instead." };
+    }
+    if (error.code === "42501") return { error: "Your account isn't allowed to do this." };
+    return { error: "The product could not be deleted. Please try again." };
+  }
+  if (!deleted?.length) return { error: "That product no longer exists." };
+
+  // The photo files are only removed once the product is gone, so a failed delete keeps them.
+  const paths = (images ?? []).map((image) => image.storage_path);
+  if (paths.length > 0) {
+    const { error: storageError } = await supabase.storage.from("product-images").remove(paths);
+    if (storageError) console.error(`Admin: photo files left after delete: ${storageError.message}`);
+  }
+
+  updateTag(CATALOG_TAG);
+  redirect("/admin/products?deleted=1");
+}

@@ -141,7 +141,7 @@ Run lint, typecheck and tests before saying a task is done.
 - One `ProductCard` component handles every state: in stock, low stock, out of stock,
   pre-order, on sale, coming soon (see SPEC "Product card and states").
 - Products: types wig, bundle, closure, frontal; texture = the `categories` table (straight, wavy,
-  curly, kinky); fixed details per product (`length_inches`, `lace_size`, `density`, `colour`,
+  curly, kinky, lace-front: owner's choice 2026-11-26); fixed details per product (`length_inches`, `lace_size`, `density`, `colour`,
   `hair_origin`): a 12" and a 16" version are separate products (owner, 2026-11-26).
 - Listings are collections at `/shop/[collection]` (`lib/collections.ts`): wigs, bundles,
   closures-frontals, each texture, new, bestsellers; `/shop` shows everything.

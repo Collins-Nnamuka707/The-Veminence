@@ -2,6 +2,7 @@ import { CircleCheck, ExternalLink, Info } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { DeleteProductDialog } from "@/components/admin/DeleteProductDialog";
 import { PageHeader, PageSkeleton } from "@/components/admin/PageHeader";
 import { Panel } from "@/components/admin/Panel";
 import { PhotoManager } from "@/components/admin/PhotoManager";
@@ -99,6 +100,9 @@ async function EditProduct({ params, searchParams }: Props) {
             <Info className="mt-px size-3.5 shrink-0" aria-hidden="true" />
             Stock changes are logged on the Stock page. Price changes are kept for the 30-day lowest price.
           </p>
+          <Panel title="Delete product" description="Removes it for good. To hide it for now, set it to Archived instead.">
+            <DeleteProductDialog productId={product.id} productName={product.nameEn} photoCount={product.images.length} />
+          </Panel>
         </aside>
 
         <div className="min-w-0 lg:order-1">

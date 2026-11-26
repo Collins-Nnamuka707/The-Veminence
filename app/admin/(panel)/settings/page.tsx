@@ -3,7 +3,9 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PageHeader, PageSkeleton } from "@/components/admin/PageHeader";
 import { Panel } from "@/components/admin/Panel";
+import { SettingsForm } from "@/components/admin/SettingsForm";
 import { requireAdmin } from "@/lib/admin/auth";
+import { formatPriceInput } from "@/lib/admin/price-input";
 import { getStoreSettings } from "@/lib/data/settings";
 import { formatPrice } from "@/lib/money";
 
@@ -18,8 +20,27 @@ export default function SettingsPage() {
 }
 
 async function Settings() {
-  await requireAdmin();
+  const admin = await requireAdmin();
   const settings = await getStoreSettings();
+
+  if (admin.role === "owner") {
+    return (
+      <>
+        <PageHeader title="Settings" description="Delivery fees and shop details used by the storefront." />
+        <SettingsForm
+          initial={{
+            feeInpostLocker: formatPriceInput(settings.deliveryFees.inpost_locker),
+            feeCourier: formatPriceInput(settings.deliveryFees.courier),
+            feePickup: formatPriceInput(settings.deliveryFees.pickup),
+            whatsappNumber: settings.whatsappNumber,
+            lowStockThreshold: String(settings.lowStockThreshold),
+          }}
+        />
+      </>
+    );
+  }
+
+  // Staff see the settings but cannot change them (only the owner can, in the database too).
   const fees = [
     { icon: Package, label: "InPost parcel locker", value: settings.deliveryFees.inpost_locker },
     { icon: Truck, label: "Courier to the door", value: settings.deliveryFees.courier },
@@ -28,7 +49,7 @@ async function Settings() {
 
   return (
     <>
-      <PageHeader title="Settings" description="Delivery fees and shop details used by the storefront." />
+      <PageHeader title="Settings" description="Delivery fees and shop details. Only the shop owner can change them." />
       <div className="grid items-start gap-6 lg:grid-cols-2">
         <Panel title="Delivery fees" description="Added to the order total at checkout." icon={Truck} flush>
           <ul className="divide-y">

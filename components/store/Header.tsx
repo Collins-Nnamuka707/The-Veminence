@@ -64,12 +64,12 @@ export function Header() {
           </div>
 
           <nav aria-label={t("menu")} className="hidden lg:block">
-            <ul className="flex items-center gap-7">
+            <ul className="flex items-center gap-4 xl:gap-7">
               {NAV_ITEMS.map((item) => (
                 <li key={item.key}>
                   <Link
                     href={item.href}
-                    className="py-2 text-[0.7rem] font-semibold tracking-[0.15em] uppercase underline-offset-8 hover:underline"
+                    className="py-2 text-[0.7rem] font-semibold tracking-[0.15em] whitespace-nowrap uppercase underline-offset-8 hover:underline"
                   >
                     {t(`nav.${item.key}`)}
                   </Link>

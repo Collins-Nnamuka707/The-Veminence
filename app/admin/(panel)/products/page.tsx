@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { CircleCheck, Plus } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -10,16 +10,18 @@ import { getStoreSettings } from "@/lib/data/settings";
 
 export const metadata: Metadata = { title: "Products" };
 
-export default function ProductsPage() {
+type Props = PageProps<"/admin/products">;
+
+export default function ProductsPage({ searchParams }: Props) {
   return (
     <Suspense fallback={<PageSkeleton />}>
-      <Products />
+      <Products searchParams={searchParams} />
     </Suspense>
   );
 }
 
-async function Products() {
-  const [products, settings] = await Promise.all([listAdminProducts(), getStoreSettings()]);
+async function Products({ searchParams }: Pick<Props, "searchParams">) {
+  const [products, settings, query] = await Promise.all([listAdminProducts(), getStoreSettings(), searchParams]);
   const live = products.filter((p) => p.status === "published").length;
 
   return (
@@ -36,6 +38,12 @@ async function Products() {
           </Button>
         }
       />
+      {query.deleted === "1" && (
+        <div className="mb-6 flex items-start gap-3 rounded-xl bg-emerald-50 p-4 text-sm text-emerald-900 ring-1 ring-emerald-700/20" role="status">
+          <CircleCheck className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+          <p>Product deleted. It&apos;s no longer in the shop.</p>
+        </div>
+      )}
       <ProductList products={products} lowAt={settings.lowStockThreshold} />
     </>
   );

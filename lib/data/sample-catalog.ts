@@ -24,6 +24,14 @@ export const sampleCategories: Category[] = [
     name: { pl: "Afro", en: "Kinky" },
     description: { pl: "Kinky straight i kinky curly", en: "Kinky straight and kinky curly" },
   },
+  {
+    slug: "lace-front",
+    name: { pl: "Lace front", en: "Lace front" },
+    description: {
+      pl: "Naturalnie wyglądająca linia włosów, którą możesz dowolnie układać",
+      en: "A natural-looking hairline you can part and style",
+    },
+  },
 ];
 
 export const sampleProducts: StoreProduct[] = [

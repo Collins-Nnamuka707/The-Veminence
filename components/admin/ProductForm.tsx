@@ -11,6 +11,7 @@ import { Label } from "@/components/admin/ui/label";
 import { NativeSelect } from "@/components/admin/ui/native-select";
 import { Textarea } from "@/components/admin/ui/textarea";
 import { cn } from "@/lib/utils";
+import { MoneyInput } from "./MoneyInput";
 import { Panel } from "./Panel";
 
 export type ProductFormValues = {
@@ -258,31 +259,6 @@ function Field({
       </Label>
       {children}
       {error ? <p className="text-sm text-destructive">{error}</p> : hint ? <p className="text-xs text-muted-foreground">{hint}</p> : null}
-    </div>
-  );
-}
-
-function MoneyInput({
-  id,
-  name,
-  value,
-  onChange,
-  invalid,
-  required,
-}: {
-  id: string;
-  name: string;
-  value: string;
-  onChange: (value: string) => void;
-  invalid: boolean;
-  required?: boolean;
-}) {
-  return (
-    <div className="relative">
-      <Input id={id} name={name} inputMode="decimal" value={value} onChange={(e) => onChange(e.target.value)} aria-invalid={invalid} required={required} className="pr-10" />
-      <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-sm text-muted-foreground" aria-hidden="true">
-        zł
-      </span>
     </div>
   );
 }
