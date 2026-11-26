@@ -34,6 +34,7 @@ describe("collections", () => {
 describe("collectionProducts", () => {
   const all = [
     product({ id: "w", productType: "wig", category: "wavy" }),
+    product({ id: "l", productType: "wig", category: "lace-front" }),
     product({ id: "b", productType: "bundle", category: "straight" }),
     product({ id: "c", productType: "closure", category: "straight" }),
     product({ id: "f", productType: "frontal", category: "curly", isNew: true }),
@@ -41,7 +42,8 @@ describe("collectionProducts", () => {
   const ids = (key: Parameters<typeof collectionProducts>[0]) => collectionProducts(key, all).map((p) => p.id);
 
   it("groups closures and frontals together, and filters by type and texture", () => {
-    expect(ids("wigs")).toEqual(["w"]);
+    expect(ids("wigs")).toEqual(["w", "l"]);
+    expect(ids("lace-front")).toEqual(["l"]);
     expect(ids("bundles")).toEqual(["b"]);
     expect(ids("closures-frontals")).toEqual(["c", "f"]);
     expect(ids("straight")).toEqual(["b", "c"]);
@@ -51,6 +53,8 @@ describe("collectionProducts", () => {
   it("knows which keys are collections", () => {
     expect(isCollectionKey("wigs")).toBe(true);
     expect(isCollectionKey("kinky")).toBe(true);
-    expect(isCollectionKey("lace-front")).toBe(false);
+    // Lace front is a texture (owner, 2026-11-26), not a type of its own.
+    expect(isCollectionKey("lace-front")).toBe(true);
+    expect(isCollectionKey("lace-fronts")).toBe(false);
   });
 });

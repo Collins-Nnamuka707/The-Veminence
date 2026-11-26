@@ -2,7 +2,7 @@ import type { Grosze } from "./money";
 import type { LocalizedText } from "./i18n-content";
 
 /** Textures (the `categories` table). */
-export type CategorySlug = "straight" | "wavy" | "curly" | "kinky";
+export type CategorySlug = "straight" | "wavy" | "curly" | "kinky" | "lace-front";
 
 export const PRODUCT_TYPES = ["wig", "bundle", "closure", "frontal"] as const;
 export type ProductType = (typeof PRODUCT_TYPES)[number];

@@ -145,7 +145,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
 
       <section aria-labelledby="textures-title" className="container-page pt-20">
         <SectionHeading id="textures-title" title={tr("textures.title")} text={tr("textures.text")} />
-        <ul className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <ul className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {categories.map((category) => (
             <li key={category.slug}>
               <Link href={`/shop/${category.slug}`} className="group relative flex aspect-square items-end overflow-hidden bg-stone p-5">

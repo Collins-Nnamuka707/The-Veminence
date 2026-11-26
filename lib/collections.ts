@@ -14,7 +14,7 @@ export type TypeCollection = keyof typeof TYPE_COLLECTIONS;
 export type SpecialCollection = "new" | "bestsellers";
 export type CollectionKey = TypeCollection | SpecialCollection | CategorySlug;
 
-export const TEXTURES: CategorySlug[] = ["straight", "wavy", "curly", "kinky"];
+export const TEXTURES: CategorySlug[] = ["straight", "wavy", "curly", "kinky", "lace-front"];
 
 export function isTypeCollection(key: string): key is TypeCollection {
   return key in TYPE_COLLECTIONS;

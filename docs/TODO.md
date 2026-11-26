@@ -36,6 +36,6 @@
 - [ ] Localized URL paths (`/pl/sklep`, `/pl/produkt/...`) via next-intl `pathnames` — better Polish SEO
 - [ ] Use `settings.low_stock_threshold` (already in the database and `getStoreSettings()`) instead of the `LOW_STOCK_THRESHOLD` constant in `lib/product-state.ts`
 - [ ] Variant picker (length/colour) on the product page, and adding variants in the admin (products have one variant for now)
-- [ ] Admin: manage categories (add, rename, reorder); the 4 sample categories are fixed for now
+- [ ] Admin: manage categories (add, rename, reorder); the 5 textures are fixed for now
 - [ ] Admin: reorder photos / choose the main photo (the first uploaded is the main one)
-- [ ] Admin: delete a product (for now, set it to Archived)
+- [ ] Orders migration (step 4): `order_items.variant_id` must reference variants `on delete restrict`, so a product that was ever ordered can't be deleted (the admin delete action already turns that error into "archive it instead")

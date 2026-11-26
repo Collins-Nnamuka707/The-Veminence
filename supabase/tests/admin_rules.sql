@@ -26,6 +26,16 @@ begin
   perform public.admin_update_product(p, cat, 'closure', 'Test wig 2', 'Peruka', 'English', null,
                                       14, '  ', null, null, null, 'published', false, true, 120000, 99000, 'ZZ-1');
   assert (select product_type from public.products where id = p) = 'closure', 'type should change';
+  -- Lace front is a texture, not a type (owner, 2026-11-26); unknown types are refused.
+  assert exists (select 1 from public.categories where slug = 'lace-front'), 'lace front texture should exist';
+  begin
+    update public.products set product_type = 'lace_front' where id = p;
+    rejected := false;
+  exception when check_violation then
+    rejected := true;
+  end;
+  assert rejected, 'lace_front should no longer be a product type';
+  update public.products set product_type = 'closure' where id = p;
   assert (select lace_size from public.products where id = p) is null, 'blank lace size should be null';
   select count(*) into history from public.price_history where variant_id = v;
   assert history = 2, format('the sale should add a price history row, got %s rows', history);

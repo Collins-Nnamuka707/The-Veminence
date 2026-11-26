@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { greeting, lastMonths } from "@/lib/admin/months";
-import { formatPriceInput, parsePriceInput } from "@/lib/admin/price-input";
+import { formatPriceInput, parseFeeInput, parsePriceInput } from "@/lib/admin/price-input";
+import { settingsFormSchema } from "@/lib/schemas/settings";
 import { slugify, uniqueSlug } from "@/lib/admin/slug";
 
 describe("parsePriceInput", () => {
@@ -66,5 +67,53 @@ describe("greeting", () => {
     expect(greeting(new Date("2026-11-26T07:00:00Z"))).toBe("Good morning"); // 08:00 in Warsaw
     expect(greeting(new Date("2026-11-26T13:00:00Z"))).toBe("Good afternoon");
     expect(greeting(new Date("2026-11-26T19:00:00Z"))).toBe("Good evening");
+  });
+});
+
+describe("parseFeeInput", () => {
+  it("reads delivery fees in złoty as grosze", () => {
+    expect(parseFeeInput("15,99")).toBe(1599);
+    expect(parseFeeInput("19.9")).toBe(1990);
+    expect(parseFeeInput("20 zł")).toBe(2000);
+  });
+
+  it("accepts 0 for free delivery", () => {
+    expect(parseFeeInput("0")).toBe(0);
+    expect(parseFeeInput("0,00")).toBe(0);
+  });
+
+  it("rejects empty, negative, oddly precise or huge fees", () => {
+    expect(parseFeeInput("")).toBeNull();
+    expect(parseFeeInput("-5")).toBeNull();
+    expect(parseFeeInput("15,999")).toBeNull();
+    expect(parseFeeInput("1000,01")).toBeNull();
+    expect(parseFeeInput("abc")).toBeNull();
+  });
+});
+
+describe("settingsFormSchema", () => {
+  const valid = {
+    feeInpostLocker: "15,99",
+    feeCourier: "19,99",
+    feePickup: "0",
+    whatsappNumber: "+48 600 100 200",
+    lowStockThreshold: "3",
+  };
+
+  it("turns the form into grosze and numbers", () => {
+    expect(settingsFormSchema.parse(valid)).toEqual({
+      feeInpostLocker: 1599,
+      feeCourier: 1999,
+      feePickup: 0,
+      whatsappNumber: "+48 600 100 200",
+      lowStockThreshold: 3,
+    });
+  });
+
+  it("flags each invalid field", () => {
+    const result = settingsFormSchema.safeParse({ ...valid, feeCourier: "free", whatsappNumber: "call me", lowStockThreshold: "-1" });
+    expect(result.success).toBe(false);
+    const fields = result.error!.issues.map((issue) => issue.path[0]);
+    expect(fields).toEqual(expect.arrayContaining(["feeCourier", "whatsappNumber", "lowStockThreshold"]));
   });
 });
