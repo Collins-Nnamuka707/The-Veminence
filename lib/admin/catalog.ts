@@ -6,6 +6,10 @@ export type AdminProduct = {
   slug: string;
   name: string;
   category: string;
+  productType: string;
+  lengthInches: number | null;
+  /** Storage path of the main photo, if any. */
+  imagePath: string | null;
   status: "draft" | "published" | "coming_soon" | "archived";
   isNew: boolean;
   allowPreorder: boolean;
@@ -31,7 +35,7 @@ export async function listAdminProducts(): Promise<AdminProduct[]> {
   const { data, error } = await supabase
     .from("products")
     .select(
-      "id, slug, name_en, status, is_new, allow_preorder, categories(name_en), variants(id, label_en, sku, price, sale_price, stock_on_hand, is_active, position)",
+      "id, slug, name_en, product_type, length_inches, status, is_new, allow_preorder, categories(name_en), variants(id, label_en, sku, price, sale_price, stock_on_hand, is_active, position), product_images(storage_path, position)",
     )
     .order("created_at", { ascending: false });
   if (error) throw new Error(`Could not load products: ${error.message}`);
@@ -41,6 +45,9 @@ export async function listAdminProducts(): Promise<AdminProduct[]> {
     slug: p.slug,
     name: p.name_en,
     category: p.categories?.name_en ?? "",
+    productType: p.product_type,
+    lengthInches: p.length_inches,
+    imagePath: [...p.product_images].sort((a, b) => a.position - b.position)[0]?.storage_path ?? null,
     status: p.status as AdminProduct["status"],
     isNew: p.is_new,
     allowPreorder: p.allow_preorder,

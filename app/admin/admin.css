@@ -3,6 +3,9 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* The admin is light only: dark: styles apply only inside a .dark element, never from the system setting. */
+@custom-variant dark (&:is(.dark *));
+
 @theme inline {
   --font-heading: var(--font-sans);
   --font-sans: var(--font-sans);
@@ -37,6 +40,10 @@
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+  --color-ink: var(--ink);
+  --color-gold: var(--gold);
+  --color-gold-dark: var(--gold-dark);
+  --color-gold-tint: var(--gold-tint);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -47,43 +54,51 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: #141210; /* ink */
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
+  /* Brand colours (see CLAUDE.md design tokens): ink, gold accents, warm neutrals. */
+  --background: #f7f6f3; /* page behind the cards */
+  --foreground: #141210; /* ink */
+  --card: #ffffff;
+  --card-foreground: #141210;
+  --popover: #ffffff;
+  --popover-foreground: #141210;
+  --primary: #141210; /* ink buttons */
+  --primary-foreground: #ffffff;
+  --secondary: #f1efea;
+  --secondary-foreground: #141210;
+  --muted: #f1efea;
+  --muted-foreground: #6f6a63; /* muted: 4.9:1 on the page, 5.3:1 on white */
+  --accent: #f5eedf; /* gold-tint */
+  --accent-foreground: #141210;
+  --destructive: #b4442f; /* sale red */
+  --border: #e6e3dc;
+  --input: #d9d5cc;
   --ring: #b8924c; /* gold-dark */
-  --chart-1: #b8924c;
-  --chart-2: #6b5e3f;
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: #faf6ee; /* cream */
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: #141210;
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: #e9e1d3; /* stone */
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --chart-1: #d4af6a;
+  --chart-2: #b8924c;
+  --chart-3: #6b5e3f;
+  --chart-4: #6f6a63;
+  --chart-5: #141210;
+  --radius: 0.5rem;
+  --ink: #141210;
+  --gold: #d4af6a;
+  --gold-dark: #b8924c;
+  --gold-tint: #f5eedf;
+  --sidebar: #141210; /* ink */
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #d4af6a; /* gold, 9:1 on ink */
+  --sidebar-primary-foreground: #141210;
+  --sidebar-accent: rgb(255 255 255 / 0.08);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgb(255 255 255 / 0.1);
+  --sidebar-ring: #d4af6a;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+  html {
+    color-scheme: light;
   }
   body {
     @apply bg-background font-sans text-foreground antialiased;

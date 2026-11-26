@@ -1,5 +1,6 @@
 "use client";
 
+import { Boxes } from "lucide-react";
 import { useActionState, useState } from "react";
 import { adjustStock, type StockFormState } from "@/app/admin/(panel)/stock/actions";
 import { Alert, AlertDescription } from "@/components/admin/ui/alert";
@@ -15,27 +16,33 @@ import {
 } from "@/components/admin/ui/dialog";
 import { Input } from "@/components/admin/ui/input";
 import { Label } from "@/components/admin/ui/label";
+import { NativeSelect } from "@/components/admin/ui/native-select";
 import { STOCK_ACTIONS } from "@/lib/schemas/admin";
 
-type Props = { variantId: string; productName: string; onHand: number };
+type Props = { variantId: string; productName: string; onHand: number; /** Full-width button. */ block?: boolean };
 
-const selectClass =
-  "h-9 w-full rounded-md border border-input bg-transparent px-3 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50";
-
-export function StockAdjustDialog({ variantId, productName, onHand }: Props) {
+export function StockAdjustDialog({ variantId, productName, onHand, block }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
-          Update stock
+        <Button variant="outline" size={block ? "default" : "sm"} className={block ? "w-full" : undefined} aria-label={`Update stock: ${productName}`}>
+          <Boxes aria-hidden="true" />
+          {block ? "Update stock" : (
+            <>
+              <span className="sm:hidden">Update</span>
+              <span className="hidden sm:inline">Update stock</span>
+            </>
+          )}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{productName}</DialogTitle>
-          <DialogDescription>{onHand} in stock now. Every change is logged with a reason.</DialogDescription>
+          <DialogDescription>
+            <span className="font-semibold text-foreground tabular-nums">{Math.max(0, onHand)}</span> in stock now. Every change is logged with a reason.
+          </DialogDescription>
         </DialogHeader>
         {/* Remounted each time the dialog opens, so it starts empty. */}
         {open && <StockForm variantId={variantId} onHand={onHand} onDone={() => setOpen(false)} />}
@@ -75,13 +82,13 @@ function StockForm({ variantId, onHand, onDone }: { variantId: string; onHand: n
       )}
       <div className="grid gap-2">
         <Label htmlFor="action">What happened?</Label>
-        <select id="action" name="action" className={selectClass} value={kind} onChange={(e) => setKind(e.target.value as keyof typeof STOCK_ACTIONS)}>
+        <NativeSelect id="action" name="action" value={kind} onChange={(e) => setKind(e.target.value as keyof typeof STOCK_ACTIONS)}>
           {Object.entries(STOCK_ACTIONS).map(([key, value]) => (
             <option key={key} value={key}>
               {value.label}
             </option>
           ))}
-        </select>
+        </NativeSelect>
       </div>
       <div className="grid gap-2">
         <Label htmlFor="quantity">{isCount ? "How many do you have?" : "How many?"}</Label>
