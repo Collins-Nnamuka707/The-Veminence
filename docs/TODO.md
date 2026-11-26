@@ -8,7 +8,7 @@
 - [ ] Real product list, prices and descriptions (Phase 1 uses `lib/data/sample-catalog.ts`)
 - [ ] Real WhatsApp contact number: set `WHATSAPP_NUMBER` in `.env.local` (currently the placeholder +48 000 000 000) and in Vercel
 - [x] Create a Supabase project (EU region) and put the URL and publishable key in `.env.local`
-- [ ] Before launch: upgrade Supabase to Pro (daily backups, no pausing after a week of inactivity)
+- [ ] Before launch: upgrade Supabase to Pro (daily backups, no pausing after a week of inactivity), then turn on leaked-password protection (Authentication → Policies)
 - [ ] Buy the shop's domain (needed for the website address and for sending email)
 - [ ] Before launch: Resend with that domain as Supabase's SMTP sender (Authentication → Emails → Set up SMTP); the built-in sender is test-only and allows ~2 emails/hour
 - [ ] Then paste the email templates from `docs/email-templates.md` (Supabase only allows editing them with custom SMTP)
@@ -32,5 +32,5 @@
 - [ ] Account deletion on request (RODO/GDPR right to erasure)
 
 - [ ] Localized URL paths (`/pl/sklep`, `/pl/produkt/...`) via next-intl `pathnames` — better Polish SEO
-- [ ] Move `LOW_STOCK_THRESHOLD` (`lib/product-state.ts`) into `settings`
+- [ ] Use `settings.low_stock_threshold` (already in the database and `getStoreSettings()`) instead of the `LOW_STOCK_THRESHOLD` constant in `lib/product-state.ts`
 - [ ] Variant picker (length/colour) on the product page

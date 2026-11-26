@@ -19,4 +19,14 @@ describe("collections", () => {
     expect(bestSellers(all).map((p) => p.id)).toEqual(["b", "e", "a"]);
     expect(bestSellers(all, 1).map((p) => p.id)).toEqual(["b"]);
   });
+
+  it("Best sellers falls back to buyable wigs before anything has sold", () => {
+    const unsold = [
+      product({ id: "x" }),
+      product({ id: "soldout", available: 0 }),
+      product({ id: "soon", status: "coming_soon" }),
+      product({ id: "y" }),
+    ];
+    expect(bestSellers(unsold).map((p) => p.id)).toEqual(["x", "y"]);
+  });
 });

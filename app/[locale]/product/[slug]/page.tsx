@@ -10,7 +10,7 @@ import { AddToCartButton } from "@/components/store/cart/AddToCartButton";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { getProductBySlug, getProducts } from "@/lib/data/catalog";
-import { t } from "@/lib/i18n-content";
+import { langAttr, t } from "@/lib/i18n-content";
 import { getCardState } from "@/lib/product-state";
 import { maxQuantity } from "@/lib/cart";
 import { getRelatedProducts } from "@/lib/related";
@@ -72,7 +72,9 @@ async function ProductDetails({ params }: Pick<Props, "params">) {
         />
 
         <div className="md:pt-6">
-          <h1 className="font-display text-4xl font-medium sm:text-5xl">{name}</h1>
+          <h1 className="font-display text-4xl font-medium sm:text-5xl" lang={langAttr(product.name, locale)}>
+            {name}
+          </h1>
           <div className="mt-4">
             <Price state={state} size="lg" />
           </div>
@@ -80,13 +82,15 @@ async function ProductDetails({ params }: Pick<Props, "params">) {
           {state.canBuy && (
             <div className="mt-6">
               <AddToCartButton
-                productId={product.id}
+                variantId={product.variantId}
                 max={maxQuantity(product)}
                 preorder={state.availability === "preorder"}
               />
             </div>
           )}
-          <p className="mt-6 leading-relaxed">{t(product.description, locale)}</p>
+          <p className="mt-6 leading-relaxed" lang={langAttr(product.description, locale)}>
+            {t(product.description, locale)}
+          </p>
         </div>
       </div>
 

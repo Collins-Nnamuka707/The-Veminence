@@ -12,6 +12,8 @@ export type Category = {
 /** A product as the storefront sees it. Prices are gross (VAT included). */
 export type StoreProduct = {
   id: string;
+  /** The variant this product sells (length/colour picker comes later). Carts hold variant ids. */
+  variantId: string;
   slug: string;
   category: CategorySlug;
   name: LocalizedText;

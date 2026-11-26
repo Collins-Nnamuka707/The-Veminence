@@ -6,14 +6,15 @@ export function getRelatedProducts(product: StoreProduct, all: StoreProduct[], l
 }
 
 /** Wigs to suggest in the cart, based on the styles already in it. */
+/** `cartIds` are the variant ids in the cart. */
 export function getCartSuggestions(cartIds: string[], all: StoreProduct[], limit = 4): StoreProduct[] {
-  const inCart = all.filter((p) => cartIds.includes(p.id));
+  const inCart = all.filter((p) => cartIds.includes(p.variantId));
   const categories = new Set(inCart.map((p) => p.category));
   const averagePrice = inCart.length
     ? inCart.reduce((sum, p) => sum + p.price, 0) / inCart.length
     : 0;
   // Suggestions in the cart must be buyable right away.
-  const candidates = all.filter((p) => !cartIds.includes(p.id) && getCardState(p).canBuy);
+  const candidates = all.filter((p) => !cartIds.includes(p.variantId) && getCardState(p).canBuy);
   return rank(candidates, categories, averagePrice, limit);
 }
 

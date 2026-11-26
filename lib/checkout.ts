@@ -20,7 +20,7 @@ export type PricedOrder = {
 export type PricingResult =
   | ({ ok: true } & PricedOrder)
   | { ok: false; reason: "empty" }
-  | { ok: false; reason: "unavailable"; productIds: string[] };
+  | { ok: false; reason: "unavailable"; variantIds: string[] };
 
 /**
  * Server-side pricing of a checkout. Prices come from the catalogue, never from the browser.
@@ -35,12 +35,12 @@ export function priceOrder(
 ): PricingResult {
   if (lines.length === 0) return { ok: false, reason: "empty" };
 
-  const byId = new Map(products.map((p) => [p.id, p]));
+  const byVariant = new Map(products.map((p) => [p.variantId, p]));
   const items: PricedItem[] = [];
   const unavailable: string[] = [];
 
   for (const line of lines) {
-    const product = byId.get(line.id);
+    const product = byVariant.get(line.id);
     if (!product || line.quantity > maxQuantity(product)) {
       unavailable.push(line.id);
       continue;
@@ -49,7 +49,7 @@ export function priceOrder(
     items.push({ product, quantity: line.quantity, unitPrice, lineTotal: unitPrice * line.quantity });
   }
 
-  if (unavailable.length > 0) return { ok: false, reason: "unavailable", productIds: unavailable };
+  if (unavailable.length > 0) return { ok: false, reason: "unavailable", variantIds: unavailable };
 
   const subtotal = items.reduce((sum, item) => sum + item.lineTotal, 0);
   const deliveryFee = deliveryFees[deliveryMethod];

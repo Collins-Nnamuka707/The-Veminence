@@ -39,7 +39,7 @@ export function buildCheckoutSessionParams(
     phone: meta(input.phone),
     delivery_method: input.deliveryMethod,
     ...Object.fromEntries(Object.entries(delivery).map(([k, v]) => [k, meta(v)])),
-    items: meta(order.items.map((item) => `${item.product.id}x${item.quantity}`).join(",")),
+    items: meta(order.items.map((item) => `${item.product.variantId}x${item.quantity}`).join(",")),
     ...(input.notes ? { notes: meta(input.notes) } : {}),
     ...(options.customerId ? { customer_id: options.customerId } : {}),
   };
@@ -58,7 +58,7 @@ export function buildCheckoutSessionParams(
         unit_amount: item.unitPrice,
         product_data: {
           name: t(item.product.name, locale),
-          metadata: { product_id: item.product.id },
+          metadata: { product_id: item.product.id, variant_id: item.product.variantId },
         },
       },
     })),

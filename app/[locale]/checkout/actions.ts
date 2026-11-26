@@ -46,7 +46,7 @@ export async function startCheckout(_prev: CheckoutState, formData: FormData): P
   if (!cart.success) return { status: "error", formError: "cartEmpty" };
 
   const input = parsed.data;
-  const settings = getStoreSettings();
+  const settings = await getStoreSettings();
   const pricing = priceOrder(cart.data, await getProducts(), input.deliveryMethod, settings.deliveryFees);
   if (!pricing.ok) {
     return { status: "error", formError: pricing.reason === "empty" ? "cartEmpty" : "itemsUnavailable" };

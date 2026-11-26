@@ -34,8 +34,13 @@ npm run lint         # eslint
 npm run typecheck    # tsc --noEmit
 npm run test         # vitest
 npm run test:e2e     # playwright
-npm run db:reset     # reset local db, run migrations, load seed
+npm run db:push      # apply new migrations in supabase/migrations to the linked project
+npm run db:types     # regenerate lib/supabase/database.types.ts after a migration
+npm run db:test      # behaviour checks in supabase/tests (rolled back, leaves no data)
 ```
+
+There is no local database (no Docker): migrations go to the linked Supabase project. Never edit
+an applied migration; add a new one. After schema changes run `npx supabase db advisors --remote`.
 
 Run lint, typecheck and tests before saying a task is done.
 
@@ -91,8 +96,10 @@ Run lint, typecheck and tests before saying a task is done.
 
 ### Languages
 - No customer-facing string hard-coded in components: use `messages/pl.json` and `messages/en.json`.
-- Owner-managed text is stored as `{ pl, en }`. Use `t(field, locale)` from `lib/i18n-content.ts`,
-  which falls back to Polish when English is empty.
+- Owner-managed text (products, categories) is English, Polish optional (owner's decision,
+  2026-11-25): columns `*_en` (required) and `*_pl` (nullable), `LocalizedText = { en, pl? }`.
+  Use `t(field, locale)` from `lib/i18n-content.ts` (falls back to English) and put
+  `lang={langAttr(field, locale)}` on the element, so English text on Polish pages is marked.
 - English is the default locale (owner's decision, 2026-11-25): `/` opens `/en` for everyone, with no
   browser-language detection; visitors switch to Polish in the header. Every storefront page needs
   `hreflang` alternates.
@@ -111,6 +118,10 @@ Run lint, typecheck and tests before saying a task is done.
 - Server Components by default; `"use client"` only where interaction needs it.
 - Data access in `lib/data/*` (storefront) and `lib/admin/*` (admin); mutations as server actions
   validated with Zod schemas from `lib/schemas/*`.
+- Storefront reads go through `"use cache"` functions with the cookie-free client in
+  `lib/supabase/public.ts`, tagged `catalog` / `settings`; admin changes must `revalidateTag` them.
+  The sample catalogue is only for tests (`CATALOG_SOURCE=sample`) and local dev without keys.
+- Carts, checkout and Stripe metadata use variant ids (`StoreProduct.variantId`), never product ids.
 - Shared storefront components in `components/store/`; admin components in `components/admin/`.
 - One `ProductCard` component handles every state: in stock, low stock, out of stock,
   pre-order, on sale, coming soon (see SPEC "Product card and states").

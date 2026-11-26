@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
 export default async function LocaleLayout({ children, params }: LayoutProps<"/[locale]">) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
-  const eurRate = await getEurRate();
+  const [eurRate, settings] = await Promise.all([getEurRate(), getStoreSettings()]);
 
   return (
     <html lang={locale} data-scroll-behavior="smooth" className={`${sans.variable} ${display.variable} ${script.variable}`}>
@@ -44,7 +44,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
             <main id="main" className="flex-1">
               {children}
             </main>
-            <Footer whatsappHref={buildWhatsAppChatLink(getStoreSettings().whatsappNumber)} />
+            <Footer whatsappHref={buildWhatsAppChatLink(settings.whatsappNumber)} />
           </EurRateProvider>
         </NextIntlClientProvider>
       </body>

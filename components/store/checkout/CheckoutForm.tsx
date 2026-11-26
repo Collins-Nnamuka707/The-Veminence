@@ -93,7 +93,7 @@ export function CheckoutForm({ products, deliveryFees }: Props) {
 
   const subtotal = rows.reduce((sum, row) => sum + row.lineTotal, 0);
   const deliveryFee = deliveryFees[values.deliveryMethod];
-  const cartValue = JSON.stringify(rows.map((row) => ({ id: row.product.id, quantity: row.quantity })));
+  const cartValue = JSON.stringify(rows.map((row) => ({ id: row.product.variantId, quantity: row.quantity })));
 
   const serverErrors = state.status === "error" ? (state.fieldErrors ?? {}) : {};
   const errors = clientErrors ?? serverErrors;
