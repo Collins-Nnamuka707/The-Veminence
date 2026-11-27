@@ -1,12 +1,12 @@
 "use server";
 
-import { updateTag } from "next/cache";
+import { refresh, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/admin/auth";
 import { slugify, uniqueSlug } from "@/lib/admin/slug";
 import { CATALOG_TAG } from "@/lib/data/catalog";
-import { newProductFormSchema, productFormSchema } from "@/lib/schemas/admin";
+import { newProductFormSchema, PRODUCT_STATUSES, productFormSchema } from "@/lib/schemas/admin";
 import { fieldErrors } from "@/lib/schemas/errors";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -151,6 +151,32 @@ export async function removeProductImage(imageId: string): Promise<{ error?: str
   await supabase.storage.from("product-images").remove([image.storage_path]);
 
   updateTag(CATALOG_TAG);
+  return {};
+}
+
+const statusChange = z.object({ productId: z.uuid(), status: z.enum(PRODUCT_STATUSES) });
+
+/**
+ * Changes only a product's status: Archive hides it from the shop without losing anything, and
+ * Restore (or Undo) brings it back. The rest of the product is left as it is.
+ */
+export async function setProductStatus(productId: string, status: string): Promise<{ error?: string }> {
+  await requireAdmin();
+  const parsed = statusChange.safeParse({ productId, status });
+  if (!parsed.success) return { error: "Unknown product or status." };
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return { error: "Supabase is not configured." };
+
+  const { data, error } = await supabase
+    .from("products")
+    .update({ status: parsed.data.status })
+    .eq("id", parsed.data.productId)
+    .select("id");
+  if (error) return { error: saveError(error) };
+  if (!data?.length) return { error: "That product no longer exists." };
+
+  updateTag(CATALOG_TAG);
+  refresh();
   return {};
 }
 

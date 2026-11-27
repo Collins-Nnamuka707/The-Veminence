@@ -10,6 +10,7 @@ export type AdminProduct = {
   lengthInches: number | null;
   /** Storage path of the main photo, if any. */
   imagePath: string | null;
+  photoCount: number;
   status: "draft" | "published" | "coming_soon" | "archived";
   isNew: boolean;
   allowPreorder: boolean;
@@ -48,6 +49,7 @@ export async function listAdminProducts(): Promise<AdminProduct[]> {
     productType: p.product_type,
     lengthInches: p.length_inches,
     imagePath: [...p.product_images].sort((a, b) => a.position - b.position)[0]?.storage_path ?? null,
+    photoCount: p.product_images.length,
     status: p.status as AdminProduct["status"],
     isNew: p.is_new,
     allowPreorder: p.allow_preorder,
