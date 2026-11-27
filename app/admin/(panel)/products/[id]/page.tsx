@@ -1,7 +1,8 @@
-import { CircleCheck, ExternalLink, Info } from "lucide-react";
+import { Archive, CircleCheck, ExternalLink, Info } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { ArchiveProductButton } from "@/components/admin/ArchiveProductButton";
 import { DeleteProductDialog } from "@/components/admin/DeleteProductDialog";
 import { PageHeader, PageSkeleton } from "@/components/admin/PageHeader";
 import { Panel } from "@/components/admin/Panel";
@@ -43,16 +44,32 @@ async function EditProduct({ params, searchParams }: Props) {
         title={product.nameEn}
         description={<ProductStatusBadge status={product.status} />}
         actions={
-          visible ? (
-            <Button asChild variant="outline">
-              <a href={`/en/product/${product.slug}`} target="_blank" rel="noopener noreferrer">
-                <ExternalLink />
-                View in shop
-              </a>
-            </Button>
-          ) : undefined
+          <>
+            {visible && (
+              <Button asChild variant="outline">
+                <a href={`/en/product/${product.slug}`} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink />
+                  View in shop
+                </a>
+              </Button>
+            )}
+            <ArchiveProductButton productId={product.id} productName={product.nameEn} status={product.status} look="button" />
+            <DeleteProductDialog
+              productId={product.id}
+              productName={product.nameEn}
+              photoCount={product.images.length}
+              status={product.status}
+            />
+          </>
         }
       />
+
+      {product.status === "archived" && (
+        <div className="mb-6 flex items-start gap-3 rounded-xl bg-stone-100 p-4 text-sm text-stone-800 ring-1 ring-stone-600/20" role="status">
+          <Archive className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+          <p>This product is archived, so it&apos;s hidden from the shop. Restore it to bring it back as a draft.</p>
+        </div>
+      )}
 
       {query.created === "1" && (
         <div className="mb-6 flex items-start gap-3 rounded-xl bg-emerald-50 p-4 text-sm text-emerald-900 ring-1 ring-emerald-700/20" role="status">
@@ -100,13 +117,11 @@ async function EditProduct({ params, searchParams }: Props) {
             <Info className="mt-px size-3.5 shrink-0" aria-hidden="true" />
             Stock changes are logged on the Stock page. Price changes are kept for the 30-day lowest price.
           </p>
-          <Panel title="Delete product" description="Removes it for good. To hide it for now, set it to Archived instead.">
-            <DeleteProductDialog productId={product.id} productName={product.nameEn} photoCount={product.images.length} />
-          </Panel>
         </aside>
 
         <div className="min-w-0 lg:order-1">
           <ProductForm
+            key={product.status}
             mode="edit"
             productId={product.id}
             categories={categories}

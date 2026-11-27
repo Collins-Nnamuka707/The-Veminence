@@ -1,14 +1,17 @@
 "use client";
 
-import { ChevronRight, PackageSearch, Search } from "lucide-react";
+import { CircleAlert, CircleCheck, PackageSearch, Pencil, Search, X } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useTransition } from "react";
 import type { AdminProduct } from "@/lib/admin/catalog";
 import { formatPrice } from "@/lib/money";
+import { ArchiveProductButton, type ProductNotice } from "./ArchiveProductButton";
+import { DeleteProductDialog } from "./DeleteProductDialog";
 import { FilterChips } from "./FilterChips";
 import { EmptyState } from "./Panel";
 import { ProductThumb } from "./ProductThumb";
 import { PRODUCT_STATUS, ProductStatusBadge, StockBadge } from "./StatusBadges";
+import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { NativeSelect } from "./ui/native-select";
 
@@ -40,10 +43,69 @@ function Price({ product }: { product: AdminProduct }) {
   );
 }
 
+/** Edit, Archive (or Restore) and Delete, at the right edge of each product. */
+function RowActions({ product, onNotice }: { product: AdminProduct; onNotice: (notice: ProductNotice) => void }) {
+  return (
+    <div className="relative z-10 flex items-center justify-end gap-0.5">
+      <Button asChild variant="ghost" size="icon" title="Edit">
+        <Link href={`/admin/products/${product.id}`} aria-label={`Edit ${product.name}`}>
+          <Pencil aria-hidden="true" />
+        </Link>
+      </Button>
+      <ArchiveProductButton productId={product.id} productName={product.name} status={product.status} onNotice={onNotice} />
+      <DeleteProductDialog
+        productId={product.id}
+        productName={product.name}
+        photoCount={product.photoCount}
+        status={product.status}
+        look="icon"
+        onNotice={onNotice}
+      />
+    </div>
+  );
+}
+
+function NoticeBar({ notice, onUndo, onClose, undoing }: { notice: ProductNotice; onUndo: () => void; onClose: () => void; undoing: boolean }) {
+  const error = notice.tone === "error";
+  const Icon = error ? CircleAlert : CircleCheck;
+  return (
+    <div
+      className={
+        error
+          ? "flex items-center gap-3 border-b bg-red-50 px-4 py-2.5 text-sm text-red-900"
+          : "flex items-center gap-3 border-b bg-emerald-50 px-4 py-2.5 text-sm text-emerald-900"
+      }
+      role={error ? "alert" : "status"}
+    >
+      <Icon className="size-4 shrink-0" aria-hidden="true" />
+      <p className="min-w-0 flex-1">{notice.text}</p>
+      {notice.undo && (
+        <Button variant="outline" size="sm" className="bg-white" disabled={undoing} onClick={onUndo}>
+          {undoing ? "Undoing…" : "Undo"}
+        </Button>
+      )}
+      <Button variant="ghost" size="icon-sm" aria-label="Dismiss message" onClick={onClose}>
+        <X aria-hidden="true" />
+      </Button>
+    </div>
+  );
+}
+
 export function ProductList({ products, lowAt }: { products: AdminProduct[]; lowAt: number }) {
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<StatusTab>("all");
   const [type, setType] = useState("all");
+  const [notice, setNotice] = useState<ProductNotice | null>(null);
+  const [undoing, startUndo] = useTransition();
+
+  function undo() {
+    const run = notice?.undo;
+    if (!run) return;
+    startUndo(async () => {
+      const result = await run();
+      setNotice(result.error ? { text: result.error, tone: "error" } : { text: "Undone.", tone: "success" });
+    });
+  }
 
   const counts = useMemo(() => {
     const c: Record<string, number> = { all: products.length };
@@ -97,6 +159,8 @@ export function ProductList({ products, lowAt }: { products: AdminProduct[]; low
         </div>
       </div>
 
+      {notice && <NoticeBar notice={notice} undoing={undoing} onUndo={undo} onClose={() => setNotice(null)} />}
+
       {shown.length === 0 ? (
         <EmptyState icon={PackageSearch} title={products.length === 0 ? "No products yet" : "No products match"}>
           {products.length === 0 ? "Add your first product to start selling." : "Try another search or filter."}
@@ -111,7 +175,7 @@ export function ProductList({ products, lowAt }: { products: AdminProduct[]; low
                 <th scope="col" className="px-3 py-3 font-medium">Status</th>
                 <th scope="col" className="px-3 py-3 text-right font-medium">Price</th>
                 <th scope="col" className="px-3 py-3 text-right font-medium">Stock</th>
-                <th scope="col" className="w-10 px-3 py-3"><span className="sr-only">Open</span></th>
+                <th scope="col" className="px-3 py-3 text-right font-medium"><span className="sr-only">Actions</span></th>
               </tr>
             </thead>
             <tbody className="divide-y">
@@ -148,8 +212,8 @@ export function ProductList({ products, lowAt }: { products: AdminProduct[]; low
                         <StockBadge onHand={stock} lowAt={lowAt} />
                       </span>
                     </td>
-                    <td className="px-3 py-3 text-muted-foreground">
-                      <ChevronRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                    <td className="py-2 pr-3 pl-1">
+                      <RowActions product={product} onNotice={setNotice} />
                     </td>
                   </tr>
                 );
@@ -162,24 +226,27 @@ export function ProductList({ products, lowAt }: { products: AdminProduct[]; low
             {shown.map((product) => {
               const stock = product.variants.reduce((sum, v) => sum + v.stockOnHand, 0);
               return (
-                <li key={product.id}>
-                  <Link href={`/admin/products/${product.id}`} className="flex gap-3 p-4 active:bg-muted/60">
-                    <ProductThumb imagePath={product.imagePath} name={product.name} size={64} />
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-start justify-between gap-2">
-                        <p className="truncate font-semibold">{product.name}</p>
-                        <span className="shrink-0 text-sm tabular-nums">
-                          <Price product={product} />
-                        </span>
-                      </div>
-                      <p className="truncate text-xs text-muted-foreground">{productDetails(product)}</p>
-                      <div className="mt-2 flex flex-wrap items-center gap-2">
-                        <ProductStatusBadge status={product.status} />
-                        <StockBadge onHand={stock} lowAt={lowAt} />
-                        <span className="text-xs text-muted-foreground tabular-nums">{stock} in stock</span>
-                      </div>
+                <li key={product.id} className="relative flex gap-3 p-4 has-[a.card-link:active]:bg-muted/60">
+                  <ProductThumb imagePath={product.imagePath} name={product.name} size={64} />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-2">
+                      <Link href={`/admin/products/${product.id}`} className="card-link block min-w-0 truncate font-semibold after:absolute after:inset-0">
+                        {product.name}
+                      </Link>
+                      <span className="shrink-0 text-sm tabular-nums">
+                        <Price product={product} />
+                      </span>
                     </div>
-                  </Link>
+                    <p className="truncate text-xs text-muted-foreground">{productDetails(product)}</p>
+                    <div className="mt-2 flex flex-wrap items-center gap-2">
+                      <ProductStatusBadge status={product.status} />
+                      <StockBadge onHand={stock} lowAt={lowAt} />
+                      <span className="text-xs text-muted-foreground tabular-nums">{stock} in stock</span>
+                    </div>
+                    <div className="-mr-2 -mb-2 flex justify-end">
+                      <RowActions product={product} onNotice={setNotice} />
+                    </div>
+                  </div>
                 </li>
               );
             })}

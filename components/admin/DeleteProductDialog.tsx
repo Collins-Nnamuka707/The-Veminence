@@ -15,14 +15,26 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/admin/ui/dialog";
+import type { AdminProduct } from "@/lib/admin/catalog";
+import { type ProductNotice, useArchiveProduct } from "./ArchiveProductButton";
 
-type Props = { productId: string; productName: string; photoCount: number };
+type Props = {
+  productId: string;
+  productName: string;
+  photoCount: number;
+  status: AdminProduct["status"];
+  /** "icon" for the product list, "button" (icon and word) for the product page. */
+  look?: "icon" | "button";
+  onNotice?: (notice: ProductNotice) => void;
+};
 
-/** "Delete product" button with a confirmation; deleting cannot be undone. */
-export function DeleteProductDialog({ productId, productName, photoCount }: Props) {
+/** "Delete product" button with a confirmation; deleting cannot be undone, so it offers Archive. */
+export function DeleteProductDialog({ productId, productName, photoCount, status, look = "button", onNotice }: Props) {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string>();
   const [pending, startTransition] = useTransition();
+  const archive = useArchiveProduct({ productId, productName, status, onNotice });
+  const busy = pending || archive.pending;
 
   function confirmDelete() {
     setError(undefined);
@@ -37,16 +49,28 @@ export function DeleteProductDialog({ productId, productName, photoCount }: Prop
     <Dialog
       open={open}
       onOpenChange={(next) => {
-        if (pending) return;
+        if (busy) return;
         setOpen(next);
         if (!next) setError(undefined);
       }}
     >
       <DialogTrigger asChild>
-        <Button variant="destructive" className="w-full">
-          <Trash2 aria-hidden="true" />
-          Delete product
-        </Button>
+        {look === "icon" ? (
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={`Delete ${productName}`}
+            title="Delete"
+            className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+          >
+            <Trash2 aria-hidden="true" />
+          </Button>
+        ) : (
+          <Button variant="destructive">
+            <Trash2 aria-hidden="true" />
+            Delete
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -57,25 +81,30 @@ export function DeleteProductDialog({ productId, productName, photoCount }: Prop
             history. It can&apos;t be undone.
           </DialogDescription>
         </DialogHeader>
-        <p className="flex gap-2 rounded-lg bg-muted/60 p-3 text-sm text-muted-foreground">
-          <Archive className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-          <span>
-            Only want to hide it for now? Close this and set its status to <strong className="font-medium text-foreground">Archived</strong>{" "}
-            instead. You can bring it back later.
-          </span>
-        </p>
-        {error && (
+        {!archive.archived && (
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-muted/60 p-3 text-sm text-muted-foreground">
+            <p className="min-w-0 flex-1 basis-48">
+              Only want to hide it for now? <strong className="font-medium text-foreground">Archive</strong> it instead. You can
+              restore it later.
+            </p>
+            <Button variant="outline" size="sm" disabled={busy} onClick={() => archive.toggle(() => setOpen(false))}>
+              <Archive aria-hidden="true" />
+              {archive.pending ? "Archiving…" : "Archive instead"}
+            </Button>
+          </div>
+        )}
+        {(error || archive.error) && (
           <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
+            <AlertDescription>{error ?? archive.error}</AlertDescription>
           </Alert>
         )}
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline" disabled={pending}>
+            <Button variant="outline" disabled={busy}>
               Keep product
             </Button>
           </DialogClose>
-          <Button onClick={confirmDelete} disabled={pending} className="bg-destructive text-white hover:bg-destructive/90">
+          <Button onClick={confirmDelete} disabled={busy} className="bg-destructive text-white hover:bg-destructive/90">
             <Trash2 aria-hidden="true" />
             {pending ? "Deleting…" : "Delete for good"}
           </Button>
