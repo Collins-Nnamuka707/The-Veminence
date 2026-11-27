@@ -1,8 +1,9 @@
 import { BadgeCheck, CreditCard, Package, Plus, Ruler, ShieldCheck, Sparkles, Truck } from "lucide-react";
 import type { Metadata } from "next";
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { ProductCard } from "@/components/store/ProductCard";
+import { COLLECTION_IMAGES, textureImage } from "@/components/store/collection-images";
 import { SectionHeading } from "@/components/store/SectionHeading";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
@@ -10,23 +11,7 @@ import { getBestSellers, getCategories } from "@/lib/data/catalog";
 import { langAttr, t } from "@/lib/i18n-content";
 import { localeAlternates } from "@/lib/seo";
 import heroImage from "@/public/images/hero-hair.webp";
-import curlyImage from "@/public/images/textures/curly.webp";
-import kinkyImage from "@/public/images/textures/kinky.webp";
-import laceFrontImage from "@/public/images/textures/lace-front.webp";
-import straightImage from "@/public/images/textures/straight.webp";
-import wavyImage from "@/public/images/textures/wavy.webp";
-import bundlesImage from "@/public/images/types/bundles.webp";
-import closuresFrontalsImage from "@/public/images/types/closures-frontals.webp";
-import wigsImage from "@/public/images/types/wigs.webp";
 
-/** Photo for each texture tile; a texture without one shows the plain stone tile. */
-const TEXTURE_IMAGES: Record<string, StaticImageData> = {
-  straight: straightImage,
-  wavy: wavyImage,
-  curly: curlyImage,
-  kinky: kinkyImage,
-  "lace-front": laceFrontImage,
-};
 
 export async function generateMetadata({ params }: PageProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await params;
@@ -49,9 +34,9 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
     { icon: CreditCard, label: tr("trust.payment") },
   ];
   const types = [
-    { href: "/shop/wigs", label: nav("wigs"), image: wigsImage },
-    { href: "/shop/bundles", label: nav("bundles"), image: bundlesImage },
-    { href: "/shop/closures-frontals", label: nav("closuresFrontals"), image: closuresFrontalsImage },
+    { href: "/shop/wigs", label: nav("wigs"), image: COLLECTION_IMAGES.wigs! },
+    { href: "/shop/bundles", label: nav("bundles"), image: COLLECTION_IMAGES.bundles! },
+    { href: "/shop/closures-frontals", label: nav("closuresFrontals"), image: COLLECTION_IMAGES["closures-frontals"]! },
   ];
   const reasons = [
     { icon: BadgeCheck, title: tr("why.one"), text: tr("why.oneText") },
@@ -170,7 +155,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
         <SectionHeading id="textures-title" title={tr("textures.title")} text={tr("textures.text")} />
         <ul className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {categories.map((category) => {
-            const image = TEXTURE_IMAGES[category.slug];
+            const image = textureImage(category.slug);
             return (
               <li key={category.slug}>
                 <Link

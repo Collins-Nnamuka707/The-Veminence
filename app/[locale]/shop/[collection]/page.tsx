@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // The URL-specific part sits behind Suspense so navigation can show the shell instantly.
 export default function CollectionPage({ params }: Props) {
   return (
-    <Suspense fallback={<div className="h-72 animate-pulse bg-ink" aria-hidden="true" />}>
+    <Suspense fallback={<div className="h-72 animate-pulse bg-ink sm:h-[26rem]" aria-hidden="true" />}>
       <Collection params={params} />
     </Suspense>
   );
