@@ -1,6 +1,6 @@
 import { BadgeCheck, CreditCard, Package, Plus, Ruler, ShieldCheck, Sparkles, Truck } from "lucide-react";
 import type { Metadata } from "next";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { getTranslations } from "next-intl/server";
 import { ProductCard } from "@/components/store/ProductCard";
 import { SectionHeading } from "@/components/store/SectionHeading";
@@ -10,6 +10,20 @@ import { getBestSellers, getCategories } from "@/lib/data/catalog";
 import { langAttr, t } from "@/lib/i18n-content";
 import { localeAlternates } from "@/lib/seo";
 import heroImage from "@/public/images/hero-hair.webp";
+import curlyImage from "@/public/images/textures/curly.webp";
+import kinkyImage from "@/public/images/textures/kinky.webp";
+import laceFrontImage from "@/public/images/textures/lace-front.webp";
+import straightImage from "@/public/images/textures/straight.webp";
+import wavyImage from "@/public/images/textures/wavy.webp";
+
+/** Photo for each texture tile; a texture without one shows the plain stone tile. */
+const TEXTURE_IMAGES: Record<string, StaticImageData> = {
+  straight: straightImage,
+  wavy: wavyImage,
+  curly: curlyImage,
+  kinky: kinkyImage,
+  "lace-front": laceFrontImage,
+};
 
 export async function generateMetadata({ params }: PageProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await params;
@@ -146,18 +160,38 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <section aria-labelledby="textures-title" className="container-page pt-20">
         <SectionHeading id="textures-title" title={tr("textures.title")} text={tr("textures.text")} />
         <ul className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-          {categories.map((category) => (
-            <li key={category.slug}>
-              <Link href={`/shop/${category.slug}`} className="group relative flex aspect-square items-end overflow-hidden bg-stone p-5">
-                <span
-                  className="text-lg font-extrabold tracking-[0.1em] uppercase underline-offset-4 group-hover:underline"
-                  lang={langAttr(category.name, locale)}
+          {categories.map((category) => {
+            const image = TEXTURE_IMAGES[category.slug];
+            return (
+              <li key={category.slug}>
+                <Link
+                  href={`/shop/${category.slug}`}
+                  className={`group relative flex aspect-[3/4] items-end overflow-hidden bg-stone p-5 ${image ? "on-dark text-white" : ""}`}
                 >
-                  {t(category.name, locale)}
-                </span>
-              </Link>
-            </li>
-          ))}
+                  {image && (
+                    <>
+                      {/* Decorative: the texture name below is the link text. */}
+                      <Image
+                        src={image}
+                        alt=""
+                        fill
+                        placeholder="blur"
+                        sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <span className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/85 via-ink/30 to-transparent" aria-hidden="true" />
+                    </>
+                  )}
+                  <span
+                    className="relative text-lg font-extrabold tracking-[0.1em] uppercase underline-offset-4 group-hover:underline"
+                    lang={langAttr(category.name, locale)}
+                  >
+                    {t(category.name, locale)}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </section>
 
