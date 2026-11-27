@@ -5,6 +5,7 @@ import type { CollectionKey } from "@/lib/collections";
 import { t } from "@/lib/i18n-content";
 import type { Category, StoreProduct } from "@/lib/product-state";
 import { CollectionHero } from "./CollectionHero";
+import { COLLECTION_IMAGES } from "./collection-images";
 import { NAV_ITEMS } from "./Header";
 import { ProductCard } from "./ProductCard";
 
@@ -38,7 +39,7 @@ export function ShopListing({ title, intro, lang, categories, products, active }
 
   return (
     <>
-      <CollectionHero title={title} intro={intro} lang={lang} />
+      <CollectionHero title={title} intro={intro} lang={lang} image={active ? COLLECTION_IMAGES[active] : undefined} />
 
       <div className="container-page pt-8 pb-24">
         <div className="flex flex-col gap-4 border-b border-stone pb-6">
