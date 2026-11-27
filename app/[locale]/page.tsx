@@ -15,6 +15,9 @@ import kinkyImage from "@/public/images/textures/kinky.webp";
 import laceFrontImage from "@/public/images/textures/lace-front.webp";
 import straightImage from "@/public/images/textures/straight.webp";
 import wavyImage from "@/public/images/textures/wavy.webp";
+import bundlesImage from "@/public/images/types/bundles.webp";
+import closuresFrontalsImage from "@/public/images/types/closures-frontals.webp";
+import wigsImage from "@/public/images/types/wigs.webp";
 
 /** Photo for each texture tile; a texture without one shows the plain stone tile. */
 const TEXTURE_IMAGES: Record<string, StaticImageData> = {
@@ -46,9 +49,9 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
     { icon: CreditCard, label: tr("trust.payment") },
   ];
   const types = [
-    { href: "/shop/wigs", label: nav("wigs") },
-    { href: "/shop/bundles", label: nav("bundles") },
-    { href: "/shop/closures-frontals", label: nav("closuresFrontals") },
+    { href: "/shop/wigs", label: nav("wigs"), image: wigsImage },
+    { href: "/shop/bundles", label: nav("bundles"), image: bundlesImage },
+    { href: "/shop/closures-frontals", label: nav("closuresFrontals"), image: closuresFrontalsImage },
   ];
   const reasons = [
     { icon: BadgeCheck, title: tr("why.one"), text: tr("why.oneText") },
@@ -125,11 +128,17 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
         <ul className="mt-8 grid gap-4 sm:grid-cols-3">
           {types.map((type) => (
             <li key={type.href}>
-              <Link href={type.href} className="group on-dark relative flex aspect-[16/9] flex-col justify-end overflow-hidden bg-ink p-6 text-white sm:aspect-[4/5]">
-                <span
-                  className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,106,0.25),transparent_65%)] transition-opacity duration-500 group-hover:opacity-60"
-                  aria-hidden="true"
+              <Link href={type.href} className="group on-dark relative flex aspect-square flex-col justify-end overflow-hidden bg-ink p-6 text-white sm:aspect-[4/5]">
+                {/* Decorative: the type name below is the link text. */}
+                <Image
+                  src={type.image}
+                  alt=""
+                  fill
+                  placeholder="blur"
+                  sizes="(min-width: 640px) 33vw, 100vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
+                <span className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/90 via-ink/40 to-transparent" aria-hidden="true" />
                 <span className="relative text-2xl font-extrabold tracking-tight uppercase">{type.label}</span>
                 <span className="relative mt-2 text-[0.65rem] font-semibold tracking-[0.2em] text-gold uppercase underline-offset-4 group-hover:underline">
                   {tr("types.shop")} →
